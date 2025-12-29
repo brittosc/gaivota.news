@@ -41,7 +41,7 @@ export async function proxy(request: NextRequest) {
 
   const isAuthPage =
     pathnameWithoutLocale.startsWith('/login') || pathnameWithoutLocale.startsWith('/api/auth');
-  const isPublicPage = pathnameWithoutLocale === '/';
+  const isPublicPage = pathnameWithoutLocale === '/' || pathnameWithoutLocale.startsWith('/blog');
 
   if (!user && !isAuthPage && !isPublicPage) {
     const locale = pathname.split('/')[1] || defaultLocale;

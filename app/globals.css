@@ -17,7 +17,28 @@
  */
 
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 @import 'tw-animate-css';
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.705 0.015 286.067 / 0.15); /* Much more subtle opacity */
+  border-radius: 10px;
+  border: none; /* Removed border for cleaner look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.705 0.015 286.067 / 0.3);
+}
 
 @custom-variant dark (&:is(.dark *));
 

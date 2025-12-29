@@ -22,75 +22,52 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LucideIcon } from 'lucide-react';
 
-import { Sidebar, SidebarContent, SidebarGroup } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup } from '@/components/ui/sidebar';
+import { ThemeSwitch } from '@/components/theme/theme-toggle';
 
-import {
-  BarChart3,
-  BookOpen,
-  Briefcase,
-  ClipboardList,
-  Cog,
-  Settings,
-  Shield,
-  Users,
-  Wrench,
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { BarChart3, Briefcase, ClipboardList } from 'lucide-react';
 
 type SidebarLink = {
-  labelKey: string;
+  label: string;
   href: string;
   icon: LucideIcon;
 };
 
 type SidebarSection = {
-  titleKey: string;
+  title: string;
   links: SidebarLink[];
 };
+
 const sidebarSections: SidebarSection[] = [
   {
-    titleKey: 'management.title',
+    title: 'Administração',
     links: [
-      { labelKey: 'management.administration', href: '#', icon: Briefcase },
-      { labelKey: 'management.indicators', href: '#', icon: BarChart3 },
-      { labelKey: 'management.teams', href: '#', icon: Users },
+      { label: 'Dashboard', href: '/admin', icon: BarChart3 },
+      { label: 'Criar Post', href: '/admin/posts/create', icon: ClipboardList },
     ],
   },
   {
-    titleKey: 'operational.title',
-    links: [
-      { labelKey: 'operational.operations', href: '#', icon: ClipboardList },
-      { labelKey: 'operational.processes', href: '#', icon: Cog },
-      { labelKey: 'operational.maintenance', href: '#', icon: Wrench },
-    ],
-  },
-  {
-    titleKey: 'system.title',
-    links: [
-      { labelKey: 'system.logs', href: '#', icon: BookOpen },
-      { labelKey: 'system.settings', href: '/settings', icon: Settings },
-      { labelKey: 'system.permissions', href: '#', icon: Shield },
-    ],
+    title: 'Site',
+    links: [{ label: 'Página Inicial', href: '/', icon: Briefcase }],
   },
 ];
 
 export function AppSidebar() {
-  const t = useTranslations('sidebar');
   const pathname = usePathname();
 
   return (
     <Sidebar>
       <SidebarContent className="bg-zinc-50 p-4 font-bold dark:bg-zinc-900">
-        {sidebarSections.map(({ titleKey, links }) => (
-          <SidebarGroup key={titleKey} className="text-muted-foreground p-4 text-sm">
-            <span className="mb-2 block font-medium">{t(titleKey)}</span>
+        {sidebarSections.map(({ title, links }) => (
+          <SidebarGroup key={title} className="text-muted-foreground p-4 text-sm">
+            <span className="mb-2 block font-medium">{title}</span>
 
-            {links.map(({ labelKey, href, icon: Icon }, index) => {
+            {links.map(({ label, href, icon: Icon }, index) => {
               const isActive = pathname === href;
 
               return (
                 <Link
-                  key={labelKey}
+                  key={label}
                   href={href}
                   aria-current={isActive ? 'page' : undefined}
                   style={{ transitionDelay: `${index * 40}ms` }}
@@ -99,13 +76,16 @@ export function AppSidebar() {
                   }`}
                 >
                   <Icon className="size-4 transition-transform duration-200 group-hover:scale-105" />
-                  <span>{t(labelKey)}</span>
+                  <span>{label}</span>
                 </Link>
               );
             })}
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter className="flex items-center justify-center border-t p-4">
+        <ThemeSwitch />
+      </SidebarFooter>
     </Sidebar>
   );
 }

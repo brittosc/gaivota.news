@@ -1,0 +1,82 @@
+import Link from 'next/link';
+import { SupportersMarquee } from '@/components/marketing/supporters-marquee';
+
+export function Footer() {
+  return (
+    <footer className="bg-muted/30 border-t">
+      <SupportersMarquee />
+
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="col-span-1 md:col-span-2">
+            <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-primary"
+              >
+                <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+                <path d="M18 14h-8" />
+                <path d="M15 18h-5" />
+                <path d="M10 6h8v4h-8V6Z" />
+              </svg>
+              Gaivota News
+            </Link>
+            <p className="text-muted-foreground mt-4 max-w-sm text-sm">
+              Trazendo as notícias mais relevantes da nossa região e do mundo, com compromisso e
+              verdade.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">Links Úteis</h4>
+            <ul className="text-muted-foreground space-y-2 text-sm">
+              <li>
+                <Link href="/" className="hover:text-primary transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-primary transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin" className="hover:text-primary transition-colors">
+                  Área Administrativa
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">Legal</h4>
+            <ul className="text-muted-foreground space-y-2 text-sm">
+              <li>
+                <Link href="/privacy" className="hover:text-primary transition-colors">
+                  Política de Privacidade
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-primary transition-colors">
+                  Termos de Uso
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="text-muted-foreground mt-12 border-t pt-8 text-center text-sm">
+          <p>&copy; {new Date().getFullYear()} Gaivota News. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

@@ -34,6 +34,7 @@ import { SettingsClientWrapper } from '@/components/providers/settings-client-wr
 import { ServiceWorkerRegister } from '@/components/pwa/sw-register';
 import { ServiceWorkerUpdatePrompt } from '@/components/pwa/sw-update-prompt';
 import { AppSidebar } from '@/components/app-sidebar';
+import { Footer } from '@/components/layout/footer';
 
 import '../globals.css';
 
@@ -65,7 +66,7 @@ export default async function LocaleLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ErrorBoundaryProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               <QueryProvider>
                 <AuthProvider>
                   <ProgressProvider>
@@ -76,9 +77,12 @@ export default async function LocaleLayout({
                           <ServiceWorkerUpdatePrompt />
                           <SettingsClientWrapper>
                             <AppSidebar />
-                            <SidebarInset className="bg-muted dark:bg-muted flex max-h-svh flex-col overflow-hidden">
-                              <SidebarTrigger className="mt-2 ml-2" />
-                              {children}
+                            <SidebarInset className="bg-muted dark:bg-muted flex h-svh max-h-svh flex-col overflow-y-auto">
+                              <div className="flex min-h-full flex-col">
+                                <SidebarTrigger className="sticky top-2 z-10 mt-2 ml-2" />
+                                <main className="flex-1">{children}</main>
+                                <Footer />
+                              </div>
                             </SidebarInset>
                           </SettingsClientWrapper>
                         </SidebarProvider>

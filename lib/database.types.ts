@@ -27,18 +27,56 @@ export interface Database {
           full_name: string | null;
           avatar_url: string | null;
           updated_at: string | null;
+          role: 'admin' | 'user';
         };
         Insert: {
           id: string;
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
+          role?: 'admin' | 'user';
         };
         Update: {
           id?: string;
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
+          role?: 'admin' | 'user';
+        };
+      };
+      posts: {
+        Row: {
+          id: string;
+          title: string;
+          slug: string;
+          content: string;
+          author_id: string;
+          published: boolean;
+          featured_image: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          slug: string;
+          content: string;
+          author_id?: string;
+          published?: boolean;
+          featured_image?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          slug?: string;
+          content?: string;
+          author_id?: string;
+          published?: boolean;
+          featured_image?: string | null;
+          created_at?: string;
+          updated_at?: string;
         };
       };
     };
