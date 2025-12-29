@@ -1,0 +1,85 @@
+{
+  "HomePage": {
+    "title": "Olá!",
+    "welcome": "Bem-vindo ao template de elite.",
+    "modalMessage": "Bem-vindo ao sistema internacionalizado"
+  },
+  "Common": {
+    "tryAgain": "Tentar novamente",
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro."
+  },
+  "Settings": {
+    "title": "Configurações",
+    "subtitle": "Personalize a sua experiência no sistema.",
+    "darkMode": ["Modo Escuro", "Alternar entre temas claro e escuro."],
+    "visualNotifications": ["Notificações Visuais", "Exibir ou ocultar balões de alerta (toasts)."],
+    "soundEffects": ["Efeitos Sonoros", "Tocar sons em notificações e ações."],
+    "languageSelect": ["Idioma do Sistema", "Escolha o idioma preferencial para a interface."]
+  },
+  "Offline": {
+    "title": "Você está offline",
+    "subtitle": "Parece que você perdeu a conexão com a internet. Verifique sua rede e tente carregar a página novamente."
+  },
+  "Profile": {
+    "account": "Conta",
+    "defaultName": "Usuário",
+    "provider": "Provedor",
+    "userAuth": "Usuário autenticado",
+    "logout": "Sair da conta"
+  },
+  "login": {
+    "welcomeBack": "Bem-vindo de volta",
+    "description": "Acesse sua conta de forma rápida e segura",
+    "signInWithGoogle": "Entrar com Google",
+    "termsNotice": "Ao continuar, você concorda com nossos",
+    "termsOfUse": "Termos de Uso",
+    "and": "e",
+    "privacyPolicy": "Política de Privacidade."
+  },
+  "sidebar": {
+    "management": {
+      "title": "Gestão",
+      "administration": "Administração",
+      "indicators": "Indicadores",
+      "teams": "Equipes"
+    },
+    "operational": {
+      "title": "Operacional",
+      "operations": "Operações",
+      "processes": "Processos",
+      "maintenance": "Manutenção"
+    },
+    "system": {
+      "title": "Sistema",
+      "logs": "Logs",
+      "settings": "Configurações",
+      "permissions": "Permissoes"
+    }
+  },
+  "modal": {
+    "defaults": {
+      "title": "Aviso do Sistema",
+      "message": "Esta é uma mensagem de informação.",
+      "button": "Entendido"
+    },
+    "settings": {
+      "common": {
+        "close": "Fechar"
+      },
+      "title": "Configurações Salvas",
+      "message": "Suas preferências de som e notificações foram atualizadas com sucesso em todos os seus dispositivos."
+    }
+  },
+  "Error": {
+    "title": "Algo deu errado!",
+    "description": "Não conseguimos processar sua solicitação no momento. Por favor, tente novamente mais tarde.",
+    "tryAgain": "Tentar novamente",
+    "goHome": "Ir para o início"
+  },
+  "NotFound": {
+    "title": "Página não encontrada",
+    "description": "Ops! Parece que você se perdeu no caminho. A página não existe, foi comida pelo cachorro, enterrada no quintal e ninguém lembra onde.",
+    "goHome": "Voltar ao início"
+  }
+}

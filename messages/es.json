@@ -1,0 +1,88 @@
+{
+  "HomePage": {
+    "title": "¡Hola!",
+    "welcome": "Bienvenido a la plantilla de élite.",
+    "modalMessage": "Bienvenido al sistema internacionalizado"
+  },
+  "Common": {
+    "tryAgain": "Intentar de nuevo",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error."
+  },
+  "Settings": {
+    "title": "Configuraciones",
+    "subtitle": "Personaliza tu experiencia en el sistema.",
+    "darkMode": ["Modo Oscuro", "Alternar entre temas claro y oscuro."],
+    "visualNotifications": [
+      "Notificaciones Visuales",
+      "Mostrar u ocultar globos de alerta (toasts)."
+    ],
+    "soundEffects": ["Efectos de Sonido", "Reproducir sonidos en notificaciones y acciones."],
+    "languageSelect": ["Idioma del sistema", "Elija su idioma preferido para la interfaz."]
+  },
+  "Offline": {
+    "title": "Estás fuera de línea",
+    "subtitle": "Parece que has perdido la conexión a internet. Verifica tu red e intenta cargar la página de nuevo."
+  },
+  "Profile": {
+    "account": "Cuenta",
+    "defaultName": "Usuario",
+    "provider": "Proveedor",
+    "userAuth": "Usuario autenticado",
+    "logout": "Cerrar sesión"
+  },
+  "login": {
+    "welcomeBack": "Bienvenido de nuevo",
+    "description": "Accede a tu cuenta de forma rápida y segura",
+    "signInWithGoogle": "Iniciar sesión con Google",
+    "termsNotice": "Al continuar, aceptas nuestros",
+    "termsOfUse": "Términos de Uso",
+    "and": "y",
+    "privacyPolicy": "Política de Privacidad."
+  },
+  "sidebar": {
+    "management": {
+      "title": "Gestión",
+      "administration": "Administración",
+      "indicators": "Indicadores",
+      "teams": "Equipos"
+    },
+    "operational": {
+      "title": "Operacional",
+      "operations": "Operaciones",
+      "processes": "Procesos",
+      "maintenance": "Mantenimiento"
+    },
+    "system": {
+      "title": "Sistema",
+      "logs": "Registros",
+      "settings": "Configuraciones",
+      "permissions": "Permisos"
+    }
+  },
+  "modal": {
+    "defaults": {
+      "title": "Aviso del Sistema",
+      "message": "Este es un mensaje de información.",
+      "button": "Entendido"
+    },
+    "settings": {
+      "common": {
+        "close": "Cerrar"
+      },
+      "title": "Configuraciones Guardadas",
+      "message": "Tus preferencias de sonido y notificaciones han sido actualizadas exitosamente en todos tus dispositivos."
+    }
+  },
+  "Error": {
+    "title": "¡Algo salió mal!",
+    "description": "No pudimos procesar tu solicitud en este momento. Por favor, intenta de nuevo más tarde.",
+    "tryAgain": "Intentar de nuevo",
+    "goHome": "Ir al inicio"
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "¡Vaya! Parece que te has perdido. La página no existe.",
+    "goHome": "Volver al inicio"
+  }
+}
