@@ -18,6 +18,8 @@
 
 'use client';
 
+export const runtime = 'edge';
+
 import { useSettings } from '@/components/providers/settings-provider';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';

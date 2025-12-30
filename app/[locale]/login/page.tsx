@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { Metadata } from 'next';
 import LoginButton from './login-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

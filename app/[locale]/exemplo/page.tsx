@@ -18,6 +18,8 @@
 
 'use client';
 
+export const runtime = 'edge';
+
 import { useSettings } from '@/components/providers/settings-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

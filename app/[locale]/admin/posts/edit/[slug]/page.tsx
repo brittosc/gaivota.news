@@ -1,4 +1,6 @@
 import CreatePostForm from '../../create/create-post-form';
+
+export const runtime = 'edge';
 import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
 import { Database } from '@/lib/database.types';

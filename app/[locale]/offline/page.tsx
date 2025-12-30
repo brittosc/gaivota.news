@@ -16,6 +16,8 @@
  * Alterações devem ser registradas conforme normas internas.
  */
 
+export const runtime = 'edge';
+
 import { WifiOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';

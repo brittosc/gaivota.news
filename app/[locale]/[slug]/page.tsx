@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+
+export const runtime = 'edge';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
