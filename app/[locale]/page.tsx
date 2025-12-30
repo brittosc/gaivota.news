@@ -13,7 +13,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Clock } from 'l
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Blog - Gaivota News',
+  title: 'Gaivota News',
   description: 'Notícias e atualizações sobre o nosso município nesta coluna semanal.',
 };
 

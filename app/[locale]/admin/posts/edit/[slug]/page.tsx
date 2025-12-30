@@ -36,7 +36,7 @@ export default async function EditPostPage(props: EditPostPageProps) {
     .single();
 
   if (profile?.role !== 'admin') {
-    redirect('/blog');
+    redirect('/admin');
   }
 
   // Fetch post data

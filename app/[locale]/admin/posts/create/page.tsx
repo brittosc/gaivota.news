@@ -28,7 +28,7 @@ export default async function CreatePostPage() {
     .single();
 
   if (profile?.role !== 'admin') {
-    redirect('/blog');
+    redirect('/');
   }
 
   return (

@@ -35,8 +35,8 @@ export default async function AdminPage() {
       <div className="container mx-auto py-8 text-center">
         <h1 className="text-2xl font-bold text-red-600">Acesso Negado</h1>
         <p>Você não tem permissão para acessar esta página.</p>
-        <Link href="/blog">
-          <Button variant="link">Voltar para o blog</Button>
+        <Link href="/">
+          <Button variant="link">Voltar para a pagina inicial</Button>
         </Link>
       </div>
     );

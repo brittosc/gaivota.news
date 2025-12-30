@@ -36,8 +36,8 @@ export function constructMetadata({
 
   return {
     title: {
-      default: title ? `${title}` : 'Projeto | Pagina Inicial',
-      template: '%s | Projeto',
+      default: title ? `${title}` : 'Gaivota News | Pagina Inicial',
+      template: '%s | Gaivota News',
     },
     description,
     manifest: '/manifest.json',
@@ -45,14 +45,14 @@ export function constructMetadata({
       type: 'website',
       locale: 'pt_BR',
       url: siteUrl,
-      title: title || 'Projeto',
+      title: title || 'Gaivota News',
       description,
-      siteName: 'Projeto',
+      siteName: 'Gaivota News',
       images: [{ url: image, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: title || 'Projeto',
+      title: title || 'Gaivota News',
       description,
       images: [image],
     },
