@@ -61,7 +61,7 @@ export const Indent = Extension.create<IndentOptions>({
     return {
       indent:
         () =>
-        ({ tr, state, dispatch: _dispatch }) => {
+        ({ tr, state }) => {
           const { selection } = state;
           const { from, to } = selection;
           let applicable = false;
@@ -88,7 +88,7 @@ export const Indent = Extension.create<IndentOptions>({
         },
       outdent:
         () =>
-        ({ tr, state, dispatch: _dispatch }) => {
+        ({ tr, state }) => {
           const { selection } = state;
           const { from, to } = selection;
           let applicable = false;

@@ -125,8 +125,6 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
         updated_at: new Date().toISOString(),
       };
 
-      const finalPostId = initialData?.id;
-
       let error;
 
       if (initialData) {
@@ -136,11 +134,7 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
           .eq('id', initialData.id);
         error = updateError;
       } else {
-        const { data: newPost, error: insertError } = await supabase
-          .from('posts')
-          .insert(postData)
-          .select('id')
-          .single();
+        const { error: insertError } = await supabase.from('posts').insert(postData).single();
         error = insertError;
       }
 
