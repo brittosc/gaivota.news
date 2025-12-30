@@ -93,9 +93,11 @@
       "adminTitle": "Administração",
       "siteTitle": "Site",
       "dashboard": "Dashboard",
+      "posts": "Posts",
       "createPost": "Criar Post",
       "team": "Equipes",
       "supporters": "Apoiadores",
+      "newsletter": "Newsletter",
       "home": "Página Inicial",
       "logout": "Sair"
     },

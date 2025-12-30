@@ -156,7 +156,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
         </div>
       )}
 
-      <div className="rounded-md border">
+      <div className="rounded-md border p-4">
         <Table className="min-w-200">
           <TableHeader>
             <TableRow>
@@ -244,13 +244,13 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                         )}
                         {post.published && (
                           <DropdownMenuItem
-                            disabled={!!post.newsletter_sent_at}
+                            // disabled={!!post.newsletter_sent_at}
                             onClick={() =>
                               handleAction(sendPostNewsletter, post.id, 'Newsletter enviada!')
                             }
                           >
                             <Mail className="mr-2 h-4 w-4" />
-                            {post.newsletter_sent_at ? 'Enviada' : 'Enviar Email'}
+                            {post.newsletter_sent_at ? 'Reenviar Email' : 'Enviar Email'}
                           </DropdownMenuItem>
                         )}
                         {post.archived ? (

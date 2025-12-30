@@ -51,7 +51,7 @@ export async function SupportersMarquee() {
           Nossos Apoiadores
         </h3>
       </div>
-      <div className="mx-auto w-[95%] overflow-hidden sm:w-[90%]">
+      <div className="mx-auto w-[95%] overflow-hidden py-4 sm:w-[90%]">
         <div className="group flex w-full">
           <div
             className="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-8 pr-8"

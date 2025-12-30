@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { Database } from '@/lib/database.types';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -70,12 +71,13 @@ export async function sendPostNewsletter(postId: string) {
     return { success: false, message: 'Post precisa estar publicado.' };
   }
 
-  if (post.newsletter_sent_at) {
-    return { success: false, message: 'Newsletter já enviada para este post.' };
-  }
+  // if (post.newsletter_sent_at) {
+  //   return { success: false, message: 'Newsletter já enviada para este post.' };
+  // }
 
   // 2. Fetch active subscribers
-  const { data: subscribers, error: subError } = await supabase
+  const adminSupabase = createAdminClient();
+  const { data: subscribers, error: subError } = await adminSupabase
     .from('newsletter_subscribers')
     .select('email')
     .eq('active', true);
@@ -94,22 +96,68 @@ export async function sendPostNewsletter(postId: string) {
     // For production with many users, consider 'resend.batch.send' or a queue.
     const emailPromises = subscribers.map(sub =>
       resend.emails.send({
-        from: 'Gaivota News <nao-responda@grupobritto.com.br>', // Ensure this domain is verified in Resend
+        from: 'Gaivota News <onboarding@resend.dev>',
         to: sub.email,
         subject: emailSubject,
         html: `
-          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1>${post.title}</h1>
-            <p>Um novo artigo foi publicado no Gaivota News!</p>
-            <p style="margin: 20px 0;">
-              <a href="${emailLink}" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                Ler Agora
-              </a>
-            </p>
-            <p style="font-size: 12px; color: #666; margin-top: 30px;">
-              Você está recebendo este email porque se inscreveu em nossa newsletter.
-            </p>
-          </div>
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+                table { border-collapse: collapse; width: 100%; }
+                .wrapper { width: 100%; table-layout: fixed; background-color: #f3f4f6; padding-bottom: 40px; }
+                .main { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+                .header { background-color: #0f172a; padding: 30px 20px; text-align: center; }
+                .logo { color: #ffffff; font-size: 28px; font-weight: 700; text-decoration: none; letter-spacing: 0.5px; }
+                .content { padding: 40px 30px; color: #334155; line-height: 1.6; }
+                .h1 { font-size: 24px; font-weight: 700; color: #0f172a; margin-top: 0; margin-bottom: 20px; }
+                .text { font-size: 16px; margin-bottom: 20px; }
+                .btn-container { text-align: center; margin: 30px 0; }
+                .btn { background-color: #2563eb; color: #ffffff !important; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; display: inline-block; transition: background-color 0.2s; }
+                .btn:hover { background-color: #1d4ed8; }
+                .footer { background-color: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 12px; }
+                .unsubscribe { color: #64748b; text-decoration: underline; margin-top: 10px; display: inline-block; }
+              </style>
+            </head>
+            <body>
+              <div class="wrapper">
+                <table role="presentation" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td align="center">
+                      <br>
+                      <div class="main">
+                        <div class="header">
+                          <a href="${domain}" class="logo">Gaivota News 🌊</a>
+                        </div>
+                        <div class="content">
+                          <h1 class="h1">${post.title}</h1>
+                          <p class="text">Olá,</p>
+                          <p class="text">Um novo artigo acabou de ser publicado no <strong>Gaivota News</strong> e achamos que você vai gostar.</p>
+                          <p class="text">Confira os detalhes clicando no botão abaixo:</p>
+                          
+                          <div class="btn-container">
+                            <a href="${emailLink}" class="btn">Ler Notícia Completa</a>
+                          </div>
+                          
+                          <p class="text">Boa leitura,<br><strong>Equipe Gaivota News</strong></p>
+                        </div>
+                        <div class="footer">
+                          <p>© ${new Date().getFullYear()} Gaivota News. Balneário Gaivota, SC.</p>
+                          <p style="margin-top: 10px;">
+                            <a href="${domain}/newsletter/unsubscribe?email=${encodeURIComponent(sub.email)}" class="unsubscribe">Não quero mais receber emails</a>
+                          </p>
+                        </div>
+                      </div>
+                      <br>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </body>
+          </html>
         `,
       })
     );

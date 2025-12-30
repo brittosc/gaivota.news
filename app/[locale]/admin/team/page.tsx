@@ -1,9 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AddTeamMemberDialog } from '@/components/admin/add-team-member-dialog';
+import { TeamMemberCard } from '@/components/admin/team-member-card';
 
 export default async function TeamPage() {
   const supabase = await createClient();
@@ -32,34 +31,36 @@ export default async function TeamPage() {
     .in('role', ['admin', 'editor'])
     .order('full_name');
 
+  // Fetch emails using Admin API
+  const adminSupabase = createAdminClient();
+  const { data: usersData } = await adminSupabase.auth.admin.listUsers();
+
+  // Map emails to profiles
+  const profilesWithEmail = profiles?.map(profile => {
+    const userRecord = usersData?.users.find(u => u.id === profile.id);
+    return {
+      ...profile,
+      email: userRecord?.email,
+      // Use user created_at as "Joined At" if profile updated_at is just profile update?
+      // Actually profile.updated_at is fine for now, or userRecord.created_at
+      join_date: userRecord?.created_at,
+    };
+  });
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Gerenciar Equipe</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Gerenciar Equipe</h1>
+          <p className="text-muted-foreground mt-1">
+            Gerencie os administradores e editores do site.
+          </p>
+        </div>
         <AddTeamMemberDialog />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {profiles?.map(profile => (
-          <Card key={profile.id}>
-            <CardHeader className="flex flex-row items-center gap-4 pb-2">
-              <Avatar>
-                <AvatarImage src={profile.avatar_url || ''} />
-                <AvatarFallback>{profile.full_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle className="text-base">{profile.full_name}</CardTitle>
-                <p className="text-muted-foreground w-40 truncate text-xs">{profile.id}</p>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <Badge variant={profile.role === 'admin' ? 'default' : 'secondary'}>
-                  {profile.role.toUpperCase()}
-                </Badge>
-                {/* Aqui poderíamos adicionar um botão para promover/rebaixar usuário se necessário */}
-              </div>
-            </CardContent>
-          </Card>
+        {profilesWithEmail?.map(profile => (
+          <TeamMemberCard key={profile.id} profile={profile} currentUserId={user.id} />
         ))}
       </div>
     </div>

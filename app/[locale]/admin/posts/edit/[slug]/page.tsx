@@ -35,7 +35,7 @@ export default async function EditPostPage(props: EditPostPageProps) {
     .returns<Pick<Database['public']['Tables']['profiles']['Row'], 'role'>[]>()
     .single();
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'editor') {
     redirect('/admin');
   }
 

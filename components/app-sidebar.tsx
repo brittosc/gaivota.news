@@ -25,7 +25,16 @@ import { LucideIcon } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup } from '@/components/ui/sidebar';
 import { ThemeSwitch } from '@/components/theme/theme-toggle';
 
-import { BarChart3, Briefcase, ClipboardList, Users, Heart, LogOut } from 'lucide-react';
+import {
+  BarChart3,
+  Briefcase,
+  ClipboardList,
+  Users,
+  Heart,
+  LogOut,
+  Mail,
+  FileText,
+} from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import * as React from 'react';
@@ -41,9 +50,12 @@ const sidebarSections = [
     title: 'management.title', // Key for translation
     links: [
       { label: 'management.dashboard', href: '/admin', icon: BarChart3 },
+      { label: 'management.posts', href: '/admin/posts', icon: FileText },
       { label: 'management.createPost', href: '/admin/posts/create', icon: ClipboardList },
       { label: 'management.team', href: '/admin/team', icon: Users },
       { label: 'management.supporters', href: '/admin/supporters', icon: Heart },
+      { label: 'management.likes', href: '/admin/likes', icon: Heart },
+      { label: 'management.newsletter', href: '/admin/newsletter', icon: Mail },
     ],
   },
   {
@@ -90,9 +102,12 @@ export function AppSidebar() {
     const map: Record<string, string> = {
       'management.title': t('adminTitle'),
       'management.dashboard': t('dashboard'),
+      'management.posts': t('posts') || 'Posts',
       'management.createPost': t('createPost'),
       'management.team': t('team'),
       'management.supporters': t('supporters'),
+      'management.likes': 'Curtidas',
+      'management.newsletter': t('newsletter') || 'Newsletter', // Fallback
       'site.title': t('siteTitle'),
       'site.home': t('home'),
     };

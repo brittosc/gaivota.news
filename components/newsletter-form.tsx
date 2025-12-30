@@ -4,49 +4,45 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { createBrowserClient } from '@supabase/ssr';
 import { Mail } from 'lucide-react';
-
 import { useTranslations } from 'next-intl';
+import { subscribeToNewsletter } from '@/app/actions/newsletter';
 
 export function NewsletterForm() {
-  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const t = useTranslations('Components.Newsletter');
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+
     if (!email || !email.includes('@')) {
       toast.error(t('invalidEmail'));
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
     try {
-      const { error } = await supabase.from('newsletter_subscribers').insert({ email });
+      // Call Server Action directly
+      // Note: server action expects prevState, but we can pass null or mock if not using useFormState
+      // However, typical signature is (prevState, formData).
+      const result = await subscribeToNewsletter({ message: '', success: false }, formData);
 
-      if (error) {
-        if (error.code === '23505') {
-          // Unique violation
+      if (result.success) {
+        toast.success(result.message); // Will contain debug info now
+        (e.target as HTMLFormElement).reset();
+      } else {
+        if (result.message === 'Email já cadastrado.') {
           toast.info(t('alreadySubscribed'));
         } else {
-          throw error;
+          toast.error(result.message);
         }
-      } else {
-        toast.success(t('success'));
-        setEmail('');
       }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : t('error');
-      // Keeping detailed error in console, specific user message in toast?
-      // User prompt implies strictly translating the visible texts, keeping error message generic for user is better i18n practice usually.
-      // But let's keep it simple.
-      toast.error(`${t('error')}: ${errorMessage}`);
+    } catch {
+      toast.error(t('error'));
     } finally {
       setLoading(false);
     }
@@ -60,11 +56,10 @@ export function NewsletterForm() {
         <div className="relative">
           <Mail className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
           <Input
+            name="email"
             type="email"
             placeholder={t('placeholder')}
             className="pl-9"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
             disabled={loading}
             required
           />

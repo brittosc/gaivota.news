@@ -75,7 +75,7 @@ export async function generateMetadata(props: BlogPostProps) {
   };
 }
 
-import { LikeButton } from '@/components/blog/like-button';
+// import { LikeButton } from '@/components/blog/like-button';
 
 // ... (existing imports)
 
@@ -102,7 +102,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
   } = await supabase.auth.getUser();
 
   let isAdmin = false;
-  let isLiked = false;
+  // let isLiked = false; - Removed unused variable
 
   if (user) {
     const { data: profile } = await supabase
@@ -114,14 +114,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
 
     isAdmin = profile?.role === 'admin';
 
-    const { data: like } = await supabase
-      .from('post_likes')
-      .select('id')
-      .eq('post_id', post.id)
-      .eq('user_id', user.id)
-      .single();
-
-    isLiked = !!like;
+    // isLiked = !!like; - Removed unused assignment
   }
 
   // Check if current user is admin if post is unpublished
@@ -171,19 +164,27 @@ export default async function BlogPostPage(props: BlogPostProps) {
         <article className="prose prose-zinc dark:prose-invert max-w-none">
           <div className="mb-8 border-b pb-8">
             <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
-            <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-4 text-sm">
-              <span>
-                {format(new Date(post.created_at), "d 'de' MMMM 'de' yyyy", {
-                  locale: ptBR,
-                })}
-              </span>
+            <div className="flex items-end justify-between gap-4 text-sm">
+              <div className="text-muted-foreground flex flex-col gap-1">
+                <span>
+                  {format(new Date(post.created_at), "d 'de' MMMM 'de' yyyy", {
+                    locale: ptBR,
+                  })}
+                </span>
+                {(post as PostWithTags & { author_custom_name?: string }).author_custom_name && (
+                  <span className="text-foreground font-medium">
+                    Por{' '}
+                    {(post as PostWithTags & { author_custom_name?: string }).author_custom_name}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-4">
-                <LikeButton
+                {/* <LikeButton
                   postId={post.id}
                   initialLiked={isLiked}
                   initialCount={post.likes_count || 0}
                   userId={user?.id}
-                />
+                /> */}
                 <ShareButtons title={post.title} url={`/${post.slug}`} />
               </div>
             </div>

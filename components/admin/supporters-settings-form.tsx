@@ -57,6 +57,7 @@ export function SupportersSettingsForm({
               min={5}
               max={120}
               className="max-w-50"
+              onWheel={e => e.currentTarget.blur()}
             />
           </div>
 

@@ -14,7 +14,7 @@ import { MediaUploadModal } from '@/components/editor/media-upload-modal';
 
 import Image from 'next/image';
 
-type Post = Database['public']['Tables']['posts']['Row'];
+type Post = Database['public']['Tables']['posts']['Row'] & { author_custom_name?: string | null };
 
 interface CreatePostFormProps {
   initialData?: Post;
@@ -27,6 +27,7 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
   const [title, setTitle] = useState(initialData?.title || '');
   const [slug, setSlug] = useState(initialData?.slug || '');
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!initialData?.slug);
+  const [authorCustomName, setAuthorCustomName] = useState(initialData?.author_custom_name || '');
 
   const [content, setContent] = useState(initialData?.content || '');
   const [featuredImage, setFeaturedImage] = useState(initialData?.featured_image || '');
@@ -125,6 +126,7 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
         content,
         published,
         featured_image: featuredImage || null,
+        author_custom_name: authorCustomName || null,
         updated_at: new Date().toISOString(),
       };
 
@@ -251,6 +253,19 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
               {featuredImage ? 'Alterar Imagem' : 'Adicionar Imagem'}
             </Button>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="authorCustomName">Nome do Autor (Opcional)</Label>
+          <Input
+            id="authorCustomName"
+            value={authorCustomName}
+            onChange={e => setAuthorCustomName(e.target.value)}
+            placeholder="Ex: João Silva (Deixe vazio para não exibir)"
+          />
+          <p className="text-muted-foreground text-xs">
+            Se preenchido, este nome aparecerá ao lado da data no post.
+          </p>
         </div>
 
         <div className="space-y-2">

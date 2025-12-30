@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, FileText, Users, Heart } from 'lucide-react';
+import { PlusCircle, FileText, Users, Heart, ShieldAlert } from 'lucide-react';
 import { PostsTable } from './posts-table';
 import { OverviewChart } from '@/components/admin/overview-chart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,12 +39,26 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   if (profile?.role !== 'admin' && profile?.role !== 'editor') {
     return (
-      <div className="container mx-auto py-8 text-center">
-        <h1 className="text-2xl font-bold text-red-600">Acesso Negado</h1>
-        <p>Você não tem permissão para acessar esta página.</p>
-        <Link href="/">
-          <Button variant="link">Voltar para a pagina inicial</Button>
-        </Link>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center p-4">
+        <Card className="w-full max-w-md border-l-4 border-l-red-500 shadow-lg">
+          <CardContent className="flex flex-col items-center p-8 text-center">
+            <div className="mb-6 rounded-full bg-red-50 p-4">
+              <ShieldAlert className="h-12 w-12 text-red-600" />
+            </div>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900">Acesso Restrito</h1>
+            <p className="mb-6 leading-relaxed text-gray-500">
+              Você não possui as permissões necessárias para visualizar este painel. Esta área é
+              exclusiva para administradores e editores da equipe.
+            </p>
+            <div className="flex w-full gap-4">
+              <Link href="/" className="w-full">
+                <Button variant="outline" className="w-full">
+                  Voltar ao Início
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -65,8 +80,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       .select('*')
       .gte('created_at', startDate)
       .lte('created_at', endDate)
-      .order('created_at', { ascending: false }),
-    supabase.from('newsletter_subscribers').select('*', { count: 'exact' }),
+      .order('created_at', { ascending: false })
+      .limit(5), // Limit dashboard to 5 recent posts
+    createAdminClient().from('newsletter_subscribers').select('*', { count: 'exact', head: true }), // Count only with admin client
     supabase.from('post_likes').select('*').gte('created_at', startDate).lte('created_at', endDate),
   ]);
 
@@ -136,46 +152,49 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
-            <FileText className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalPosts}</div>
-            <p className="text-muted-foreground text-xs">+1 desde o último mês (exemplo)</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Assinantes</CardTitle>
-            <Users className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalSubscribers}</div>
-            <p className="text-muted-foreground text-xs">Assinantes da Newsletter</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Curtidas</CardTitle>
-            <Heart className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalLikes}</div>
-            <p className="text-muted-foreground text-xs">Em todos os posts</p>
-          </CardContent>
-        </Card>
+        <Link href="/admin/posts">
+          <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
+              <FileText className="text-muted-foreground h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalPosts}</div>
+              <p className="text-muted-foreground text-xs">Ver todos os posts</p>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/admin/newsletter">
+          <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Assinantes</CardTitle>
+              <Users className="text-muted-foreground h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalSubscribers}</div>
+              <p className="text-muted-foreground text-xs">Gerenciar newsletter</p>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/admin/likes">
+          <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total de Curtidas</CardTitle>
+              <Heart className="text-muted-foreground h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalLikes}</div>
+              <p className="text-muted-foreground text-xs">Ver histórico de curtidas</p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       <div className="lg:grid-w-full grid w-full gap-4 md:grid-cols-1">
         <OverviewChart data={chartData} />
       </div>
 
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold tracking-tight">Posts Recentes</h2>
-        <PostsTable posts={posts} />
-      </div>
+      {/* Recent posts removed as per user request */}
     </div>
   );
 }

@@ -65,7 +65,7 @@ export default async function SupportersPage() {
 
       <SupportersSettingsForm initialSettings={initialSettings} />
 
-      <div className="rounded-md border">
+      <div className="rounded-md border p-4">
         <Table>
           <TableHeader>
             <TableRow>

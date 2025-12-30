@@ -24,10 +24,10 @@ export default async function CreatePostPage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .returns<{ role: 'admin' | 'user' }[]>()
+    .returns<{ role: 'admin' | 'user' | 'editor' }[]>()
     .single();
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'editor') {
     redirect('/');
   }
 
