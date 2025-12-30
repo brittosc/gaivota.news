@@ -1,6 +1,6 @@
 /**
  * @file install-button.tsx
- * @directory template-nextjs\components\pwa
+ * @directory gaivota.news\components\pwa
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:32

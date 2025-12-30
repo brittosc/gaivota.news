@@ -1,6 +1,6 @@
 /**
  * @file server.ts
- * @directory template-nextjs\lib\supabase
+ * @directory gaivota.news\lib\supabase
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:33

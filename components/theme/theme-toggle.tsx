@@ -1,6 +1,6 @@
 /**
  * @file theme-toggle.tsx
- * @directory template-nextjs\components\theme
+ * @directory gaivota.news\components\theme
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:33

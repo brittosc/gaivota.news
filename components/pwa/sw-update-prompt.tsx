@@ -1,6 +1,6 @@
 /**
  * @file sw-update-prompt.tsx
- * @directory template-nextjs\components\pwa
+ * @directory gaivota.news\components\pwa
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 27/12/2025 21:10

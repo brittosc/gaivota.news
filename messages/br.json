@@ -81,5 +81,11 @@
     "title": "Página não encontrada",
     "description": "Ops! Parece que você se perdeu no caminho. A página não existe, foi comida pelo cachorro, enterrada no quintal e ninguém lembra onde.",
     "goHome": "Voltar ao início"
+  },
+  "Privacy": {
+    "title": "Política de Privacidade"
+  },
+  "Terms": {
+    "title": "Termos de Uso"
   }
 }

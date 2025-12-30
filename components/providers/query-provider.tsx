@@ -1,6 +1,6 @@
 /**
  * @file query-provider.tsx
- * @directory template-nextjs\components\providers
+ * @directory gaivota.news\components\providers
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:32

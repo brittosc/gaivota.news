@@ -88,7 +88,7 @@ export default async function Home(props: HomeProps) {
           Gaivota News
         </h1>
         <p className="text-muted-foreground mt-2 text-lg">
-          Notícias e atualizações sobre o nosso município nesta coluna semanal.
+          Notícias e atualizações sobre o nosso município.
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 /**
  * @file i18n.ts
- * @directory template-nextjs\lib
+ * @directory gaivota.news\lib
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 29/12/2025 07:15

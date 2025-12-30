@@ -81,5 +81,11 @@
     "title": "Page not found",
     "description": "Oops! It seems you are lost. The page does not exist.",
     "goHome": "Back to home"
+  },
+  "Privacy": {
+    "title": "Privacy Policy"
+  },
+  "Terms": {
+    "title": "Terms of Use"
   }
 }

@@ -31,7 +31,7 @@ export function Footer() {
               Gaivota News
             </Link>
             <p className="text-muted-foreground mt-4 text-sm">
-              Trazendo as notícias mais relevantes da nossa região e do mundo.
+              Notícias e atualizações sobre o nosso município.
             </p>
           </div>
 
@@ -41,7 +41,7 @@ export function Footer() {
               <ul className="text-muted-foreground space-y-1 text-sm">
                 <li>
                   <Link href="/" className="hover:text-primary transition-colors">
-                    Home
+                    Pagina Inicial
                   </Link>
                 </li>
                 <li>

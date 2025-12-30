@@ -1,6 +1,6 @@
 /**
  * @file app-sidebar.tsx
- * @directory template-nextjs\components
+ * @directory gaivota.news\components
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 28/12/2025 14:09

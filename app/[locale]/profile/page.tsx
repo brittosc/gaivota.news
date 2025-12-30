@@ -1,6 +1,6 @@
 /**
  * @file page.tsx
- * @directory template-nextjs\app\profile
+ * @directory gaivota.news\app\profile
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:31

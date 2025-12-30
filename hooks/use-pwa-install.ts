@@ -1,6 +1,6 @@
 /**
  * @file use-pwa-install.ts
- * @directory template-nextjs\hooks
+ * @directory gaivota.news\hooks
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.1.0
  * @since 21/12/2025 13:34

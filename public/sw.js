@@ -1,6 +1,6 @@
 /**
  * @file sw.js
- * @directory template-nextjs\public
+ * @directory gaivota.news\public
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 27/12/2025 21:10
@@ -81,7 +81,7 @@ self.addEventListener('push', function (event) {
   if (!(self.Notification && self.Notification.permission === 'granted')) return;
 
   const data = event.data?.json() ?? {};
-  const title = data.title || 'Template Next';
+  const title = data.title || 'Gaivota News';
   const options = {
     body: data.body || 'Nova notificação',
     icon: '/logo.png',

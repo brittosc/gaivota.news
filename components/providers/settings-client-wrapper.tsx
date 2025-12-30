@@ -1,6 +1,6 @@
 /**
  * @file settings-client-wrapper.tsx
- * @directory template-nextjs\components\providers
+ * @directory gaivota.news\components\providers
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 28/12/2025 14:08

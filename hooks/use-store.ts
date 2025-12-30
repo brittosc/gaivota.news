@@ -1,6 +1,6 @@
 /**
  * @file use-store.ts
- * @directory template-nextjs\hooks
+ * @directory gaivota.news\hooks
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.2
  * @since 28/12/2025 18:30
