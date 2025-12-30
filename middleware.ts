@@ -41,12 +41,15 @@ export async function middleware(request: NextRequest) {
   const pathnameWithoutLocale =
     pathname.replace(new RegExp(`^/(?:${localePattern})(/|$)`), '/') || '/';
 
-  const isAuthPage =
-    pathnameWithoutLocale.startsWith('/login') || pathnameWithoutLocale.startsWith('/api/auth');
-  const isPublicPage = pathnameWithoutLocale === '/' || pathnameWithoutLocale.startsWith('/blog');
+  const protectedPaths = ['/admin', '/profile'];
+  const isProtectedPath = protectedPaths.some(path => pathnameWithoutLocale.startsWith(path));
 
-  if (!user && !isAuthPage && !isPublicPage) {
-    const locale = pathname.split('/')[1] || defaultLocale;
+  if (!user && isProtectedPath) {
+    const locale = pathname.split('/')[1];
+    if (!(locales as readonly string[]).includes(locale)) {
+      // locale is not valid, use default
+      return NextResponse.redirect(new URL(`/${defaultLocale}/login`, request.url));
+    }
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
