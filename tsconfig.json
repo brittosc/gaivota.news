@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "proxy.ts",
+    "middleware.ts",
     "vitest.config.ts",
     ".next/dev/types/**/*.ts"
   ],

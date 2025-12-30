@@ -4,6 +4,8 @@ import createMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './lib/i18n';
 import { env } from './lib/env';
 
+export const runtime = 'experimental-edge';
+
 const i18nMiddleware = createMiddleware({
   locales,
   defaultLocale,
@@ -12,7 +14,7 @@ const i18nMiddleware = createMiddleware({
 
 const localePattern = locales.join('|');
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const response = i18nMiddleware(request);
   const supabase = createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
