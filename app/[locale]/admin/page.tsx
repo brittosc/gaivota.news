@@ -59,7 +59,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const endDate = endOfDay(toDate).toISOString();
 
   // Fetch data withdate filter
-  const [postsRes, subsRes] = await Promise.all([
+  const [postsRes, subsRes, likesRes] = await Promise.all([
     supabase
       .from('posts')
       .select('*')
@@ -67,38 +67,57 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       .lte('created_at', endDate)
       .order('created_at', { ascending: false }),
     supabase.from('newsletter_subscribers').select('*', { count: 'exact' }),
+    supabase.from('post_likes').select('*').gte('created_at', startDate).lte('created_at', endDate),
   ]);
 
   const posts = postsRes.data || [];
+  const likes = likesRes.data || [];
   const totalPosts = posts.length;
   const totalSubscribers = subsRes.count || 0;
-  // Note: Total likes should technically be filtered by when the LIKE happened, but we don't have that easily queryable
-  // without joining a huge table or if likes_count is just on the post.
-  // If likes_count is on post, it's "likes on posts created in this period".
-  // Let's stick to "likes on posts created in this period" for now as it matches the posts metric.
-  const totalLikes = posts.reduce((acc, curr) => acc + (curr.likes_count || 0), 0);
+  const totalLikes = likes.length; // Uses the actual likes table count in range, or total?
+  // User wants total likes stats card -> implies ALL time usually, but here we limited by date.
+  // Actually, typical dashboard card shows ALL time total, but chart shows trend.
+  // The code previously filtered posts by date, so stats card showed "Posts in filtered range" effectively?
+  // Line 126 was totalPosts (which is posts.length).
+  // So stats cards are range-bound. That's fine.
 
   // Prepare Chart Data
   const daysDiff = differenceInDays(toDate, fromDate);
-  const chartDataMap = new Map<string, number>();
+  const chartDataMap = new Map<string, { posts: number; likes: number }>();
 
-  // Format based on range duration
   const isLongRange = daysDiff > 90;
   const dateFormatStr = isLongRange ? 'MMM yyyy' : 'dd MMM';
 
-  // Initialize map with empty values for range if we wanted perfectly continuous axis?
-  // For now let's just group existing data.
+  // Helper to ensure map has keys
+  const getOrCreate = (key: string) => {
+    if (!chartDataMap.has(key)) {
+      chartDataMap.set(key, { posts: 0, likes: 0 });
+    }
+    return chartDataMap.get(key)!;
+  };
 
   posts.forEach(post => {
-    // We sort ascending for the chart
-    const dateKey = format(new Date(post.created_at), dateFormatStr, { locale: ptBR });
-    chartDataMap.set(dateKey, (chartDataMap.get(dateKey) || 0) + 1);
+    const rawDate = format(new Date(post.created_at), 'yyyy-MM-dd');
+    const entry = getOrCreate(rawDate);
+    entry.posts += 1;
   });
 
-  // Sort by date manually since map iteration order isn't guaranteed for inserted keys if not sequential
+  likes.forEach(like => {
+    const rawDate = format(new Date(like.created_at), 'yyyy-MM-dd');
+    const entry = getOrCreate(rawDate);
+    entry.likes += 1;
+  });
+
+  // Convert to array
   const chartData = Array.from(chartDataMap.entries())
-    .map(([name, total]) => ({ name, total }))
-    .reverse(); // Posts are fetched desc, so iterating them gives newest first. We want oldest first for chart.
+    .map(([date, data]) => ({
+      date,
+      name: format(parseISO(date), dateFormatStr, { locale: ptBR }),
+      posts: data.posts,
+      likes: data.likes,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .reverse();
 
   return (
     <div className="container mx-auto space-y-8 px-4 py-8">
@@ -149,7 +168,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7">
+      <div className="lg:grid-w-full grid w-full gap-4 md:grid-cols-1">
         <OverviewChart data={chartData} />
       </div>
 
