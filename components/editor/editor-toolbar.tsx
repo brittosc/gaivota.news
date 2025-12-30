@@ -29,6 +29,8 @@ import {
   Youtube,
   Minus,
   Palette,
+  Indent,
+  Outdent,
 } from 'lucide-react';
 
 import { useState } from 'react';
@@ -335,6 +337,45 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             className="h-8 w-8 p-0"
           >
             <Minus className="h-4 w-4" />
+          </ToggleGroupItem>
+        </ToggleGroup>
+
+        <div className="bg-border mx-1 h-6 w-px" />
+
+        {/* Indent/Outdent */}
+        <ToggleGroup type="multiple" className="flex">
+          <ToggleGroupItem
+            value="outdent"
+            aria-label="Outdent"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => {
+              if (editor.isActive('bulletList') || editor.isActive('orderedList')) {
+                editor.chain().focus().liftListItem('listItem').run();
+              } else {
+                editor.chain().focus().outdent().run();
+              }
+            }}
+            // Only disable if NEITHER list lift NOR outdent is possible
+            disabled={!editor.can().liftListItem('listItem') && !editor.can().outdent()}
+            className="h-8 w-8 p-0"
+          >
+            <Outdent className="h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="indent"
+            aria-label="Indent"
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => {
+              if (editor.isActive('bulletList') || editor.isActive('orderedList')) {
+                editor.chain().focus().sinkListItem('listItem').run();
+              } else {
+                editor.chain().focus().indent().run();
+              }
+            }}
+            disabled={!editor.can().sinkListItem('listItem') && !editor.can().indent()}
+            className="h-8 w-8 p-0"
+          >
+            <Indent className="h-4 w-4" />
           </ToggleGroupItem>
         </ToggleGroup>
 

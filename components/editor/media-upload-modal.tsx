@@ -72,6 +72,12 @@ export function MediaUploadModal({
 
       setUrl(data.publicUrl);
       toast.success('Imagem enviada com sucesso!');
+
+      // Auto-insert if it's an image upload
+      if (type === 'image') {
+        onConfirm(data.publicUrl);
+        onClose();
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       console.error('Error uploading image:', error);

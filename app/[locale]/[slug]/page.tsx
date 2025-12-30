@@ -15,14 +15,22 @@ interface BlogPostProps {
   }>;
 }
 
+type PostWithTags = Database['public']['Tables']['posts']['Row'] & {
+  post_tags: {
+    tags: Database['public']['Tables']['tags']['Row'];
+  }[];
+};
+
 export async function generateMetadata(props: BlogPostProps) {
   const params = await props.params;
   const supabase = await createClient();
   const { data: post } = await supabase
     .from('posts')
-    .select('title, content')
+    .select('title, content, featured_image')
     .eq('slug', params.slug)
-    .returns<Pick<Database['public']['Tables']['posts']['Row'], 'title' | 'content'>[]>()
+    .returns<
+      Pick<Database['public']['Tables']['posts']['Row'], 'title' | 'content' | 'featured_image'>[]
+    >()
     .single();
 
   if (!post) {
@@ -32,8 +40,29 @@ export async function generateMetadata(props: BlogPostProps) {
   }
 
   return {
-    title: post.title,
-    description: post.content.substring(0, 160),
+    openGraph: {
+      title: post.title,
+      description: post.content.substring(0, 160),
+      url: `/${params.slug}`,
+      siteName: 'Gaivota News',
+      type: 'article',
+      images: post.featured_image
+        ? [
+            {
+              url: post.featured_image,
+              width: 1200,
+              height: 630,
+              alt: post.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.content.substring(0, 160),
+      images: post.featured_image ? [post.featured_image] : [],
+    },
   };
 }
 
@@ -41,10 +70,10 @@ export default async function BlogPostPage(props: BlogPostProps) {
   const params = await props.params;
   const supabase = await createClient();
 
-  // Fetch post without join to avoid relationship issues
+  // Fetch post with tags
   const { data: postData, error } = await supabase
     .from('posts')
-    .select('*')
+    .select('*, post_tags(tags(*))')
     .eq('slug', params.slug)
     .single();
 
@@ -52,7 +81,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
     notFound();
   }
 
-  const post = postData as Database['public']['Tables']['posts']['Row'];
+  const post = postData as unknown as PostWithTags;
 
   // Fetch current user and profile to check permissions
   const {
@@ -79,8 +108,8 @@ export default async function BlogPostPage(props: BlogPostProps) {
 
   return (
     <div className="min-h-screen py-8">
-      <div className="container mx-auto mb-8 flex max-w-2xl items-center justify-between px-4">
-        <Link href="/blog">
+      <div className="container mx-auto mb-8 flex max-w-4xl items-center justify-between px-4">
+        <Link href="/">
           <Button variant="ghost" className="pl-0 hover:bg-transparent hover:underline">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Voltar para o blog
@@ -115,7 +144,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
         </div>
       )}
 
-      <div className="container mx-auto max-w-2xl px-4">
+      <div className="container mx-auto max-w-4xl px-4">
         <article className="prose prose-zinc dark:prose-invert max-w-none">
           <div className="mb-8 border-b pb-8">
             <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
@@ -125,7 +154,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
                   locale: ptBR,
                 })}
               </span>
-              <ShareButtons title={post.title} url={`/blog/${post.slug}`} />
+              <ShareButtons title={post.title} url={`/${post.slug}`} />
             </div>
           </div>
           <div className="leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }} />

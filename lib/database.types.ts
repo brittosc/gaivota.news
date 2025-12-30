@@ -79,6 +79,60 @@ export interface Database {
           updated_at?: string;
         };
       };
+      tags: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          created_at?: string;
+        };
+      };
+      post_tags: {
+        Row: {
+          post_id: string;
+          tag_id: string;
+        };
+        Insert: {
+          post_id: string;
+          tag_id: string;
+        };
+        Update: {
+          post_id?: string;
+          tag_id?: string;
+        };
+      };
+      newsletter_subscribers: {
+        Row: {
+          id: string;
+          email: string;
+          created_at: string;
+          active: boolean;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          created_at?: string;
+          active?: boolean;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          created_at?: string;
+          active?: boolean;
+        };
+      };
     };
   };
 }

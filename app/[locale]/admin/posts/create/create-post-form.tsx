@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { RichTextEditor } from '@/components/editor/rich-text-editor';
 import { Database } from '@/lib/database.types';
 import { MediaUploadModal } from '@/components/editor/media-upload-modal';
+
 import Image from 'next/image';
 
 type Post = Database['public']['Tables']['posts']['Row'];
@@ -22,13 +23,45 @@ interface CreatePostFormProps {
 export default function CreatePostForm({ initialData }: CreatePostFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  // Controlled inputs for auto-slug
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [slug, setSlug] = useState(initialData?.slug || '');
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!initialData?.slug);
+
   const [content, setContent] = useState(initialData?.content || '');
   const [featuredImage, setFeaturedImage] = useState(initialData?.featured_image || '');
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const supabase = createBrowserClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
+
+  const slugify = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .normalize('NFD') // Split accented characters
+      .replace(/[\u0300-\u036f]/g, '') // Remove accents
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(/[^\w-]+/g, '') // Remove all non-word chars
+      .replace(/--+/g, '-') // Replace multiple - with single -
+      .replace(/^-+/, '') // Trim - from start
+      .replace(/-+$/, ''); // Trim - from end
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    if (!slugManuallyEdited) {
+      setSlug(slugify(newTitle));
+    }
+  };
+
+  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSlug(e.target.value);
+    setSlugManuallyEdited(true);
+  };
 
   const handleSubmit = async (published: boolean, event?: React.MouseEvent) => {
     event?.preventDefault();
@@ -40,10 +73,17 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
       return;
     }
 
-    const form = document.querySelector('form') as HTMLFormElement;
-    const formData = new FormData(form);
-    const title = formData.get('title') as string;
-    const slug = formData.get('slug') as string;
+    // Form data is now in state, but we can verify
+    if (!title.trim()) {
+      toast.error('O título é obrigatório');
+      setLoading(false);
+      return;
+    }
+    if (!slug.trim()) {
+      toast.error('O slug é obrigatório');
+      setLoading(false);
+      return;
+    }
 
     try {
       // Validation: Check for empty content (stripping HTML)
@@ -85,6 +125,8 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
         updated_at: new Date().toISOString(),
       };
 
+      const finalPostId = initialData?.id;
+
       let error;
 
       if (initialData) {
@@ -94,9 +136,17 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
           .eq('id', initialData.id);
         error = updateError;
       } else {
-        const { error: insertError } = await supabase.from('posts').insert(postData);
+        const { data: newPost, error: insertError } = await supabase
+          .from('posts')
+          .insert(postData)
+          .select('id')
+          .single();
         error = insertError;
       }
+
+      if (error) throw error;
+
+      // Handle Tags
 
       if (error) throw error;
 
@@ -108,10 +158,10 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
 
       if (initialData) {
         // If updating, go to the post page to see changes
-        router.push(`/blog/${slug}`);
+        router.push(`/${slug}`);
       } else {
         // If creating, also go to the post page to see the new post
-        router.push(`/blog/${slug}`);
+        router.push(`/${slug}`);
       }
       router.refresh();
     } catch (error: unknown) {
@@ -139,7 +189,8 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
             name="title"
             required
             placeholder="Título do post"
-            defaultValue={initialData?.title}
+            value={title}
+            onChange={handleTitleChange}
           />
         </div>
 
@@ -150,7 +201,8 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
             name="slug"
             required
             placeholder="titulo-do-post"
-            defaultValue={initialData?.slug}
+            value={slug}
+            onChange={handleSlugChange}
           />
           <p className="text-muted-foreground text-xs">URL amigável para o post.</p>
         </div>

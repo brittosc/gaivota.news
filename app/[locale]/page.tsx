@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 export const metadata = {
   title: 'Blog - Gaivota News',
-  description: 'Notícias, atualizações e artigos do mundo da tecnologia.',
+  description: 'Notícias e atualizações sobre o nosso município nesta coluna semanal.',
 };
 
 interface HomeProps {
@@ -86,7 +86,7 @@ export default async function Home(props: HomeProps) {
           Gaivota News
         </h1>
         <p className="text-muted-foreground mt-2 text-lg">
-          Notícias, atualizações e artigos do mundo da tecnologia.
+          Notícias e atualizações sobre o nosso município nesta coluna semanal.
         </p>
       </div>
 
@@ -94,7 +94,7 @@ export default async function Home(props: HomeProps) {
 
       <div className="space-y-8">
         {posts?.map(post => (
-          <Link href={`/blog/${post.slug}`} key={post.id} className="group block">
+          <Link href={`/${post.slug}`} key={post.id} className="group block">
             <Card
               className={`hover:bg-muted/50 overflow-hidden transition-all duration-300 hover:shadow-lg ${post.featured_image ? 'pt-0' : ''}`}
             >

@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import { SupportersMarquee } from '@/components/marketing/supporters-marquee';
+import { NewsletterForm } from '@/components/newsletter-form';
 
 export function Footer() {
   return (
-    <footer className="bg-muted/30 border-t">
+    <footer className="bg-muted/30 mt-10">
       <SupportersMarquee />
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          <div className="col-span-1 md:col-span-2">
+      <div className="container mx-auto max-w-4xl px-4 py-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="col-span-1">
             <Link href="/" className="flex items-center gap-2 text-xl font-bold">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,47 +30,51 @@ export function Footer() {
               </svg>
               Gaivota News
             </Link>
-            <p className="text-muted-foreground mt-4 max-w-sm text-sm">
-              Trazendo as notícias mais relevantes da nossa região e do mundo, com compromisso e
-              verdade.
+            <p className="text-muted-foreground mt-4 text-sm">
+              Trazendo as notícias mais relevantes da nossa região e do mundo.
             </p>
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">Links Úteis</h4>
-            <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>
-                <Link href="/" className="hover:text-primary transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-primary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin" className="hover:text-primary transition-colors">
-                  Área Administrativa
-                </Link>
-              </li>
-            </ul>
+          <div className="flex flex-col gap-6">
+            <div>
+              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">Links Úteis</h4>
+              <ul className="text-muted-foreground space-y-1 text-sm">
+                <li>
+                  <Link href="/" className="hover:text-primary transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="hover:text-primary transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/admin" className="hover:text-primary transition-colors">
+                    Área Administrativa
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">Legal</h4>
+              <ul className="text-muted-foreground space-y-1 text-sm">
+                <li>
+                  <Link href="/privacy" className="hover:text-primary transition-colors">
+                    Política de Privacidade
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-primary transition-colors">
+                    Termos de Uso
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div>
-            <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">Legal</h4>
-            <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>
-                <Link href="/privacy" className="hover:text-primary transition-colors">
-                  Política de Privacidade
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-primary transition-colors">
-                  Termos de Uso
-                </Link>
-              </li>
-            </ul>
+            <NewsletterForm />
           </div>
         </div>
 

@@ -15,6 +15,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Youtube from '@tiptap/extension-youtube';
 import Placeholder from '@tiptap/extension-placeholder';
+import { Indent } from './extensions/indent';
 
 import { EditorToolbar } from './editor-toolbar';
 
@@ -36,11 +37,12 @@ export function RichTextEditor({ content, onChange, editable = true }: RichTextE
       TaskItem.configure({ nested: true }),
       Subscript,
       Superscript,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ['heading', 'paragraph', 'image'] }),
       Link.configure({ openOnClick: false }),
       Image,
       Youtube,
       Placeholder.configure({ placeholder: 'Write something amazing...' }),
+      Indent,
     ],
     content: content,
     onUpdate: ({ editor }) => {

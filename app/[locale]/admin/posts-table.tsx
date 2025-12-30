@@ -164,7 +164,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                         <Edit className="h-4 w-4" />
                       </Button>
                     </Link>
-                    <Link href={`/blog/${post.slug}`} target="_blank">
+                    <Link href={`/${post.slug}`} target="_blank">
                       <Button variant="ghost" size="icon" title="Ver">
                         <Eye className="h-4 w-4" />
                       </Button>
