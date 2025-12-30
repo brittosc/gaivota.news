@@ -42,6 +42,7 @@ export async function generateMetadata(props: BlogPostProps) {
   }
 
   return {
+    title: post.title,
     openGraph: {
       title: post.title,
       description: post.content.substring(0, 160),
