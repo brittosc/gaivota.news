@@ -95,10 +95,13 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
       }
 
       // Check for duplicate Title or Slug
+      const safeTitle = title.replace(/"/g, '\\"');
+      const safeSlug = slug.replace(/"/g, '\\"');
+
       const { data: existingPosts, error: checkError } = await supabase
         .from('posts')
         .select('id, title, slug')
-        .or(`title.eq.${title},slug.eq.${slug}`);
+        .or(`title.eq."${safeTitle}",slug.eq."${safeSlug}"`);
 
       if (checkError) throw checkError;
 
