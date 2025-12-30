@@ -1,6 +1,7 @@
 import CreatePostForm from '../../create/create-post-form';
 import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
+import { Database } from '@/lib/database.types';
 
 export const metadata = {
   title: 'Editar Post',
@@ -29,6 +30,7 @@ export default async function EditPostPage(props: EditPostPageProps) {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
+    .returns<Pick<Database['public']['Tables']['profiles']['Row'], 'role'>[]>()
     .single();
 
   if (profile?.role !== 'admin') {
