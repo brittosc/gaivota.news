@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { SupportersMarquee } from '@/components/marketing/supporters-marquee';
 import { NewsletterForm } from '@/components/newsletter-form';
+import { getTranslations } from 'next-intl/server';
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations('Components.Footer');
+
   return (
     <footer className="bg-muted/30 mt-10">
       <SupportersMarquee />
@@ -30,38 +33,40 @@ export function Footer() {
               </svg>
               Gaivota News
             </Link>
-            <p className="text-muted-foreground mt-4 text-sm">
-              Notícias e atualizações sobre o nosso município.
-            </p>
+            <p className="text-muted-foreground mt-4 text-sm">{t('description')}</p>
           </div>
 
           <div className="flex flex-col gap-6">
             <div>
-              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">Links Úteis</h4>
+              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">
+                {t('linksTitle')}
+              </h4>
               <ul className="text-muted-foreground space-y-1 text-sm">
                 <li>
                   <Link href="/" className="hover:text-primary transition-colors">
-                    Pagina Inicial
+                    {t('home')}
                   </Link>
                 </li>
                 <li>
                   <Link href="/admin" className="hover:text-primary transition-colors">
-                    Área Administrativa
+                    {t('admin')}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">Legal</h4>
+              <h4 className="mb-2 text-sm font-semibold tracking-wider uppercase">
+                {t('legalTitle')}
+              </h4>
               <ul className="text-muted-foreground space-y-1 text-sm">
                 <li>
                   <Link href="/privacy" className="hover:text-primary transition-colors">
-                    Política de Privacidade
+                    {t('privacy')}
                   </Link>
                 </li>
                 <li>
                   <Link href="/terms" className="hover:text-primary transition-colors">
-                    Termos de Uso
+                    {t('terms')}
                   </Link>
                 </li>
               </ul>
@@ -74,7 +79,9 @@ export function Footer() {
         </div>
 
         <div className="text-muted-foreground mt-12 border-t pt-8 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} Gaivota News. Todos os direitos reservados.</p>
+          <p>
+            &copy; {new Date().getFullYear()} Gaivota News. {t('rights')}
+          </p>
         </div>
       </div>
     </footer>

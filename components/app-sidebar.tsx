@@ -25,7 +25,10 @@ import { LucideIcon } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup } from '@/components/ui/sidebar';
 import { ThemeSwitch } from '@/components/theme/theme-toggle';
 
-import { BarChart3, Briefcase, ClipboardList } from 'lucide-react';
+import { BarChart3, Briefcase, ClipboardList, Users, Heart, LogOut } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import * as React from 'react';
 
 type SidebarLink = {
   label: string;
@@ -33,34 +36,75 @@ type SidebarLink = {
   icon: LucideIcon;
 };
 
-type SidebarSection = {
-  title: string;
-  links: SidebarLink[];
-};
-
-const sidebarSections: SidebarSection[] = [
+const sidebarSections = [
   {
-    title: 'Administração',
+    title: 'management.title', // Key for translation
     links: [
-      { label: 'Dashboard', href: '/admin', icon: BarChart3 },
-      { label: 'Criar Post', href: '/admin/posts/create', icon: ClipboardList },
+      { label: 'management.dashboard', href: '/admin', icon: BarChart3 },
+      { label: 'management.createPost', href: '/admin/posts/create', icon: ClipboardList },
+      { label: 'management.team', href: '/admin/team', icon: Users },
+      { label: 'management.supporters', href: '/admin/supporters', icon: Heart },
     ],
   },
   {
-    title: 'Site',
-    links: [{ label: 'Página Inicial', href: '/', icon: Briefcase }],
+    title: 'site.title', // Key for translation
+    links: [{ label: 'site.home', href: '/', icon: Briefcase }],
   },
 ];
 
+import { useTranslations } from 'next-intl';
+
 export function AppSidebar() {
   const pathname = usePathname();
+  const supabase = createClient();
+  const t = useTranslations('Components.Sidebar'); // Hook for translations
+  const [profile, setProfile] = React.useState<{
+    full_name: string | null;
+    avatar_url: string | null;
+  } | null>(null);
+
+  React.useEffect(() => {
+    async function loadProfile() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('full_name, avatar_url')
+          .eq('id', user.id)
+          .single();
+        if (data) setProfile(data);
+      }
+    }
+    loadProfile();
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  // Helper to map keys to text, since sidebarSections is static
+  const getLabel = (key: string) => {
+    const map: Record<string, string> = {
+      'management.title': t('adminTitle'),
+      'management.dashboard': t('dashboard'),
+      'management.createPost': t('createPost'),
+      'management.team': t('team'),
+      'management.supporters': t('supporters'),
+      'site.title': t('siteTitle'),
+      'site.home': t('home'),
+    };
+    return map[key] || key;
+  };
 
   return (
     <Sidebar>
       <SidebarContent className="bg-zinc-50 p-4 font-bold dark:bg-zinc-900">
         {sidebarSections.map(({ title, links }) => (
           <SidebarGroup key={title} className="text-muted-foreground p-4 text-sm">
-            <span className="mb-2 block font-medium">{title}</span>
+            <span className="mb-2 block font-medium">{getLabel(title)}</span>
 
             {links.map(({ label, href, icon: Icon }, index) => {
               const isActive = pathname === href;
@@ -76,15 +120,34 @@ export function AppSidebar() {
                   }`}
                 >
                   <Icon className="size-4 transition-transform duration-200 group-hover:scale-105" />
-                  <span>{label}</span>
+                  <span>{getLabel(label)}</span>
                 </Link>
               );
             })}
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter className="flex items-center justify-center border-t p-4">
-        <ThemeSwitch />
+      <SidebarFooter className="space-y-4 border-t bg-zinc-50 p-4 dark:bg-zinc-900">
+        {profile && (
+          <div className="flex items-center gap-3 px-2">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={profile.avatar_url || ''} />
+              <AvatarFallback>{profile.full_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col text-sm">
+              <span className="text-foreground font-medium">{profile.full_name}</span>
+              <button
+                onClick={handleLogout}
+                className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-left text-xs transition-colors"
+              >
+                <LogOut className="h-3 w-3" /> {t('logout')}
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="flex items-center justify-center">
+          <ThemeSwitch />
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

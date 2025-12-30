@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'edge';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -58,16 +57,27 @@ export async function generateMetadata(props: BlogPostProps) {
               alt: post.title,
             },
           ]
-        : [],
+        : [
+            {
+              url: '/og-default.png', // Fallback image
+              width: 1200,
+              height: 630,
+              alt: 'Gaivota News',
+            },
+          ],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.content.substring(0, 160),
-      images: post.featured_image ? [post.featured_image] : [],
+      images: post.featured_image ? [post.featured_image] : ['/og-default.png'],
     },
   };
 }
+
+import { LikeButton } from '@/components/blog/like-button';
+
+// ... (existing imports)
 
 export default async function BlogPostPage(props: BlogPostProps) {
   const params = await props.params;
@@ -92,6 +102,7 @@ export default async function BlogPostPage(props: BlogPostProps) {
   } = await supabase.auth.getUser();
 
   let isAdmin = false;
+  let isLiked = false;
 
   if (user) {
     const { data: profile } = await supabase
@@ -102,6 +113,15 @@ export default async function BlogPostPage(props: BlogPostProps) {
       .single();
 
     isAdmin = profile?.role === 'admin';
+
+    const { data: like } = await supabase
+      .from('post_likes')
+      .select('id')
+      .eq('post_id', post.id)
+      .eq('user_id', user.id)
+      .single();
+
+    isLiked = !!like;
   }
 
   // Check if current user is admin if post is unpublished
@@ -157,7 +177,15 @@ export default async function BlogPostPage(props: BlogPostProps) {
                   locale: ptBR,
                 })}
               </span>
-              <ShareButtons title={post.title} url={`/${post.slug}`} />
+              <div className="flex items-center gap-4">
+                <LikeButton
+                  postId={post.id}
+                  initialLiked={isLiked}
+                  initialCount={post.likes_count || 0}
+                  userId={user?.id}
+                />
+                <ShareButtons title={post.title} url={`/${post.slug}`} />
+              </div>
             </div>
           </div>
           <div className="leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }} />

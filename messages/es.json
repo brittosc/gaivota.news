@@ -84,5 +84,50 @@
     "title": "Página no encontrada",
     "description": "¡Vaya! Parece que te has perdido. La página no existe.",
     "goHome": "Volver al inicio"
+  },
+  "Components": {
+    "Sidebar": {
+      "adminTitle": "Administración",
+      "siteTitle": "Sitio",
+      "dashboard": "Panel",
+      "createPost": "Crear Publicación",
+      "team": "Equipo",
+      "supporters": "Colaboradores",
+      "home": "Página de Inicio",
+      "logout": "Cerrar Sesión"
+    },
+    "Footer": {
+      "description": "Noticias y actualizaciones sobre nuestro municipio.",
+      "linksTitle": "Enlaces Útiles",
+      "legalTitle": "Legal",
+      "home": "Página de Inicio",
+      "admin": "Área Administrativa",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Uso",
+      "rights": "Todos los derechos reservados."
+    },
+    "Newsletter": {
+      "title": "Recibe las novedades",
+      "label": "Boletín",
+      "description": "Suscríbete a nuestro boletín para recibir las últimas publicaciones y actualizaciones directamente en tu correo electrónico.",
+      "shortDescription": "Recibe las últimas noticias directamente en tu correo electrónico.",
+      "placeholder": "tu@email.com",
+      "subscribe": "Suscribirse",
+      "subscribing": "Suscribiendo...",
+      "success": "¡Suscripción exitosa!",
+      "error": "Error al suscribirse",
+      "invalidEmail": "Por favor, introduce un correo electrónico válido.",
+      "alreadySubscribed": "¡Este correo ya está suscrito!"
+    }
+  },
+  "Pages": {
+    "Home": {
+      "heroSubtitle": "Noticias y actualizaciones sobre nuestro municipio.",
+      "error": "Error al cargar publicaciones.",
+      "noResults": "No se encontraron publicaciones para tu búsqueda.",
+      "clearSearch": "Borrar búsqueda",
+      "page": "Página",
+      "of": "de"
+    }
   }
 }

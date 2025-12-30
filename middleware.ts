@@ -1,10 +1,8 @@
 import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './lib/i18n';
 import { env } from './lib/env';
-
-export const runtime = 'experimental-edge';
 
 const i18nMiddleware = createMiddleware({
   locales,
@@ -15,7 +13,20 @@ const i18nMiddleware = createMiddleware({
 const localePattern = locales.join('|');
 
 export async function middleware(request: NextRequest) {
-  const response = i18nMiddleware(request);
+  // Hack to map pt-BR/pt headers to 'br' locale since we use 'br' code for Brazil
+  const acceptLanguage = request.headers.get('accept-language') || '';
+  let modifiedRequest = request;
+
+  if (acceptLanguage.toLowerCase().includes('pt')) {
+    const headers = new Headers(request.headers);
+    headers.set('accept-language', `br,${acceptLanguage}`);
+    modifiedRequest = new NextRequest(request.url, {
+      headers,
+      method: request.method,
+    });
+  }
+
+  const response = i18nMiddleware(modifiedRequest);
   const supabase = createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

@@ -87,5 +87,50 @@
   },
   "Terms": {
     "title": "Termos de Uso"
+  },
+  "Components": {
+    "Sidebar": {
+      "adminTitle": "Administração",
+      "siteTitle": "Site",
+      "dashboard": "Dashboard",
+      "createPost": "Criar Post",
+      "team": "Equipes",
+      "supporters": "Apoiadores",
+      "home": "Página Inicial",
+      "logout": "Sair"
+    },
+    "Footer": {
+      "description": "Notícias e atualizações sobre o nosso município.",
+      "linksTitle": "Links Úteis",
+      "legalTitle": "Legal",
+      "home": "Página Inicial",
+      "admin": "Área Administrativa",
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Uso",
+      "rights": "Todos os direitos reservados."
+    },
+    "Newsletter": {
+      "title": "Receba as novidades",
+      "label": "Newsletter",
+      "description": "Inscreva-se em nossa newsletter para receber os últimos posts e atualizações diretamente no seu e-mail.",
+      "shortDescription": "Receba as últimas notícias diretamente no seu e-mail.",
+      "placeholder": "seu@email.com",
+      "subscribe": "Inscrever-se",
+      "subscribing": "Inscrevendo...",
+      "success": "Inscrição realizada com sucesso!",
+      "error": "Erro ao se inscrever",
+      "invalidEmail": "Por favor, insira um e-mail válido.",
+      "alreadySubscribed": "Este e-mail já está inscrito!"
+    }
+  },
+  "Pages": {
+    "Home": {
+      "heroSubtitle": "Notícias e atualizações sobre o nosso município.",
+      "error": "Erro ao carregar posts.",
+      "noResults": "Nenhum post encontrado para sua busca.",
+      "clearSearch": "Limpar busca",
+      "page": "Página",
+      "of": "de"
+    }
   }
 }

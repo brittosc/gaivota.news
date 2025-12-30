@@ -16,16 +16,14 @@
  * Alterações devem ser registradas conforme normas internas.
  */
 
-export const runtime = 'edge';
-
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  // Define /profile como padrão se nenhum parâmetro "next" for passado
-  const next = searchParams.get('next') ?? '/';
+  // Define /admin como padrão se nenhum parâmetro "next" for passado
+  const next = searchParams.get('next') ?? '/admin';
 
   if (code) {
     const supabase = await createClient();
@@ -44,7 +42,6 @@ export async function GET(request: Request) {
           .single();
 
         if (!profile) {
-          // @ts-expect-error: Profile might not exist yet, ignoring type check for insertion
           await supabase.from('profiles').insert({
             id: user.id,
             full_name: user.user_metadata.full_name,

@@ -7,9 +7,12 @@ import { toast } from 'sonner';
 import { createBrowserClient } from '@supabase/ssr';
 import { Mail } from 'lucide-react';
 
+import { useTranslations } from 'next-intl';
+
 export function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const t = useTranslations('Components.Newsletter');
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,7 +22,7 @@ export function NewsletterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
-      toast.error('Por favor, insira um e-mail válido.');
+      toast.error(t('invalidEmail'));
       return;
     }
 
@@ -30,17 +33,20 @@ export function NewsletterForm() {
       if (error) {
         if (error.code === '23505') {
           // Unique violation
-          toast.info('Este e-mail já está inscrito!');
+          toast.info(t('alreadySubscribed'));
         } else {
           throw error;
         }
       } else {
-        toast.success('Inscrição realizada com sucesso!');
+        toast.success(t('success'));
         setEmail('');
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-      toast.error('Erro ao se inscrever: ' + errorMessage);
+      const errorMessage = error instanceof Error ? error.message : t('error');
+      // Keeping detailed error in console, specific user message in toast?
+      // User prompt implies strictly translating the visible texts, keeping error message generic for user is better i18n practice usually.
+      // But let's keep it simple.
+      toast.error(`${t('error')}: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -48,16 +54,14 @@ export function NewsletterForm() {
 
   return (
     <div className="w-full">
-      <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">Newsletter</h4>
-      <p className="text-muted-foreground mb-4 text-sm">
-        Receba as últimas notícias diretamente no seu e-mail.
-      </p>
+      <h4 className="mb-4 text-sm font-semibold tracking-wider uppercase">{t('label')}</h4>
+      <p className="text-muted-foreground mb-4 text-sm">{t('shortDescription')}</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div className="relative">
           <Mail className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
           <Input
             type="email"
-            placeholder="seu@email.com"
+            placeholder={t('placeholder')}
             className="pl-9"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -66,7 +70,7 @@ export function NewsletterForm() {
           />
         </div>
         <Button type="submit" disabled={loading} size="sm" className="w-full">
-          {loading ? 'Inscrevendo...' : 'Inscrever-se'}
+          {loading ? t('subscribing') : t('subscribe')}
         </Button>
       </form>
     </div>

@@ -43,6 +43,8 @@ const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin']
 
 export const metadata = constructMetadata();
 
+import { createClient } from '@/lib/supabase/server';
+
 export default async function LocaleLayout({
   children,
   params,
@@ -57,6 +59,25 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let showSidebar = false;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profile && (profile.role === 'admin' || profile.role === 'editor')) {
+      showSidebar = true;
+    }
+  }
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -72,14 +93,16 @@ export default async function LocaleLayout({
                   <ProgressProvider>
                     <SettingsProvider>
                       <ModalProvider>
-                        <SidebarProvider defaultOpen={false}>
+                        <SidebarProvider defaultOpen={showSidebar}>
                           <ServiceWorkerRegister />
                           <ServiceWorkerUpdatePrompt />
                           <SettingsClientWrapper>
-                            <AppSidebar />
+                            {showSidebar && <AppSidebar />}
                             <SidebarInset className="bg-muted dark:bg-muted flex h-svh max-h-svh flex-col overflow-y-auto">
                               <div className="flex min-h-full flex-col">
-                                <SidebarTrigger className="sticky top-2 z-10 mt-2 ml-2" />
+                                {showSidebar && (
+                                  <SidebarTrigger className="sticky top-2 z-10 mt-2 ml-2" />
+                                )}
                                 <main className="flex-1">{children}</main>
                                 <Footer />
                               </div>

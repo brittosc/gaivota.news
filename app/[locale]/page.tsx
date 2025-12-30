@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 
-export const runtime = 'edge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -21,11 +20,14 @@ interface HomeProps {
   searchParams: Promise<{ page?: string; query?: string; sort?: string }>;
 }
 
+import { getTranslations } from 'next-intl/server';
+
 export default async function Home(props: HomeProps) {
   const searchParams = await props.searchParams;
   const page = Number(searchParams.page) || 1;
   const query = searchParams.query || '';
   const sortAscending = searchParams.sort === 'oldest';
+  const t = await getTranslations('Pages.Home');
 
   const POSTS_PER_PAGE = 5;
   const start = (page - 1) * POSTS_PER_PAGE;
@@ -49,7 +51,7 @@ export default async function Home(props: HomeProps) {
     .returns<Database['public']['Tables']['posts']['Row'][]>();
 
   if (error) {
-    return <div className="text-center text-red-500">Erro ao carregar posts.</div>;
+    return <div className="text-center text-red-500">{t('error')}</div>;
   }
 
   const totalPages = count ? Math.ceil(count / POSTS_PER_PAGE) : 0;
@@ -87,9 +89,7 @@ export default async function Home(props: HomeProps) {
           </svg>
           Gaivota News
         </h1>
-        <p className="text-muted-foreground mt-2 text-lg">
-          Notícias e atualizações sobre o nosso município.
-        </p>
+        <p className="text-muted-foreground mt-2 text-lg">{t('heroSubtitle')}</p>
       </div>
 
       <SearchFilter />
@@ -137,11 +137,11 @@ export default async function Home(props: HomeProps) {
         ))}
         {posts?.length === 0 && (
           <div className="flex min-h-60 flex-col items-center justify-center rounded-lg border border-dashed text-center">
-            <p className="text-muted-foreground text-lg">Nenhum post encontrado para sua busca.</p>
+            <p className="text-muted-foreground text-lg">{t('noResults')}</p>
             {query && (
               <Link href="/">
                 <Button variant="link" className="mt-2">
-                  Limpar busca
+                  {t('clearSearch')}
                 </Button>
               </Link>
             )}
@@ -174,7 +174,7 @@ export default async function Home(props: HomeProps) {
           </Link>
 
           <span className="flex items-center px-4 text-sm font-medium">
-            Página {page} de {totalPages}
+            {t('page')} {page} {t('of')} {totalPages}
           </span>
 
           {/* Next Page */}

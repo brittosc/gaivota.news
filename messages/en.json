@@ -87,5 +87,50 @@
   },
   "Terms": {
     "title": "Terms of Use"
+  },
+  "Components": {
+    "Sidebar": {
+      "adminTitle": "Administration",
+      "siteTitle": "Site",
+      "dashboard": "Dashboard",
+      "createPost": "Create Post",
+      "team": "Team",
+      "supporters": "Supporters",
+      "home": "Home Page",
+      "logout": "Logout"
+    },
+    "Footer": {
+      "description": "News and updates about our municipality.",
+      "linksTitle": "Useful Links",
+      "legalTitle": "Legal",
+      "home": "Home Page",
+      "admin": "Admin Area",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "rights": "All rights reserved."
+    },
+    "Newsletter": {
+      "title": "Get the latest news",
+      "label": "Newsletter",
+      "description": "Subscribe to our newsletter to receive the latest posts and updates directly in your email.",
+      "shortDescription": "Get the latest news directly in your email.",
+      "placeholder": "your@email.com",
+      "subscribe": "Subscribe",
+      "subscribing": "Subscribing...",
+      "success": "Subscription successful!",
+      "error": "Error subscribing",
+      "invalidEmail": "Please enter a valid email.",
+      "alreadySubscribed": "This email is already subscribed!"
+    }
+  },
+  "Pages": {
+    "Home": {
+      "heroSubtitle": "News and updates about our municipality.",
+      "error": "Error loading posts.",
+      "noResults": "No posts found for your search.",
+      "clearSearch": "Clear search",
+      "page": "Page",
+      "of": "of"
+    }
   }
 }

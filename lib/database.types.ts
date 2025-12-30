@@ -4,21 +4,11 @@
  * @author Mauricio de Britto - grupobritto.com.br
  * @version 0.0.1
  * @since 21/12/2025 13:33
- *
- * @description
- * Descrição objetiva da responsabilidade do arquivo
- *
- * @company Quem é dono do sistema
- * @system Em qual sistema este arquivo existe?
- * @module Qual parte funcional do sistema ele implementa?
- *
- * @maintenance
- * Alterações devem ser registradas conforme normas internas.
  */
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       profiles: {
@@ -27,22 +17,23 @@ export interface Database {
           full_name: string | null;
           avatar_url: string | null;
           updated_at: string | null;
-          role: 'admin' | 'user';
+          role: 'admin' | 'user' | 'editor';
         };
         Insert: {
           id: string;
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
-          role?: 'admin' | 'user';
+          role?: 'admin' | 'user' | 'editor';
         };
         Update: {
           id?: string;
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
-          role?: 'admin' | 'user';
+          role?: 'admin' | 'user' | 'editor';
         };
+        Relationships: [];
       };
       posts: {
         Row: {
@@ -52,9 +43,12 @@ export interface Database {
           content: string;
           author_id: string;
           published: boolean;
+          archived: boolean;
+          likes_count: number;
           featured_image: string | null;
           created_at: string;
           updated_at: string;
+          newsletter_sent_at: string | null;
         };
         Insert: {
           id?: string;
@@ -63,9 +57,12 @@ export interface Database {
           content: string;
           author_id?: string;
           published?: boolean;
+          archived?: boolean;
+          likes_count?: number;
           featured_image?: string | null;
           created_at?: string;
           updated_at?: string;
+          newsletter_sent_at?: string | null;
         };
         Update: {
           id?: string;
@@ -74,10 +71,22 @@ export interface Database {
           content?: string;
           author_id?: string;
           published?: boolean;
+          archived?: boolean;
+          likes_count?: number;
           featured_image?: string | null;
           created_at?: string;
           updated_at?: string;
+          newsletter_sent_at?: string | null;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'posts_author_id_fkey';
+            columns: ['author_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       tags: {
         Row: {
@@ -98,6 +107,7 @@ export interface Database {
           slug?: string;
           created_at?: string;
         };
+        Relationships: [];
       };
       post_tags: {
         Row: {
@@ -112,6 +122,22 @@ export interface Database {
           post_id?: string;
           tag_id?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: 'post_tags_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'posts';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_tags_tag_id_fkey';
+            columns: ['tag_id'];
+            isOneToOne: false;
+            referencedRelation: 'tags';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       newsletter_subscribers: {
         Row: {
@@ -132,7 +158,156 @@ export interface Database {
           created_at?: string;
           active?: boolean;
         };
+        Relationships: [];
+      };
+      supporters: {
+        Row: {
+          id: string;
+          name: string;
+          avatar_url: string | null;
+          link: string | null;
+          active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          avatar_url?: string | null;
+          link?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          avatar_url?: string | null;
+          link?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      post_likes: {
+        Row: {
+          id: string;
+          post_id: string;
+          user_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          user_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          user_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'post_likes_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'posts';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_likes_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      post_revisions: {
+        Row: {
+          id: string;
+          post_id: string;
+          author_id: string | null;
+          title: string;
+          content: string;
+          status: 'pending' | 'approved' | 'rejected';
+          featured_image: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          author_id?: string | null;
+          title: string;
+          content: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          featured_image?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          author_id?: string | null;
+          title?: string;
+          content?: string;
+          status?: 'pending' | 'approved' | 'rejected';
+          featured_image?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'post_revisions_author_id_fkey';
+            columns: ['author_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_revisions_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'posts';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+
+      site_settings: {
+        Row: {
+          key: string;
+          value: Json;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          key: string;
+          value: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          key?: string;
+          value?: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
       };
     };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
   };
-}
+};
