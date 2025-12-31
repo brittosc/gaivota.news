@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -126,7 +126,7 @@ export function ChatWidget({ userRole, userId }: { userRole?: UserRole; userId?:
       if (data) {
         console.log('Fetched messages:', data.length); // Debug
         setMessages(data as unknown as ChatMessage[]);
-        if (isOpen) setTimeout(scrollToBottom, 100);
+        if (isOpenRef.current) setTimeout(scrollToBottom, 100);
 
         const msgIds = data.map(m => m.id);
         if (msgIds.length > 0) {

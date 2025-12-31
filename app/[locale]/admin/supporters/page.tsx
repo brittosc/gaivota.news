@@ -2,18 +2,9 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+// Table, Badge, Avatar unused
 import { SupporterModal } from '@/components/modals/supporter-modal';
-import { SupporterActions } from '@/components/admin/supporter-actions'; // Client component for actions
+// SupporterActions unused
 import { SupportersSettingsForm } from '@/components/admin/supporters-settings-form';
 import { SupportersTable } from '@/components/admin/supporters-table';
 
