@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: 'Privacy' });
@@ -9,8 +8,6 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default function PrivacyPage() {
-  const t = useTranslations('Privacy');
-
   return (
     <div className="container mx-auto max-w-4xl px-4 py-12">
       <h1 className="mb-8 text-3xl font-bold">Política de Privacidade</h1>

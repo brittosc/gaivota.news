@@ -19,7 +19,7 @@ export async function getSiteSettings(key: string) {
   return data?.value || null;
 }
 
-import { Database, Json } from '@/lib/database.types';
+import { Json } from '@/lib/database.types';
 
 export async function updateSiteSettings(key: string, value: Json) {
   const supabase = await createClient();

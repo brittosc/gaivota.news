@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, FileText, Users, Heart, ShieldAlert } from 'lucide-react';
-import { PostsTable } from './posts-table';
 import { OverviewChart } from '@/components/admin/overview-chart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { format, subDays, startOfDay, endOfDay, parseISO, differenceInDays } from 'date-fns';

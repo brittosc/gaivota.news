@@ -93,7 +93,7 @@ export default async function LocaleLayout({
                   <ProgressProvider>
                     <SettingsProvider>
                       <ModalProvider>
-                        <SidebarProvider defaultOpen={showSidebar}>
+                        <SidebarProvider defaultOpen={false}>
                           <ServiceWorkerRegister />
                           <ServiceWorkerUpdatePrompt />
                           <SettingsClientWrapper>

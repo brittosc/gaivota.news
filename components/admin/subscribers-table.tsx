@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Power } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { deleteSubscriber, deleteSubscribers } from '@/app/actions/newsletter';
+import {
+  deleteSubscriber,
+  deleteSubscribers,
+  toggleSubscriberStatus,
+} from '@/app/actions/newsletter';
 import { Database } from '@/lib/database.types';
 
 type Subscriber = Database['public']['Tables']['newsletter_subscribers']['Row'] & {
@@ -59,6 +63,22 @@ export function SubscribersTable({ subscribers: initialSubscribers }: Subscriber
       newSelected.add(id);
     }
     setSelectedIds(newSelected);
+  };
+
+  const handleToggleStatus = async (id: string, newStatus: boolean) => {
+    try {
+      const result = await toggleSubscriberStatus(id, newStatus);
+      if (result.success) {
+        toast.success(result.message);
+        setSubscribers(prev =>
+          prev.map(sub => (sub.id === id ? { ...sub, active: newStatus } : sub))
+        );
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
+      toast.error('Erro ao atualizar status.');
+    }
   };
 
   const handleDelete = async (ids: string[]) => {
@@ -162,37 +182,56 @@ export function SubscribersTable({ subscribers: initialSubscribers }: Subscriber
                       Ativo
                     </span>
                   ) : (
-                    <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+                    <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
                       Inativo
                     </span>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon" className="hover:text-red-600">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Remover Assinante?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Tem certeza que deseja remover <b>{sub.email}</b>?
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-red-600 hover:bg-red-700"
-                          onClick={() => handleDelete([sub.id])}
-                          disabled={isDeleting}
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleToggleStatus(sub.id, !sub.active)}
+                      className={
+                        sub.active
+                          ? 'text-green-600 hover:text-green-700'
+                          : 'text-gray-400 hover:text-gray-600'
+                      }
+                      title={sub.active ? 'Desativar' : 'Ativar'}
+                    >
+                      <Power className="h-4 w-4" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-red-500 hover:bg-red-50 hover:text-red-700"
                         >
-                          {isDeleting ? 'Removendo...' : 'Sim, remover'}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remover Assinante?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Tem certeza que deseja remover <b>{sub.email}</b>?
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-red-600 hover:bg-red-700"
+                            onClick={() => handleDelete([sub.id])}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? 'Removendo...' : 'Sim, remover'}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

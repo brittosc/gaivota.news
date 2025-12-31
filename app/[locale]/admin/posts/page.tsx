@@ -62,17 +62,13 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
 
   const { page: pageParam, limit: limitParam } = await searchParams;
   const page = Number(pageParam) || 1;
-  const limit = Number(limitParam) || 30;
+  const limit = Number(limitParam) || 10;
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
   // Fetch posts with pagination
   // We need count to know total pages
-  const {
-    data: posts,
-    count,
-    error,
-  } = await supabase
+  const { data: posts, count } = await supabase
     .from('posts')
     .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })

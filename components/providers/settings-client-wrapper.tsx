@@ -29,7 +29,7 @@ export function SettingsClientWrapper({ children }: { children: React.ReactNode 
     <TooltipProvider delayDuration={0}>
       {children}
       {isNotificationsEnabled && (
-        <Toaster position="bottom-right" richColors closeButton expand={true} duration={1500} />
+        <Toaster position="bottom-right" richColors closeButton expand={true} duration={5000} />
       )}
     </TooltipProvider>
   );

@@ -316,3 +316,36 @@ export async function unsubscribeFromNewsletter(email: string) {
 
   return { success: true, message: 'Inscrição cancelada com sucesso.' };
 }
+
+export async function toggleSubscriberStatus(id: string, active: boolean) {
+  const supabase = await createClient();
+  const adminSupabase = createAdminClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, message: 'Não autorizado.' };
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role !== 'admin' && profile?.role !== 'editor') {
+    return { success: false, message: 'Não autorizado.' };
+  }
+
+  const { error } = await adminSupabase
+    .from('newsletter_subscribers')
+    .update({ active })
+    .eq('id', id);
+
+  if (error) {
+    return { success: false, message: 'Erro ao atualizar status.' };
+  }
+
+  revalidatePath('/admin/newsletter');
+  return { success: true, message: `Assinante ${active ? 'ativado' : 'desativado'} com sucesso.` };
+}

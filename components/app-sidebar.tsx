@@ -20,47 +20,52 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LucideIcon } from 'lucide-react';
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup } from '@/components/ui/sidebar';
 import { ThemeSwitch } from '@/components/theme/theme-toggle';
 
-import {
-  BarChart3,
-  Briefcase,
-  ClipboardList,
-  Users,
-  Heart,
-  LogOut,
-  Mail,
-  FileText,
-} from 'lucide-react';
+import { BarChart3, Users, Heart, LogOut, Mail, FileText, ThumbsUp, Folder } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import * as React from 'react';
-
-type SidebarLink = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-};
 
 const sidebarSections = [
   {
     title: 'management.title', // Key for translation
     links: [
-      { label: 'management.dashboard', href: '/admin', icon: BarChart3 },
-      { label: 'management.posts', href: '/admin/posts', icon: FileText },
-      { label: 'management.createPost', href: '/admin/posts/create', icon: ClipboardList },
-      { label: 'management.team', href: '/admin/team', icon: Users },
-      { label: 'management.supporters', href: '/admin/supporters', icon: Heart },
-      { label: 'management.likes', href: '/admin/likes', icon: Heart },
-      { label: 'management.newsletter', href: '/admin/newsletter', icon: Mail },
+      { label: 'management.dashboard', href: '/admin', icon: BarChart3, color: 'text-sky-500' },
+      { label: 'management.posts', href: '/admin/posts', icon: FileText, color: 'text-violet-500' },
+      {
+        label: 'management.newsletter',
+        href: '/admin/newsletter',
+        icon: Mail,
+        color: 'text-indigo-500',
+      },
+      {
+        label: 'management.files',
+        href: '/admin/files',
+        icon: Folder,
+        color: 'text-blue-500',
+      },
     ],
   },
   {
-    title: 'site.title', // Key for translation
-    links: [{ label: 'site.home', href: '/', icon: Briefcase }],
+    title: 'management.community',
+    links: [
+      { label: 'management.team', href: '/admin/team', icon: Users, color: 'text-orange-500' },
+      {
+        label: 'management.supporters',
+        href: '/admin/supporters',
+        icon: Heart,
+        color: 'text-pink-500',
+      },
+      {
+        label: 'management.likes',
+        href: '/admin/likes',
+        icon: ThumbsUp,
+        color: 'text-emerald-500',
+      },
+    ],
   },
 ];
 
@@ -101,13 +106,15 @@ export function AppSidebar() {
   const getLabel = (key: string) => {
     const map: Record<string, string> = {
       'management.title': t('adminTitle'),
+      'management.community': t('communityTitle'),
       'management.dashboard': t('dashboard'),
       'management.posts': t('posts') || 'Posts',
       'management.createPost': t('createPost'),
-      'management.team': t('team'),
+      'management.team': t('team') || 'Colaboradores',
       'management.supporters': t('supporters'),
       'management.likes': 'Curtidas',
       'management.newsletter': t('newsletter') || 'Newsletter', // Fallback
+      'management.files': t('files') || 'Arquivos',
       'site.title': t('siteTitle'),
       'site.home': t('home'),
     };
@@ -121,7 +128,7 @@ export function AppSidebar() {
           <SidebarGroup key={title} className="text-muted-foreground p-4 text-sm">
             <span className="mb-2 block font-medium">{getLabel(title)}</span>
 
-            {links.map(({ label, href, icon: Icon }, index) => {
+            {links.map(({ label, href, icon: Icon, color }, index) => {
               const isActive = pathname === href;
 
               return (
@@ -134,7 +141,9 @@ export function AppSidebar() {
                     isActive ? 'bg-muted text-foreground' : 'text-muted-foreground'
                   }`}
                 >
-                  <Icon className="size-4 transition-transform duration-200 group-hover:scale-105" />
+                  <Icon
+                    className={`size-4 transition-transform duration-200 group-hover:scale-105 ${color || ''}`}
+                  />
                   <span>{getLabel(label)}</span>
                 </Link>
               );

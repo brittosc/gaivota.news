@@ -16,8 +16,18 @@ import Image from '@tiptap/extension-image';
 import Youtube from '@tiptap/extension-youtube';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Indent } from './extensions/indent';
-
+import { Audio } from './extensions/audio';
+import { Video } from './extensions/video';
+import { FontSize } from './extensions/font-size';
+import { FileAttachment } from './extensions/file-attachment';
+import { ImageGallery } from './extensions/image-gallery';
+import { LetterSpacing } from './extensions/letter-spacing';
 import { EditorToolbar } from './editor-toolbar';
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { Button } from '@/components/ui/button';
+import { Eye, Pencil } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface RichTextEditorProps {
   content: string;
@@ -26,7 +36,11 @@ interface RichTextEditorProps {
 }
 
 export function RichTextEditor({ content, onChange, editable = true }: RichTextEditorProps) {
+  const t = useTranslations('Components.Editor');
+  const [isPreview, setIsPreview] = useState(false);
+
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Underline,
@@ -37,16 +51,26 @@ export function RichTextEditor({ content, onChange, editable = true }: RichTextE
       TaskItem.configure({ nested: true }),
       Subscript,
       Superscript,
-      TextAlign.configure({ types: ['heading', 'paragraph', 'image'] }),
+      TextAlign.configure({ types: ['heading', 'paragraph', 'image', 'audio', 'video'] }),
       Link.configure({ openOnClick: false }),
       Image,
       Youtube,
       Placeholder.configure({ placeholder: 'Write something amazing...' }),
       Indent,
+      Audio,
+      Video,
+      FontSize,
+      ImageGallery,
+      FileAttachment,
+      LetterSpacing,
     ],
     content: content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
+      // Basic autosave to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('post-draft-content', editor.getHTML());
+      }
     },
     editable: editable,
     editorProps: {
@@ -57,13 +81,48 @@ export function RichTextEditor({ content, onChange, editable = true }: RichTextE
     },
   });
 
+  // Restore draft on mount if content is empty (optional feature, but good for autosave)
+  useEffect(() => {
+    if (content === '<p></p>' || content === '') {
+      const saved = localStorage.getItem('post-draft-content');
+      if (saved && editor) {
+        // editor.commands.setContent(saved); // Optional: Discuss with user if they want auto-restore.
+        // For now, I'll just save it.
+      }
+    }
+  }, [content, editor]);
+
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="bg-background w-full overflow-hidden rounded-md border">
-      {editable && <EditorToolbar editor={editor} />}
+    <div className="bg-background relative w-full overflow-hidden rounded-md border">
+      {editable && (
+        <div className="absolute top-2 right-2 z-10">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-muted bg-background/50 h-8 w-8 border backdrop-blur-sm"
+                  onClick={() => {
+                    const newState = !isPreview;
+                    setIsPreview(newState);
+                    editor.setEditable(!newState);
+                  }}
+                >
+                  {isPreview ? <Pencil className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{isPreview ? t('edit') : t('preview')}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
+
+      {editable && !isPreview && <EditorToolbar editor={editor} />}
       <div className="p-4">
         <EditorContent editor={editor} />
       </div>

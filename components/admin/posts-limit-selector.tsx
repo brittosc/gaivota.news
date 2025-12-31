@@ -12,7 +12,7 @@ import {
 export function PostsLimitSelector() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const limit = searchParams.get('limit') || '30';
+  const limit = searchParams.get('limit') || '10';
 
   const handleValueChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());

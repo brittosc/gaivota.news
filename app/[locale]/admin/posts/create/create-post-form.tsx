@@ -176,7 +176,7 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
       <MediaUploadModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={url => setFeaturedImage(url)}
+        onConfirm={url => setFeaturedImage(Array.isArray(url) ? url[0] : url)}
         type="image"
         initialUrl={featuredImage || ''}
       />

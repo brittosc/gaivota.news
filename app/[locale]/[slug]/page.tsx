@@ -9,6 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Database } from '@/lib/database.types';
 import { ShareButtons } from '@/components/blog/share-buttons';
 import Image from 'next/image';
+import { PostViewer } from '@/components/blog/post-viewer';
 
 interface BlogPostProps {
   params: Promise<{
@@ -189,7 +190,9 @@ export default async function BlogPostPage(props: BlogPostProps) {
               </div>
             </div>
           </div>
-          <div className="leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="leading-relaxed">
+            <PostViewer content={post.content} />
+          </div>
         </article>
       </div>
     </div>
