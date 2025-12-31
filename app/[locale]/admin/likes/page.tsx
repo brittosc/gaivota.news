@@ -1,3 +1,4 @@
+import { LikesTable } from '@/components/admin/likes-table';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -42,6 +43,7 @@ export default async function LikesPage() {
     .from('post_likes')
     .select(
       `
+      id,
       created_at,
       user_id,
       post_id,
@@ -70,61 +72,7 @@ export default async function LikesPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Usuário</TableHead>
-                  <TableHead>Post</TableHead>
-                  <TableHead className="text-right">Data</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {likes?.map((like, index) => (
-                  <TableRow key={`${like.post_id}-${like.user_id}-${index}`}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={like.profiles?.avatar_url || ''} />
-                          <AvatarFallback>
-                            {like.profiles?.full_name?.slice(0, 2).toUpperCase() || 'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm font-medium">
-                          {like.profiles?.full_name || 'Usuário Desconhecido'}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {like.posts ? (
-                        <Link
-                          href={`/${like.posts.slug}`}
-                          target="_blank"
-                          className="text-primary hover:underline"
-                        >
-                          {like.posts.title}
-                        </Link>
-                      ) : (
-                        <span className="text-muted-foreground italic">Post excluído</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-right">
-                      {format(new Date(like.created_at), "d 'de' MMMM 'às' HH:mm", {
-                        locale: ptBR,
-                      })}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {!likes?.length && (
-                  <TableRow>
-                    <TableCell colSpan={3} className="h-24 text-center">
-                      Nenhuma curtida encontrada.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+          <LikesTable likes={likes || []} currentUserRole={profile?.role} />
         </CardContent>
       </Card>
     </div>

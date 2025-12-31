@@ -23,7 +23,13 @@ import { Database } from '@/lib/database.types';
 
 type Supporter = Database['public']['Tables']['supporters']['Row'];
 
-export function SupporterActions({ supporter }: { supporter: Supporter }) {
+export function SupporterActions({
+  supporter,
+  currentUserRole = 'editor',
+}: {
+  supporter: Supporter;
+  currentUserRole?: 'admin' | 'editor' | 'user' | string;
+}) {
   const supabase = createClient();
   const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
@@ -37,6 +43,10 @@ export function SupporterActions({ supporter }: { supporter: Supporter }) {
       router.refresh();
     }
   };
+
+  if (currentUserRole !== 'admin') {
+    return null;
+  }
 
   return (
     <div className="flex justify-end gap-2">

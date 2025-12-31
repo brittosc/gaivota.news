@@ -64,7 +64,7 @@ const BUCKETS = {
   file: 'blog-files',
 };
 
-export function FileManager() {
+export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'editor' | 'user' }) {
   const [activeTab, setActiveTab] = useState<keyof typeof BUCKETS>('images');
   const [files, setFiles] = useState<FileObject[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
@@ -256,7 +256,7 @@ export function FileManager() {
               <SelectItem value="size-desc">Tamanho (Maior)</SelectItem>
             </SelectContent>
           </Select>
-          {selectedFiles.length > 0 && (
+          {userRole === 'admin' && selectedFiles.length > 0 && (
             <Button variant="destructive" onClick={() => initDelete()}>
               <Trash2 className="mr-2 h-4 w-4" /> Excluir ({selectedFiles.length})
             </Button>
@@ -425,12 +425,14 @@ export function FileManager() {
                           <DropdownMenuItem onClick={() => openRenameDialog(file)}>
                             <Pencil className="mr-2 h-4 w-4" /> Renomear
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="text-red-600"
-                            onClick={() => initDelete(file.name)}
-                          >
-                            <Trash2 className="mr-2 h-4 w-4" /> Excluir
-                          </DropdownMenuItem>
+                          {userRole === 'admin' && (
+                            <DropdownMenuItem
+                              className="text-red-600"
+                              onClick={() => initDelete(file.name)}
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" /> Excluir
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>

@@ -71,7 +71,7 @@ export default async function NewsletterPage() {
         </Link>
       </div>
 
-      <SubscribersTable subscribers={subscribersWithProfile} />
+      <SubscribersTable subscribers={subscribersWithProfile} currentUserRole={profile?.role} />
     </div>
   );
 }

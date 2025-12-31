@@ -180,3 +180,15 @@ export async function sendPostNewsletter(postId: string) {
   revalidatePath('/admin');
   return { success: true, message: `Newsletter enviada para ${successCount} assinantes!` };
 }
+
+export async function deleteLikes(ids: string[]) {
+  const supabase = await createClient();
+  const { error } = await supabase.from('post_likes').delete().in('id', ids);
+
+  if (error) {
+    return { success: false, message: 'Erro ao remover curtidas.' };
+  }
+
+  revalidatePath('/admin/likes');
+  return { success: true, message: 'Curtidas removidas com sucesso.' };
+}

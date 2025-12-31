@@ -48,7 +48,7 @@ export default async function FilesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <FileManager />
+      <FileManager userRole={profile?.role} />
     </div>
   );
 }

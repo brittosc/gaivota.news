@@ -29,6 +29,7 @@ import { ProgressProvider } from '@/components/providers/progress-provider';
 import { ErrorBoundaryProvider } from '@/components/providers/error-boundary-provider';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { SettingsClientWrapper } from '@/components/providers/settings-client-wrapper';
+import { UserActivityTracker } from '@/components/auth/user-activity-tracker';
 
 // PWA e UI
 import { ServiceWorkerRegister } from '@/components/pwa/sw-register';
@@ -90,6 +91,7 @@ export default async function LocaleLayout({
             <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               <QueryProvider>
                 <AuthProvider>
+                  <UserActivityTracker />
                   <ProgressProvider>
                     <SettingsProvider>
                       <ModalProvider>

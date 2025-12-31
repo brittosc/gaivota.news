@@ -20,7 +20,7 @@ export default async function TeamPage() {
     .eq('id', user.id)
     .single();
 
-  if (currentUserProfile?.role !== 'admin') {
+  if (currentUserProfile?.role !== 'admin' && currentUserProfile?.role !== 'editor') {
     return <div>Acesso restrito</div>;
   }
 
@@ -41,9 +41,9 @@ export default async function TeamPage() {
     return {
       ...profile,
       email: userRecord?.email,
-      // Use user created_at as "Joined At" if profile updated_at is just profile update?
-      // Actually profile.updated_at is fine for now, or userRecord.created_at
       join_date: userRecord?.created_at,
+      last_sign_in_at: userRecord?.last_sign_in_at,
+      last_active_at: profile.last_active_at, // Access the new column from profile
     };
   });
 
@@ -60,7 +60,12 @@ export default async function TeamPage() {
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {profilesWithEmail?.map(profile => (
-          <TeamMemberCard key={profile.id} profile={profile} currentUserId={user.id} />
+          <TeamMemberCard
+            key={profile.id}
+            profile={profile}
+            currentUserId={user.id}
+            currentUserRole={currentUserProfile.role}
+          />
         ))}
       </div>
     </div>

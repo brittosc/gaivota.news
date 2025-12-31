@@ -8,6 +8,7 @@ import { env } from '@/lib/env';
 import { Database } from '@/lib/database.types';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -46,6 +47,7 @@ import {
   EyeOff,
   CheckCircle,
   Mail,
+  X,
 } from 'lucide-react';
 import {
   archivePost,
@@ -66,16 +68,17 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
   const [posts, setPosts] = useState(initialPosts); // Local state for optimistic UI
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = useState(false);
+  const [filter, setFilter] = useState('published');
   const supabase = createBrowserClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
   const toggleSelectAll = () => {
-    if (selectedIds.size === posts.length) {
+    if (selectedIds.size === filteredPosts.length) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(posts.map(p => p.id)));
+      setSelectedIds(new Set(filteredPosts.map(p => p.id)));
     }
   };
 
@@ -122,37 +125,69 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
     }
   };
 
+  const filteredPosts = posts.filter(post => {
+    if (filter === 'all') return true;
+    if (filter === 'archived') return post.archived;
+    if (filter === 'published') return post.published && !post.archived;
+    if (filter === 'draft') return !post.published && !post.archived;
+    return true;
+  });
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <Tabs defaultValue="published" value={filter} onValueChange={setFilter}>
+          <TabsList>
+            <TabsTrigger value="all">Todos</TabsTrigger>
+            <TabsTrigger value="published">Publicados</TabsTrigger>
+            <TabsTrigger value="draft">Rascunhos</TabsTrigger>
+            <TabsTrigger value="archived">Arquivados</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
+      {/* Bulk Actions Floating Bar */}
       {selectedIds.size > 0 && (
-        <div className="bg-muted/50 flex items-center justify-between rounded-md border p-2">
-          <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm" disabled={isDeleting}>
-                <Trash2 className="mr-2 h-4 w-4" />
-                Deletar Selecionados
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Esta ação não pode ser desfeita. Isso excluirá permanentemente os posts
-                  selecionados.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  onClick={() => deletePosts(Array.from(selectedIds))}
-                >
-                  {isDeleting ? 'Deletando...' : 'Sim, deletar'}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
+          <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
+            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <div className="flex items-center gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="sm" disabled={isDeleting}>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Deletar
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta ação não pode ser desfeita. Isso excluirá permanentemente os posts
+                      selecionados.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={() => deletePosts(Array.from(selectedIds))}
+                    >
+                      {isDeleting ? 'Deletando...' : 'Sim, deletar'}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              onClick={() => setSelectedIds(new Set())}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
 
@@ -162,7 +197,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
             <TableRow>
               <TableHead className="w-12">
                 <Checkbox
-                  checked={posts.length > 0 && selectedIds.size === posts.length}
+                  checked={filteredPosts.length > 0 && selectedIds.size === filteredPosts.length}
                   onCheckedChange={toggleSelectAll}
                   aria-label="Select all"
                 />
@@ -174,7 +209,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {posts.map(post => (
+            {filteredPosts.map(post => (
               <TableRow
                 key={post.id}
                 data-state={selectedIds.has(post.id) && 'selected'}
@@ -189,15 +224,16 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                 </TableCell>
                 <TableCell className="max-w-50 truncate font-medium" title={post.title}>
                   {post.title}
-                  {post.archived && (
-                    <span className="text-muted-foreground ml-2 text-xs">(Arquivado)</span>
-                  )}
                 </TableCell>
                 <TableCell className="max-w-37.5 truncate" title={post.slug}>
                   {post.slug}
                 </TableCell>
                 <TableCell>
-                  {post.published ? (
+                  {post.archived ? (
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-800">
+                      Arquivado
+                    </span>
+                  ) : post.published ? (
                     <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800">
                       Publicado
                     </span>
@@ -279,7 +315,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                 </TableCell>
               </TableRow>
             ))}
-            {posts.length === 0 && (
+            {filteredPosts.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="h-24 text-center">
                   Nenhum post encontrado.

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2, Power } from 'lucide-react';
+import { Trash2, Power, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -40,9 +40,13 @@ type Subscriber = Database['public']['Tables']['newsletter_subscribers']['Row'] 
 
 interface SubscribersTableProps {
   subscribers: Subscriber[];
+  currentUserRole?: 'admin' | 'editor' | 'user' | string;
 }
 
-export function SubscribersTable({ subscribers: initialSubscribers }: SubscribersTableProps) {
+export function SubscribersTable({
+  subscribers: initialSubscribers,
+  currentUserRole = 'editor',
+}: SubscribersTableProps) {
   const [subscribers, setSubscribers] = useState(initialSubscribers);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = useState(false);
@@ -102,34 +106,47 @@ export function SubscribersTable({ subscribers: initialSubscribers }: Subscriber
 
   return (
     <div className="space-y-4">
-      {selectedIds.size > 0 && (
-        <div className="bg-muted/50 flex items-center justify-between rounded-md border p-2">
-          <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm" disabled={isDeleting}>
-                <Trash2 className="mr-2 h-4 w-4" />
-                Deletar Selecionados
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Esta ação excluirá permanentemente os {selectedIds.size} assinantes selecionados.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  onClick={() => handleDelete(Array.from(selectedIds))}
-                >
-                  {isDeleting ? 'Deletando...' : 'Sim, deletar'}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+      {selectedIds.size > 0 && currentUserRole === 'admin' && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
+          <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
+            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <div className="flex items-center gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="sm" disabled={isDeleting}>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Deletar
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta ação excluirá permanentemente os {selectedIds.size} assinantes
+                      selecionados.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={() => handleDelete(Array.from(selectedIds))}
+                    >
+                      {isDeleting ? 'Deletando...' : 'Sim, deletar'}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              onClick={() => setSelectedIds(new Set())}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
 
@@ -188,50 +205,52 @@ export function SubscribersTable({ subscribers: initialSubscribers }: Subscriber
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleToggleStatus(sub.id, !sub.active)}
-                      className={
-                        sub.active
-                          ? 'text-green-600 hover:text-green-700'
-                          : 'text-gray-400 hover:text-gray-600'
-                      }
-                      title={sub.active ? 'Desativar' : 'Ativar'}
-                    >
-                      <Power className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-red-500 hover:bg-red-50 hover:text-red-700"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Remover Assinante?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Tem certeza que deseja remover <b>{sub.email}</b>?
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction
-                            className="bg-red-600 hover:bg-red-700"
-                            onClick={() => handleDelete([sub.id])}
-                            disabled={isDeleting}
+                  {currentUserRole === 'admin' && (
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleToggleStatus(sub.id, !sub.active)}
+                        className={
+                          sub.active
+                            ? 'text-green-600 hover:text-green-700'
+                            : 'text-gray-400 hover:text-gray-600'
+                        }
+                        title={sub.active ? 'Desativar' : 'Ativar'}
+                      >
+                        <Power className="h-4 w-4" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-red-500 hover:bg-red-50 hover:text-red-700"
                           >
-                            {isDeleting ? 'Removendo...' : 'Sim, remover'}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Remover Assinante?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Tem certeza que deseja remover <b>{sub.email}</b>?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-red-600 hover:bg-red-700"
+                              onClick={() => handleDelete([sub.id])}
+                              disabled={isDeleting}
+                            >
+                              {isDeleting ? 'Removendo...' : 'Sim, remover'}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
