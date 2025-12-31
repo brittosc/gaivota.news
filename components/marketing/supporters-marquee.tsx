@@ -63,6 +63,7 @@ export async function SupportersMarquee() {
                 href={supporter.link || '#'}
                 target={supporter.link ? '_blank' : undefined}
                 className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-110 sm:h-24 sm:w-24"
+                aria-label={`Visitar página de ${supporter.name}`}
               >
                 <Image
                   src={
@@ -91,6 +92,7 @@ export async function SupportersMarquee() {
                 target={supporter.link ? '_blank' : undefined}
                 className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-110 sm:h-24 sm:w-24"
                 tabIndex={-1}
+                aria-label={`Visitar página de ${supporter.name}`}
               >
                 <Image
                   src={

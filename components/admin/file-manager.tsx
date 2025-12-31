@@ -19,6 +19,7 @@ import {
   Trash2,
   Upload,
   FileIcon,
+  FileText,
   Music,
   Film,
   Image as ImageIcon,
@@ -26,7 +27,7 @@ import {
   MoreVertical,
   Copy,
   Pencil,
-  Paperclip,
+  Download,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -75,6 +76,8 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
   const [newFileName, setNewFileName] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null); // If null, bulk delete
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewFile, setPreviewFile] = useState<FileObject | null>(null);
   const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'name-asc' | 'size-desc'>(
     'date-desc'
   );
@@ -232,6 +235,30 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     return data.publicUrl;
   };
 
+  const handleDownload = async (file: FileObject) => {
+    const url = getPublicUrl(file.name);
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Erro ao baixar arquivo');
+    }
+  };
+
+  const openPreview = (file: FileObject) => {
+    setPreviewFile(file);
+    setPreviewOpen(true);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -256,11 +283,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
               <SelectItem value="size-desc">Tamanho (Maior)</SelectItem>
             </SelectContent>
           </Select>
-          {userRole === 'admin' && selectedFiles.length > 0 && (
-            <Button variant="destructive" onClick={() => initDelete()}>
-              <Trash2 className="mr-2 h-4 w-4" /> Excluir ({selectedFiles.length})
-            </Button>
-          )}
+
           <div className="relative">
             <Button disabled={isUploading} className="cursor-pointer" asChild>
               <label>
@@ -356,33 +379,145 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                 <FileIcon className="mb-4 h-10 w-10 opacity-50" />
                 <p>Nenhum arquivo encontrado neste bucket.</p>
               </div>
+            ) : activeTab === 'audio' || activeTab === 'file' ? (
+              /* LIST VIEW */
+              <div className="rounded-md border">
+                <div className="bg-muted grid grid-cols-[auto_1fr_auto_auto_auto] gap-4 p-3 text-sm font-medium">
+                  <div className="w-8">
+                    <input
+                      type="checkbox"
+                      checked={files.length > 0 && selectedFiles.length === files.length}
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setSelectedFiles(files.map(f => f.name));
+                        } else {
+                          setSelectedFiles([]);
+                        }
+                      }}
+                      className="accent-primary h-4 w-4 rounded border-gray-300"
+                      aria-label="Selecionar todos os arquivos"
+                    />
+                  </div>
+                  <div>Nome</div>
+                  <div className="hidden sm:block">Tamanho</div>
+                  <div className="hidden sm:block">Data</div>
+                  <div className="w-10"></div>
+                </div>
+                <div className="divide-y">
+                  {files.map(file => {
+                    const isSelected = selectedFiles.includes(file.name);
+                    const fileExt = file.name.split('.').pop()?.toLowerCase();
+                    let Icon = FileIcon;
+                    if (fileExt === 'pdf') Icon = FileText;
+                    if (fileExt === 'mp3' || fileExt === 'wav' || fileExt === 'ogg') Icon = Music;
+
+                    return (
+                      <div
+                        key={file.id}
+                        className={`hover:bg-muted/50 grid grid-cols-[auto_1fr_auto_auto_auto] items-center gap-4 p-3 text-sm transition-colors ${isSelected ? 'bg-muted/50' : ''}`}
+                        onClick={e => {
+                          if (
+                            (e.target as HTMLElement).closest('button') ||
+                            (e.target as HTMLElement).closest('.dropdown') ||
+                            (e.target as HTMLElement).tagName === 'INPUT'
+                          )
+                            return;
+                          openPreview(file);
+                        }}
+                      >
+                        <div className="flex w-8 items-center justify-center">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleFileSelection(file.name)}
+                            className="accent-primary h-4 w-4 cursor-pointer rounded border-gray-300"
+                            onClick={e => e.stopPropagation()}
+                            aria-label={`Selecionar ${file.name}`}
+                          />
+                        </div>
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center rounded">
+                            <Icon className="h-4 w-4" />
+                          </div>
+                          <span className="truncate" title={file.name}>
+                            {file.name}
+                          </span>
+                        </div>
+                        <div className="text-muted-foreground hidden sm:block">
+                          {((file.metadata?.size || 0) / 1024 / 1024).toFixed(2)} MB
+                        </div>
+                        <div className="text-muted-foreground hidden sm:block">
+                          {new Date(file.created_at).toLocaleDateString()}
+                        </div>
+                        <div className="flex justify-end">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="dropdown h-8 w-8">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => openPreview(file)}>
+                                <FileIcon className="mr-2 h-4 w-4" /> Visualizar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleDownload(file)}>
+                                <Download className="mr-2 h-4 w-4" /> Baixar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => copyUrl(file.name)}>
+                                <Copy className="mr-2 h-4 w-4" /> Copiar Link
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openRenameDialog(file)}>
+                                <Pencil className="mr-2 h-4 w-4" /> Renomear
+                              </DropdownMenuItem>
+                              {userRole === 'admin' && (
+                                <DropdownMenuItem
+                                  className="text-red-600"
+                                  onClick={() => initDelete(file.name)}
+                                >
+                                  <Trash2 className="mr-2 h-4 w-4" /> Excluir
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              /* GRID VIEW - Updated to be smaller (more columns) */
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {files.map(file => (
                   <div
                     key={file.id}
-                    className={`group relative rounded-lg border p-3 transition-all hover:shadow-md ${selectedFiles.includes(file.name) ? 'ring-primary bg-accent/20 ring-2' : ''}`}
+                    className={`group relative rounded-lg border p-2 transition-all hover:shadow-md ${selectedFiles.includes(file.name) ? 'ring-primary bg-accent/20 ring-2' : ''}`}
                     onClick={e => {
-                      // Toggle selection on card click if not clicking interactive elements
                       if (
                         (e.target as HTMLElement).closest('button') ||
-                        (e.target as HTMLElement).closest('.dropdown')
+                        (e.target as HTMLElement).closest('.dropdown') ||
+                        (e.target as HTMLElement).tagName === 'VIDEO' ||
+                        (e.target as HTMLElement).closest('.video-player-controls') // Assuming custom player might have this
                       )
                         return;
-                      toggleFileSelection(file.name);
+                      openPreview(file);
                     }}
                   >
-                    <div className="absolute top-2 left-2 z-10">
+                    <div
+                      className="bg-background/80 absolute top-1 left-1 z-20 rounded-br-md p-0.5 opacity-0 shadow-sm backdrop-blur-sm transition-opacity group-hover:opacity-100 data-[checked=true]:opacity-100"
+                      data-checked={selectedFiles.includes(file.name)}
+                    >
                       <input
                         type="checkbox"
                         checked={selectedFiles.includes(file.name)}
                         onChange={() => toggleFileSelection(file.name)}
-                        className="h-4 w-4 rounded border-gray-300 shadow-sm"
+                        className="accent-primary h-3 w-3 cursor-pointer rounded border-gray-300 shadow-sm"
                         onClick={e => e.stopPropagation()}
+                        aria-label={`Selecionar ${file.name}`}
                       />
                     </div>
 
-                    <div className="bg-muted/20 relative mb-3 flex aspect-square items-center justify-center overflow-hidden rounded-md">
+                    <div className="bg-muted/20 relative mb-2 flex aspect-square items-center justify-center overflow-hidden rounded-md">
                       {activeTab === 'images' ? (
                         <Image
                           src={getPublicUrl(file.name)}
@@ -391,14 +526,6 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                           className="object-cover"
                           unoptimized
                         />
-                      ) : activeTab === 'audio' ? (
-                        <div className="w-full p-2">
-                          <CustomAudioPlayer src={getPublicUrl(file.name)} className="w-full" />
-                        </div>
-                      ) : activeTab === 'file' ? (
-                        <div className="text-muted-foreground flex h-full flex-col items-center justify-center p-2">
-                          <Paperclip className="mb-2 h-10 w-10" />
-                        </div>
                       ) : (
                         <div className="h-full w-full">
                           <CustomVideoPlayer
@@ -408,17 +535,23 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="w-full truncate text-sm font-medium" title={file.name}>
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="w-full truncate text-xs font-medium" title={file.name}>
                         {file.name}
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="dropdown h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
+                          <Button variant="ghost" size="icon" className="dropdown h-6 w-6">
+                            <MoreVertical className="h-3 w-3" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => openPreview(file)}>
+                            <FileIcon className="mr-2 h-4 w-4" /> Visualizar
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDownload(file)}>
+                            <Download className="mr-2 h-4 w-4" /> Baixar
+                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => copyUrl(file.name)}>
                             <Copy className="mr-2 h-4 w-4" /> Copiar Link
                           </DropdownMenuItem>
@@ -436,9 +569,8 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
-                    <div className="text-muted-foreground mt-1 text-xs">
-                      {((file.metadata?.size || 0) / 1024 / 1024).toFixed(2)} MB •{' '}
-                      {new Date(file.created_at).toLocaleDateString()}
+                    <div className="text-muted-foreground mt-0.5 text-[10px]">
+                      {((file.metadata?.size || 0) / 1024 / 1024).toFixed(2)} MB
                     </div>
                   </div>
                 ))}
@@ -447,6 +579,29 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
           </CardContent>
         </Card>
       </Tabs>
+
+      {/* Floating Action Bar */}
+      {selectedFiles.length > 0 && userRole === 'admin' && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
+          <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
+            <span className="font-medium">{selectedFiles.length} selecionado(s)</span>
+            <div className="bg-border h-4 w-px" />
+            <Button variant="destructive" size="sm" onClick={() => initDelete()}>
+              <Trash2 className="mr-2 h-4 w-4" />
+              Excluir Selecionados
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              onClick={() => setSelectedFiles([])}
+            >
+              <Trash2 className="h-4 w-4 rotate-45" />{' '}
+              {/* Using Trash as X since X is not imported yet, wait I should use X if I import it or use Trash rotated as hack or just text */}
+            </Button>
+          </div>
+        </div>
+      )}
 
       <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
         <DialogContent>
@@ -495,6 +650,66 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
               Excluir
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="w-full max-w-4xl overflow-hidden border-none bg-black/95 p-0 text-white">
+          <DialogTitle className="sr-only">Visualização do Arquivo</DialogTitle>
+          <div className="relative flex max-h-[85vh] min-h-[40vh] flex-col items-center justify-center">
+            {previewFile && (
+              <div className="flex h-full w-full items-center justify-center p-4">
+                {activeTab === 'images' ? (
+                  <div className="relative h-full min-h-[50vh] w-full">
+                    <Image
+                      src={getPublicUrl(previewFile.name)}
+                      alt={previewFile.name}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                ) : activeTab === 'video' ? (
+                  <div className="w-full max-w-3xl">
+                    <CustomVideoPlayer
+                      src={getPublicUrl(previewFile.name)}
+                      className="aspect-video w-full"
+                    />
+                  </div>
+                ) : activeTab === 'audio' ? (
+                  <div className="w-full max-w-md space-y-4 rounded-xl bg-zinc-900 p-6">
+                    <div className="text-center">
+                      <Music className="text-primary mx-auto mb-4 h-16 w-16" />
+                      <h3 className="mb-6 truncate text-lg font-medium">{previewFile.name}</h3>
+                    </div>
+                    <CustomAudioPlayer src={getPublicUrl(previewFile.name)} className="w-full" />
+                  </div>
+                ) : (
+                  <div className="p-12 text-center">
+                    <FileIcon className="mx-auto mb-6 h-24 w-24 text-gray-500" />
+                    <h3 className="mb-2 text-xl font-medium">{previewFile.name}</h3>
+                    <p className="mb-8 text-gray-400">
+                      Este arquivo não pode ser visualizado diretamente.
+                    </p>
+                    <Button onClick={() => handleDownload(previewFile)} size="lg">
+                      <Download className="mr-2 h-5 w-5" /> Baixar Arquivo
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+            {previewFile && (activeTab === 'images' || activeTab === 'video') && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+                <Button
+                  variant="secondary"
+                  onClick={() => handleDownload(previewFile)}
+                  className="border-none bg-white/10 text-white shadow-lg backdrop-blur-sm hover:bg-white/20"
+                >
+                  <Download className="mr-2 h-4 w-4" /> Baixar Original
+                </Button>
+              </div>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

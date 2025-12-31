@@ -31,7 +31,8 @@ export function CustomVideoPlayer({ src, poster, className, ...props }: CustomVi
   const [hasStarted, setHasStarted] = React.useState(false);
   const controlsTimeoutRef = React.useRef<NodeJS.Timeout>(null);
 
-  const togglePlay = () => {
+  const togglePlay = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (videoRef.current) {
       if (!hasStarted) setHasStarted(true);
 
@@ -166,6 +167,7 @@ export function CustomVideoPlayer({ src, poster, className, ...props }: CustomVi
           'absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/80 to-transparent p-4 transition-opacity duration-300',
           showControls ? 'opacity-100' : 'opacity-0'
         )}
+        onClick={e => e.stopPropagation()}
       >
         <div className="flex flex-col gap-2">
           {/* Progress Bar */}

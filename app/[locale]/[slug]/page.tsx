@@ -143,18 +143,14 @@ export default async function BlogPostPage(props: BlogPostProps) {
 
       {post.featured_image && (
         <div className="mx-auto mb-10 w-full max-w-6xl px-4">
-          <div
-            className="relative w-full overflow-hidden rounded-xl border shadow-sm"
-            style={{ maxHeight: '500px' }}
-          >
-            {/* Using style for max-height to ensure it doesn't get too tall on large screens, while keeping width */}
+          <div className="relative max-h-125 w-full overflow-hidden rounded-xl border shadow-sm">
+            {/* Using max-h-[500px] to ensure it doesn't get too tall on large screens */}
             <Image
               src={post.featured_image}
               alt={post.title}
               width={1200}
               height={630}
-              className="h-full w-full object-cover"
-              style={{ maxHeight: '500px', width: '100%', height: 'auto' }}
+              className="h-auto max-h-125 w-full object-cover"
               unoptimized
             />
           </div>

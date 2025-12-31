@@ -46,6 +46,8 @@ export const metadata = constructMetadata();
 
 import { createClient } from '@/lib/supabase/server';
 
+import { ChatWidget } from '@/components/chat/chat-widget';
+
 export default async function LocaleLayout({
   children,
   params,
@@ -67,6 +69,7 @@ export default async function LocaleLayout({
   } = await supabase.auth.getUser();
 
   let showSidebar = false;
+  let userRole: 'admin' | 'editor' | 'user' | 'supporter' | undefined;
 
   if (user) {
     const { data: profile } = await supabase
@@ -75,8 +78,11 @@ export default async function LocaleLayout({
       .eq('id', user.id)
       .single();
 
-    if (profile && (profile.role === 'admin' || profile.role === 'editor')) {
-      showSidebar = true;
+    if (profile) {
+      userRole = profile.role;
+      if (profile.role === 'admin' || profile.role === 'editor') {
+        showSidebar = true;
+      }
     }
   }
 
@@ -109,6 +115,7 @@ export default async function LocaleLayout({
                                 <Footer />
                               </div>
                             </SidebarInset>
+                            <ChatWidget userId={user?.id} userRole={userRole} />
                           </SettingsClientWrapper>
                         </SidebarProvider>
                       </ModalProvider>

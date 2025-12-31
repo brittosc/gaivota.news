@@ -134,6 +134,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 onClick={() => editor.chain().focus().undo().run()}
                 disabled={!editor.can().chain().focus().undo().run()}
                 className="hover:bg-muted inline-flex h-8 w-8 items-center justify-center rounded-md p-0 disabled:opacity-50"
+                aria-label={t('undo')}
               >
                 <Undo className="h-4 w-4" />
               </button>
@@ -146,6 +147,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 onClick={() => editor.chain().focus().redo().run()}
                 disabled={!editor.can().chain().focus().redo().run()}
                 className="hover:bg-muted inline-flex h-8 w-8 items-center justify-center rounded-md p-0 disabled:opacity-50"
+                aria-label={t('redo')}
               >
                 <Redo className="h-4 w-4" />
               </button>
@@ -361,6 +363,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 }
                 value={editor.getAttributes('textStyle').color || '#000000'}
                 className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                title={t('textColor')}
               />
               <div className="hover:bg-muted/50 flex h-8 w-8 items-center justify-center rounded-md">
                 <Palette
@@ -634,6 +637,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 onClick={() => editor.chain().focus().toggleSubscript().run()}
                 data-state={editor.isActive('subscript') ? 'on' : 'off'}
                 className="h-8 w-8 p-0"
+                aria-label={t('subscript')}
               >
                 <SubIcon className="h-4 w-4" />
               </ToggleGroupItem>
@@ -647,6 +651,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 onClick={() => editor.chain().focus().toggleSuperscript().run()}
                 data-state={editor.isActive('superscript') ? 'on' : 'off'}
                 className="h-8 w-8 p-0"
+                aria-label={t('superscript')}
               >
                 <SuperIcon className="h-4 w-4" />
               </ToggleGroupItem>

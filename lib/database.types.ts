@@ -17,7 +17,7 @@ export type Database = {
           full_name: string | null;
           avatar_url: string | null;
           updated_at: string | null;
-          role: 'admin' | 'user' | 'editor';
+          role: 'admin' | 'user' | 'editor' | 'supporter';
           last_active_at: string | null;
         };
         Insert: {
@@ -25,7 +25,7 @@ export type Database = {
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
-          role?: 'admin' | 'user' | 'editor';
+          role?: 'admin' | 'user' | 'editor' | 'supporter';
           last_active_at?: string | null;
         };
         Update: {
@@ -33,10 +33,81 @@ export type Database = {
           full_name?: string | null;
           avatar_url?: string | null;
           updated_at?: string | null;
-          role?: 'admin' | 'user' | 'editor';
+          role?: 'admin' | 'user' | 'editor' | 'supporter';
           last_active_at?: string | null;
         };
         Relationships: [];
+      };
+      chat_messages: {
+        Row: {
+          id: string;
+          user_id: string;
+          content: string;
+          created_at: string;
+          file_url?: string | null;
+          file_type?: string | null;
+          file_name?: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          content: string;
+          created_at?: string;
+          file_url?: string | null;
+          file_type?: string | null;
+          file_name?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          content?: string;
+          created_at?: string;
+          file_url?: string | null;
+          file_type?: string | null;
+          file_name?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'chat_messages_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      chat_read_receipts: {
+        Row: {
+          message_id: string;
+          user_id: string;
+          read_at: string;
+        };
+        Insert: {
+          message_id: string;
+          user_id: string;
+          read_at?: string;
+        };
+        Update: {
+          message_id?: string;
+          user_id?: string;
+          read_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'chat_read_receipts_message_id_fkey';
+            columns: ['message_id'];
+            isOneToOne: false;
+            referencedRelation: 'chat_messages';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chat_read_receipts_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       posts: {
         Row: {
