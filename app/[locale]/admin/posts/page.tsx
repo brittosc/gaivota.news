@@ -14,12 +14,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { getTranslations } from 'next-intl/server';
 
 interface PostsPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function PostsPage({ searchParams }: PostsPageProps) {
+  const t = await getTranslations('Admin.Posts');
   const supabase = await createClient();
 
   // Check auth and role
@@ -45,13 +47,11 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
             <div className="mb-6 rounded-full bg-red-50 p-4">
               <ShieldAlert className="h-12 w-12 text-red-600" />
             </div>
-            <h1 className="mb-2 text-2xl font-bold text-gray-900">Acesso Restrito</h1>
-            <p className="mb-6 leading-relaxed text-gray-500">
-              Você não possui as permissões necessárias.
-            </p>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900">{t('restrictedAccess')}</h1>
+            <p className="mb-6 leading-relaxed text-gray-500">{t('restrictedMessage')}</p>
             <Link href="/" className="w-full">
               <Button variant="outline" className="w-full">
-                Voltar ao Início
+                {t('backHome')}
               </Button>
             </Link>
           </CardContent>
@@ -79,11 +79,11 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   return (
     <div className="container mx-auto space-y-8 px-4 py-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Todos os Posts</h1>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
         <Link href="/admin/posts/create">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
-            Novo Post
+            {t('newPost')}
           </Button>
         </Link>
       </div>

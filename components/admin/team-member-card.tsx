@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { MoreHorizontal, Shield, ShieldAlert, Trash2, UserCog } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations, useFormatter } from 'next-intl';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -62,6 +63,8 @@ export function TeamMemberCard({
   currentUserId,
   currentUserRole = 'editor',
 }: TeamMemberCardProps) {
+  const t = useTranslations('Admin.Team');
+  const format = useFormatter();
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = React.useState(false);
   const [selectedRole, setSelectedRole] = React.useState<'admin' | 'editor'>(
@@ -75,9 +78,9 @@ export function TeamMemberCard({
     startTransition(async () => {
       const result = await updateUserRole(profile.id, selectedRole);
       if (result.error) {
-        toast.error('Erro ao atualizar cargo');
+        toast.error(t('toastErrorUpdatingRole'));
       } else {
-        toast.success('Cargo atualizado com sucesso');
+        toast.success(t('toastRoleUpdated'));
         setIsEditDialogOpen(false);
       }
     });
@@ -88,9 +91,9 @@ export function TeamMemberCard({
       // Demote to 'user'
       const result = await updateUserRole(profile.id, 'user');
       if (result.error) {
-        toast.error('Erro ao remover membro');
+        toast.error(t('toastErrorRemovingMember'));
       } else {
-        toast.success('Membro removido da equipe');
+        toast.success(t('toastMemberRemoved'));
         setIsRemoveDialogOpen(false);
       }
     });
@@ -124,22 +127,22 @@ export function TeamMemberCard({
               {profile.full_name}
             </CardTitle>
             <p className="text-muted-foreground truncate text-xs" title={profile.email}>
-              {profile.email || 'Email não disponível'}
+              {profile.email || t('emailUnavailable')}
             </p>
           </div>
           {currentUserRole === 'admin' && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0" disabled={isSelf}>
-                  <span className="sr-only">Abrir menu</span>
+                  <span className="sr-only">{t('openMenu')}</span>
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
                   <UserCog className="mr-2 h-4 w-4" />
-                  Alterar Cargo
+                  {t('changeRole')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -147,7 +150,7 @@ export function TeamMemberCard({
                   onClick={() => setIsRemoveDialogOpen(true)}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Remover da Equipe
+                  {t('removeMember')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -175,10 +178,14 @@ export function TeamMemberCard({
               </Badge>
               <div className="flex flex-col items-end gap-0.5">
                 <span className="text-muted-foreground text-xs">
-                  Registrou-se em:{' '}
+                  {t('joinedAt')}{' '}
                   {profile.join_date
-                    ? new Date(profile.join_date).toLocaleDateString('pt-BR')
-                    : 'Data desconhecida'}
+                    ? format.dateTime(new Date(profile.join_date), {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      })
+                    : t('dateUnknown')}
                 </span>
                 {isOnline ? (
                   <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500">
@@ -186,13 +193,13 @@ export function TeamMemberCard({
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
                     </span>
-                    Online
+                    {t('online')}
                   </span>
                 ) : (
                   lastSeenDate && (
                     <span className="text-muted-foreground text-xs">
-                      Último login:{' '}
-                      {new Date(lastSeenDate).toLocaleDateString('pt-BR', {
+                      {t('lastLogin')}{' '}
+                      {format.dateTime(new Date(lastSeenDate as string), {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric',
@@ -211,8 +218,10 @@ export function TeamMemberCard({
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Alterar Cargo</DialogTitle>
-            <DialogDescription>Selecione o novo cargo para {profile.full_name}.</DialogDescription>
+            <DialogTitle>{t('changeRoleTitle')}</DialogTitle>
+            <DialogDescription>
+              {t('changeRoleDesc', { name: profile.full_name || '' })}
+            </DialogDescription>
           </DialogHeader>
           <div className="py-4">
             <Select
@@ -220,20 +229,20 @@ export function TeamMemberCard({
               onValueChange={val => setSelectedRole(val as 'admin' | 'editor')}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Selecione um cargo" />
+                <SelectValue placeholder={t('selectRole')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="editor">Editor</SelectItem>
+                <SelectItem value="admin">{t('roleAdmin')}</SelectItem>
+                <SelectItem value="editor">{t('roleEditor')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-              Cancelar
+              {t('cancel')}
             </Button>
             <Button onClick={handleUpdateRole} disabled={isPending}>
-              {isPending ? 'Salvando...' : 'Salvar Alterações'}
+              {isPending ? t('saving') : t('saveChanges')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -243,20 +252,21 @@ export function TeamMemberCard({
       <AlertDialog open={isRemoveDialogOpen} onOpenChange={setIsRemoveDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remover da Equipe?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Isso removerá o acesso administrativo de <b>{profile.full_name}</b> e definirá seu
-              cargo como &quot;User&quot;. Essa ação pode ser desfeita readicionando o membro.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t('removeMemberTitle')}</AlertDialogTitle>
+            <AlertDialogDescription
+              dangerouslySetInnerHTML={{
+                __html: t.raw('removeMemberDesc').replace('{name}', profile.full_name || ''),
+              }}
+            />
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
               onClick={handleRemoveMember}
               disabled={isPending}
             >
-              {isPending ? 'Removendo...' : 'Sim, remover'}
+              {isPending ? t('removing') : t('yesRemove')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

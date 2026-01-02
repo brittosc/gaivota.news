@@ -1,5 +1,5 @@
-export function calculateReadingTime(content: string): string {
-  if (!content) return '1 min de leitura';
+export function calculateReadingTime(content: string): number {
+  if (!content) return 0;
 
   // Strip HTML tags
   const text = content.replace(/<[^>]*>?/gm, '');
@@ -13,5 +13,5 @@ export function calculateReadingTime(content: string): string {
   // Calculate time
   const minutes = Math.ceil(wordCount / wordsPerMinute);
 
-  return `${minutes} min de leitura`;
+  return minutes;
 }

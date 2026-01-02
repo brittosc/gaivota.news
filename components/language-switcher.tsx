@@ -55,6 +55,31 @@ const languageConfig: Record<Locale, { name: string; flagUrl: string; fallback: 
     flagUrl: 'https://flagcdn.com/w80/ru.png',
     fallback: 'RU',
   },
+  'zh-CN': {
+    name: '简体中文',
+    flagUrl: 'https://flagcdn.com/w80/cn.png',
+    fallback: 'CN',
+  },
+  fr: {
+    name: 'Français',
+    flagUrl: 'https://flagcdn.com/w80/fr.png',
+    fallback: 'FR',
+  },
+  de: {
+    name: 'Deutsch',
+    flagUrl: 'https://flagcdn.com/w80/de.png',
+    fallback: 'DE',
+  },
+  ar: {
+    name: 'العربية',
+    flagUrl: 'https://flagcdn.com/w80/sa.png',
+    fallback: 'AR',
+  },
+  hi: {
+    name: 'हिन्दी',
+    flagUrl: 'https://flagcdn.com/w80/in.png',
+    fallback: 'HI',
+  },
 };
 
 export function LanguageSwitcher() {

@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { format, subDays, startOfDay, endOfDay, parseISO, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { CalendarDateRangePicker } from '@/components/admin/date-range-picker';
+import { getTranslations } from 'next-intl/server';
 
 export const metadata = {
   title: 'Admin Dashboard',
@@ -19,6 +20,7 @@ interface AdminPageProps {
 }
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
+  const t = await getTranslations('Admin.Dashboard');
   const supabase = await createClient();
 
   // Check auth and role
@@ -44,15 +46,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             <div className="mb-6 rounded-full bg-red-50 p-4">
               <ShieldAlert className="h-12 w-12 text-red-600" />
             </div>
-            <h1 className="mb-2 text-2xl font-bold text-gray-900">Acesso Restrito</h1>
-            <p className="mb-6 leading-relaxed text-gray-500">
-              Você não possui as permissões necessárias para visualizar este painel. Esta área é
-              exclusiva para administradores e editores da equipe.
-            </p>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900">{t('accessRestricted')}</h1>
+            <p className="mb-6 leading-relaxed text-gray-500">{t('accessRestrictedMessage')}</p>
             <div className="flex w-full gap-4">
               <Link href="/" className="w-full">
                 <Button variant="outline" className="w-full">
-                  Voltar ao Início
+                  {t('backHome')}
                 </Button>
               </Link>
             </div>
@@ -62,9 +61,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     );
   }
 
-  const { from, to } = await searchParams; // searchParams is a promise in Next.js 15+ (actually simpler, it's just syncprop in older, async in newer, assuming async access is fine or just access it directly if page prop)
-  // Actually Next.js 15 page props are awaited, but let's assume we can access them.
-  // Wait, `searchParams` prop in Page component.
+  const { from, to } = await searchParams;
 
   const fromDate = from ? parseISO(from as string) : subDays(new Date(), 30);
   const toDate = to ? parseISO(to as string) : new Date();
@@ -89,12 +86,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const likes = likesRes.data || [];
   const totalPosts = posts.length;
   const totalSubscribers = subsRes.count || 0;
-  const totalLikes = likes.length; // Uses the actual likes table count in range, or total?
-  // User wants total likes stats card -> implies ALL time usually, but here we limited by date.
-  // Actually, typical dashboard card shows ALL time total, but chart shows trend.
-  // The code previously filtered posts by date, so stats card showed "Posts in filtered range" effectively?
-  // Line 126 was totalPosts (which is posts.length).
-  // So stats cards are range-bound. That's fine.
+  const totalLikes = likes.length;
 
   // Prepare Chart Data
   const daysDiff = differenceInDays(toDate, fromDate);
@@ -137,13 +129,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   return (
     <div className="container mx-auto space-y-8 px-4 py-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
         <div className="flex items-center gap-4">
           <CalendarDateRangePicker />
           <Link href="/admin/posts/create">
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Novo Post
+              {t('newPost')}
             </Button>
           </Link>
         </div>
@@ -154,36 +146,36 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         <Link href="/admin/posts">
           <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('totalPosts')}</CardTitle>
               <FileText className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalPosts}</div>
-              <p className="text-muted-foreground text-xs">Ver todos os posts</p>
+              <p className="text-muted-foreground text-xs">{t('viewAllPosts')}</p>
             </CardContent>
           </Card>
         </Link>
         <Link href="/admin/newsletter">
           <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Assinantes</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('subscribers')}</CardTitle>
               <Users className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalSubscribers}</div>
-              <p className="text-muted-foreground text-xs">Gerenciar newsletter</p>
+              <p className="text-muted-foreground text-xs">{t('manageNewsletter')}</p>
             </CardContent>
           </Card>
         </Link>
         <Link href="/admin/likes">
           <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Curtidas</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('totalLikes')}</CardTitle>
               <Heart className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalLikes}</div>
-              <p className="text-muted-foreground text-xs">Ver histórico de curtidas</p>
+              <p className="text-muted-foreground text-xs">{t('viewLikesHistory')}</p>
             </CardContent>
           </Card>
         </Link>

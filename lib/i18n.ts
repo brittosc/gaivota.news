@@ -16,6 +16,6 @@
  * Alterações devem ser registradas conforme normas internas.
  */
 
-export const locales = ['br', 'en', 'es', 'ru'] as const;
+export const locales = ['br', 'en', 'es', 'ru', 'zh-CN', 'fr', 'de', 'ar', 'hi'] as const;
 export const defaultLocale = 'br' as const;
 export type Locale = (typeof locales)[number];

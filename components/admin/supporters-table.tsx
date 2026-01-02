@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -43,6 +44,7 @@ export function SupportersTable({
   supporters: initialSupporters,
   currentUserRole = 'editor',
 }: SupportersTableProps) {
+  const t = useTranslations('Admin.Supporters');
   const router = useRouter();
   const [supporters, setSupporters] = useState(initialSupporters);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -75,9 +77,9 @@ export function SupportersTable({
     const { error } = await supabase.from('supporters').delete().in('id', ids);
 
     if (error) {
-      toast.error('Erro ao deletar: ' + error.message);
+      toast.error(t('toastErrorDeleting', { message: error.message }));
     } else {
-      toast.success('Apoiadores deletados com sucesso!');
+      toast.success(t('toastDeleteSuccess'));
       setSupporters(prev => prev.filter(s => !ids.includes(s.id)));
       setSelectedIds(new Set());
       router.refresh();
@@ -91,30 +93,31 @@ export function SupportersTable({
       {selectedIds.size > 0 && currentUserRole === 'admin' && (
         <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
-            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <span className="text-sm font-medium">
+              {selectedIds.size} {t('selected')}
+            </span>
             <div className="flex items-center gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="sm" disabled={isDeleting}>
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Deletar
+                    {t('delete')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('confirmDeleteTitle')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Esta ação excluirá permanentemente os {selectedIds.size} apoiadores
-                      selecionados.
+                      {t('confirmDeleteDesc', { count: selectedIds.size })}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       onClick={() => handleDelete(Array.from(selectedIds))}
                     >
-                      {isDeleting ? 'Deletando...' : 'Sim, deletar'}
+                      {isDeleting ? t('deleting') : t('yesDelete')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -143,11 +146,11 @@ export function SupportersTable({
                   aria-label="Select all"
                 />
               </TableHead>
-              <TableHead>Logo</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Link</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Ações</TableHead>
+              <TableHead>{t('tableLogo')}</TableHead>
+              <TableHead>{t('tableName')}</TableHead>
+              <TableHead>{t('tableLink')}</TableHead>
+              <TableHead>{t('tableStatus')}</TableHead>
+              <TableHead className="text-right">{t('tableActions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -170,7 +173,7 @@ export function SupportersTable({
                 <TableCell className="max-w-52 truncate">{supporter.link || '-'}</TableCell>
                 <TableCell>
                   <Badge variant={supporter.active ? 'default' : 'secondary'}>
-                    {supporter.active ? 'Ativo' : 'Inativo'}
+                    {supporter.active ? t('statusActive') : t('statusInactive')}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
@@ -181,7 +184,7 @@ export function SupportersTable({
             {supporters.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="text-muted-foreground h-24 text-center">
-                  Nenhum apoiador cadastrado.
+                  {t('noSupporters')}
                 </TableCell>
               </TableRow>
             )}

@@ -31,17 +31,15 @@ function ErrorFallback({
   resetErrorBoundary: () => void;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-950">
+    <div className="bg-background flex min-h-screen items-center justify-center p-6">
       <div className="flex max-w-md flex-col items-center gap-4 text-center">
-        <div className="rounded-full bg-red-100 p-3 text-red-600 dark:bg-red-900/20">
+        <div className="bg-destructive/10 text-destructive rounded-full p-3">
           <AlertTriangle className="h-10 w-10" />
         </div>
         <h2 className="text-2xl font-bold">Algo deu muito errado</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
           Ocorreu um erro crítico na interface que impediu o carregamento. Detalhes:
-          <code className="mt-2 block rounded bg-zinc-200 p-2 font-mono text-xs dark:bg-zinc-800">
-            {error.message}
-          </code>
+          <code className="bg-muted mt-2 block rounded p-2 font-mono text-xs">{error.message}</code>
         </p>
         <Button onClick={resetErrorBoundary} className="mt-2 w-full">
           Tentar recarregar interface

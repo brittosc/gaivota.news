@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { SupportersMarquee } from '@/components/marketing/supporters-marquee';
 import { NewsletterForm } from '@/components/newsletter-form';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { ThemeSwitch } from '@/components/theme/theme-toggle';
 import { getTranslations } from 'next-intl/server';
 
 export async function Footer() {
@@ -78,7 +80,11 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="text-muted-foreground mt-12 border-t pt-8 text-center text-sm">
+        <div className="text-muted-foreground mt-12 flex flex-col items-center gap-4 border-t pt-8 text-center text-sm">
+          <div className="flex items-center gap-2">
+            <ThemeSwitch />
+            <LanguageSwitcher />
+          </div>
           <p>
             &copy; {new Date().getFullYear()} Gaivota News. {t('rights')}
           </p>

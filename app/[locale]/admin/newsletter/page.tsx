@@ -5,12 +5,14 @@ import { SubscribersTable } from '@/components/admin/subscribers-table';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
 export const metadata = {
   title: 'Gerenciar Newsletter',
 };
 
 export default async function NewsletterPage() {
+  const t = await getTranslations('Admin.Newsletter');
   const supabase = await createClient();
 
   const {
@@ -60,13 +62,13 @@ export default async function NewsletterPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gerenciar Assinantes</h1>
-          <p className="text-muted-foreground mt-1">Lista de todos os inscritos na newsletter.</p>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('description')}</p>
         </div>
         <Link href="/admin/newsletter/send">
           <Button>
             <Mail className="mr-2 h-4 w-4" />
-            Nova Campanha
+            {t('newCampaign')}
           </Button>
         </Link>
       </div>

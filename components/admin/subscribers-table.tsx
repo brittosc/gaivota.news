@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Trash2, Power, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -47,6 +48,7 @@ export function SubscribersTable({
   subscribers: initialSubscribers,
   currentUserRole = 'editor',
 }: SubscribersTableProps) {
+  const t = useTranslations('Admin.Newsletter');
   const [subscribers, setSubscribers] = useState(initialSubscribers);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = useState(false);
@@ -109,30 +111,29 @@ export function SubscribersTable({
       {selectedIds.size > 0 && currentUserRole === 'admin' && (
         <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
-            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <span className="text-sm font-medium">
+              {selectedIds.size} {t('selected')}
+            </span>
             <div className="flex items-center gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="sm" disabled={isDeleting}>
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Deletar
+                    {t('delete')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta ação excluirá permanentemente os {selectedIds.size} assinantes
-                      selecionados.
-                    </AlertDialogDescription>
+                    <AlertDialogTitle>{t('confirmDeleteTitle')}</AlertDialogTitle>
+                    <AlertDialogDescription>{t('confirmDeleteDescription')}</AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       onClick={() => handleDelete(Array.from(selectedIds))}
                     >
-                      {isDeleting ? 'Deletando...' : 'Sim, deletar'}
+                      {isDeleting ? t('deleting') : t('yesDelete')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -161,11 +162,11 @@ export function SubscribersTable({
                   aria-label="Select all"
                 />
               </TableHead>
-              <TableHead>Assinante</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Data de Inscrição</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Ações</TableHead>
+              <TableHead>{t('tableSubscriber')}</TableHead>
+              <TableHead>{t('tableEmail')}</TableHead>
+              <TableHead>{t('tableDate')}</TableHead>
+              <TableHead>{t('tableStatus')}</TableHead>
+              <TableHead className="text-right">{t('tableActions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -187,7 +188,7 @@ export function SubscribersTable({
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium">{sub.full_name || 'Visitante'}</span>
+                      <span className="text-sm font-medium">{sub.full_name || t('guest')}</span>
                     </div>
                   </div>
                 </TableCell>
@@ -195,12 +196,12 @@ export function SubscribersTable({
                 <TableCell>{new Date(sub.created_at).toLocaleDateString('pt-BR')}</TableCell>
                 <TableCell>
                   {sub.active ? (
-                    <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                      Ativo
+                    <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                      {t('statusActive')}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-                      Inativo
+                    <span className="bg-destructive/10 text-destructive inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
+                      {t('statusInactive')}
                     </span>
                   )}
                 </TableCell>
@@ -213,10 +214,10 @@ export function SubscribersTable({
                         onClick={() => handleToggleStatus(sub.id, !sub.active)}
                         className={
                           sub.active
-                            ? 'text-green-600 hover:text-green-700'
-                            : 'text-gray-400 hover:text-gray-600'
+                            ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
+                            : 'text-muted-foreground hover:text-foreground'
                         }
-                        title={sub.active ? 'Desativar' : 'Ativar'}
+                        title={sub.active ? t('deactivate') : t('activate')}
                       >
                         <Power className="h-4 w-4" />
                       </Button>
@@ -225,26 +226,26 @@ export function SubscribersTable({
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-red-500 hover:bg-red-50 hover:text-red-700"
+                            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Remover Assinante?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('removeSubscriberTitle')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Tem certeza que deseja remover <b>{sub.email}</b>?
+                              {t('removeSubscriberDescription', { email: sub.email })}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                             <AlertDialogAction
-                              className="bg-red-600 hover:bg-red-700"
+                              className="bg-destructive hover:bg-destructive/90"
                               onClick={() => handleDelete([sub.id])}
                               disabled={isDeleting}
                             >
-                              {isDeleting ? 'Removendo...' : 'Sim, remover'}
+                              {isDeleting ? t('removing') : t('yesRemove')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -257,7 +258,7 @@ export function SubscribersTable({
             {subscribers.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center">
-                  Nenhum assinante encontrado.
+                  {t('noSubscribers')}
                 </TableCell>
               </TableRow>
             )}

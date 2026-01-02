@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { updateSiteSettings } from '@/app/actions/site-settings';
+import { useTranslations } from 'next-intl';
 
 interface SupportersSettings {
   speed: number;
@@ -18,6 +19,7 @@ export function SupportersSettingsForm({
 }: {
   initialSettings: SupportersSettings | null;
 }) {
+  const t = useTranslations('Admin.Supporters');
   const [speed, setSpeed] = useState(initialSettings?.speed || 30);
   const [maxItems, setMaxItems] = useState(initialSettings?.maxItems || 20);
   const [loading, setLoading] = useState(false);
@@ -28,9 +30,9 @@ export function SupportersSettingsForm({
 
     try {
       await updateSiteSettings('supporters_marquee', { speed, maxItems });
-      toast.success('Configurações atualizadas!');
+      toast.success(t('toastSettingsUpdated'));
     } catch {
-      toast.error('Erro ao atualizar configurações.');
+      toast.error(t('toastErrorUpdatingSettings'));
     } finally {
       setLoading(false);
     }
@@ -39,8 +41,8 @@ export function SupportersSettingsForm({
   return (
     <Card className="mb-8">
       <CardHeader>
-        <CardTitle>Configurações do Carrossel</CardTitle>
-        <CardDescription>Ajuste a velocidade e exibição dos apoiadores.</CardDescription>
+        <CardTitle>{t('settingsTitle')}</CardTitle>
+        <CardDescription>{t('settingsDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -48,7 +50,7 @@ export function SupportersSettingsForm({
           className="grid items-end gap-x-4 gap-y-2 sm:grid-cols-[1fr_1fr_auto]"
         >
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="speed">Velocidade (segundos)</Label>
+            <Label htmlFor="speed">{t('settingsSpeed')}</Label>
             <Input
               type="number"
               id="speed"
@@ -62,7 +64,7 @@ export function SupportersSettingsForm({
           </div>
 
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="maxItems">Máximo de Itens</Label>
+            <Label htmlFor="maxItems">{t('settingsMaxItems')}</Label>
             <Input
               type="number"
               id="maxItems"
@@ -75,12 +77,10 @@ export function SupportersSettingsForm({
           </div>
 
           <Button type="submit" disabled={loading} className="w-full sm:w-auto">
-            {loading ? 'Salvando...' : 'Salvar'}
+            {loading ? t('saving') : t('save')}
           </Button>
 
-          <p className="text-muted-foreground col-span-3 text-xs">
-            Quanto maior o valor, mais lenta a animação.
-          </p>
+          <p className="text-muted-foreground col-span-3 text-xs">{t('settingsHelp')}</p>
         </form>
       </CardContent>
     </Card>

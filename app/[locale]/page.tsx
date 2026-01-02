@@ -28,6 +28,7 @@ export default async function Home(props: HomeProps) {
   const query = searchParams.query || '';
   const sortAscending = searchParams.sort === 'oldest';
   const t = await getTranslations('Pages.Home');
+  const tReading = await getTranslations('ReadingTime');
 
   const POSTS_PER_PAGE = 5;
   const start = (page - 1) * POSTS_PER_PAGE;
@@ -123,7 +124,7 @@ export default async function Home(props: HomeProps) {
                   </div>
                   <div className="text-muted-foreground flex items-center gap-1 text-xs whitespace-nowrap">
                     <Clock className="h-3 w-3" />
-                    {calculateReadingTime(post.content)}
+                    {tReading('readingTime', { count: calculateReadingTime(post.content) })}
                   </div>
                 </div>
               </CardHeader>

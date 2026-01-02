@@ -364,7 +364,7 @@ export function MediaUploadModal({
                       id="stripMeta"
                       checked={stripMetadata}
                       onChange={e => setStripMetadata(e.target.checked)}
-                      className="h-4 w-4 rounded border-gray-300"
+                      className="border-input h-4 w-4 rounded"
                     />
                     <label
                       htmlFor="stripMeta"
@@ -412,7 +412,7 @@ export function MediaUploadModal({
                 <input
                   type="checkbox"
                   id="openInNewTab"
-                  className="text-primary focus:ring-primary h-4 w-4 rounded border-gray-300"
+                  className="text-primary focus:ring-primary border-input h-4 w-4 rounded"
                   checked={openInNewTab}
                   onChange={e => setOpenInNewTab(e.target.checked)}
                 />

@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { useTheme } from 'next-themes';
-import { Switch } from '@/components/ui/switch';
+
 import { Sun, Moon } from 'lucide-react';
 
 export function ThemeSwitch() {
@@ -32,27 +32,30 @@ export function ThemeSwitch() {
   }, []);
 
   if (!mounted) {
-    return <Switch disabled aria-label="Carregando tema" />;
+    return (
+      <button
+        disabled
+        className="bg-background border-input inline-flex h-10 w-10 items-center justify-center rounded-md border opacity-50"
+        aria-label="Carregando tema"
+      >
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+      </button>
+    );
   }
 
-  const isDark = resolvedTheme === 'dark';
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
-    <div className="flex items-center gap-2">
-      <Sun
-        className={`h-4 w-4 transition-colors ${isDark ? 'text-muted-foreground' : 'text-yellow-500'}`}
-      />
-
-      <Switch
-        id="theme-toggle"
-        checked={isDark}
-        onCheckedChange={checked => setTheme(checked ? 'dark' : 'light')}
-        aria-label="Alternar tema"
-      />
-
-      <Moon
-        className={`h-4 w-4 transition-colors ${isDark ? 'text-blue-400' : 'text-muted-foreground'}`}
-      />
-    </div>
+    <button
+      onClick={toggleTheme}
+      className="bg-background border-input ring-offset-background hover:bg-accent hover:text-accent-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+      aria-label="Alternar tema"
+    >
+      <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+      <span className="sr-only">Alternar tema</span>
+    </button>
   );
 }

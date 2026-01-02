@@ -5,12 +5,14 @@ import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 // Table imports unused
 // Date fns unused
+import { getTranslations } from 'next-intl/server';
 
 export const metadata = {
   title: 'Histórico de Curtidas',
 };
 
 export default async function LikesPage() {
+  const t = await getTranslations('Admin.Likes');
   const supabase = await createClient();
 
   const {
@@ -51,16 +53,14 @@ export default async function LikesPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Histórico de Curtidas</h1>
-        <p className="text-muted-foreground mt-1">Veja quem curtiu seus posts recentemente.</p>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
+        <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Curtidas</CardTitle>
-          <CardDescription>
-            Mostrando as {likes?.length || 0} curtidas mais recentes.
-          </CardDescription>
+          <CardTitle>{t('cardTitle')}</CardTitle>
+          <CardDescription>{t('recentLikes', { count: likes?.length || 0 })}</CardDescription>
         </CardHeader>
         <CardContent>
           <LikesTable likes={likes || []} currentUserRole={profile?.role} />

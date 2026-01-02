@@ -7,6 +7,7 @@ import { SupporterModal } from '@/components/modals/supporter-modal';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +31,7 @@ export function SupporterActions({
   supporter: Supporter;
   currentUserRole?: 'admin' | 'editor' | 'user' | string;
 }) {
+  const t = useTranslations('Admin.Supporters');
   const supabase = createClient();
   const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
@@ -37,9 +39,9 @@ export function SupporterActions({
   const handleDelete = async () => {
     const { error } = await supabase.from('supporters').delete().eq('id', supporter.id);
     if (error) {
-      toast.error('Erro ao deletar');
+      toast.error(t('toastErrorDeleting', { message: error.message }));
     } else {
-      toast.success('Deletado com sucesso');
+      toast.success(t('toastDeleteSuccess'));
       router.refresh();
     }
   };
@@ -73,18 +75,16 @@ export function SupporterActions({
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação não pode ser desfeita. Isso excluirá permanentemente o apoiador.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t('confirmDeleteTitle')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('deleteSupporterDesc')}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive hover:bg-destructive/90"
             >
-              Excluir
+              {t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

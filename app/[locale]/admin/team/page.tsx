@@ -3,8 +3,10 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import { AddTeamMemberDialog } from '@/components/admin/add-team-member-dialog';
 import { TeamMemberCard } from '@/components/admin/team-member-card';
+import { getTranslations } from 'next-intl/server';
 
 export default async function TeamPage() {
+  const t = await getTranslations('Admin.Team');
   const supabase = await createClient();
 
   const {
@@ -51,10 +53,8 @@ export default async function TeamPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Gerenciar Equipe</h1>
-          <p className="text-muted-foreground mt-1">
-            Gerencie os administradores e editores do site.
-          </p>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('description')}</p>
         </div>
         <AddTeamMemberDialog />
       </div>

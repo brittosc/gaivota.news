@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 export async function SupportersMarquee() {
   const supabase = await createClient();
@@ -36,7 +37,7 @@ export async function SupportersMarquee() {
   const MIN_DISPLAY_ITEMS = 20;
   const repeatCount = Math.ceil(MIN_DISPLAY_ITEMS / supporters.length);
   const repeatedSupporters = Array.from({ length: repeatCount }).flatMap(() => supporters);
-
+  const t = getTranslations('Components');
   // We need TWO sets of this "wide content" for the CSS animation to loop perfectly?
   // CSS: transform: translateX(-100%) moves the ENTIRE container width left.
   // So we need 2 identical containers side-by-side.
@@ -48,7 +49,7 @@ export async function SupportersMarquee() {
     <div className="bg-muted w-full overflow-hidden py-10">
       <div className="container mx-auto mb-6 max-w-4xl px-4">
         <h3 className="text-muted-foreground text-center text-lg font-semibold tracking-wider uppercase">
-          Nossos Apoiadores
+          {(await t)('Sidebar.supporters')}
         </h3>
       </div>
       <div className="mx-auto w-[95%] overflow-hidden py-4 sm:w-[90%]">

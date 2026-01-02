@@ -26,6 +26,7 @@ import { toast } from 'sonner';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Database } from '@/lib/database.types';
+import { useTranslations } from 'next-intl';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -35,6 +36,7 @@ export function AddTeamMemberDialog() {
   const [role, setRole] = useState<'admin' | 'editor' | 'user'>('editor');
   const [isLoading, setIsLoading] = useState(false);
   const [searchedUser, setSearchedUser] = useState<Profile | null>(null);
+  const t = useTranslations('Admin.Team');
 
   const handleSearch = async () => {
     if (!email) return;
@@ -80,12 +82,12 @@ export function AddTeamMemberDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Adicionar Membro
+          {t('addMember')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
-          <DialogTitle>Adicionar Membro da Equipe</DialogTitle>
+          <DialogTitle>{t('addMember')}</DialogTitle>
           <DialogDescription>Busque um usuário pelo email e atribua uma função.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

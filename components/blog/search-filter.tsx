@@ -15,8 +15,10 @@ import {
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function SearchFilter() {
+  const t = useTranslations('Blog');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -72,7 +74,7 @@ export function SearchFilter() {
       <div className="relative flex-1">
         <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
         <Input
-          placeholder="Pesquisar posts..."
+          placeholder={t('search')}
           className="pl-8"
           value={searchTerm}
           onChange={e => handleSearch(e.target.value)}
@@ -84,11 +86,11 @@ export function SearchFilter() {
           onValueChange={handleSort}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Ordenar por" />
+            <SelectValue placeholder={t('sort')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="latest">Mais Recentes</SelectItem>
-            <SelectItem value="oldest">Mais Antigos</SelectItem>
+            <SelectItem value="latest">{t('latest')}</SelectItem>
+            <SelectItem value="oldest">{t('oldest')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

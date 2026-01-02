@@ -7,8 +7,10 @@ import { SupporterModal } from '@/components/modals/supporter-modal';
 // SupporterActions unused
 import { SupportersSettingsForm } from '@/components/admin/supporters-settings-form';
 import { SupportersTable } from '@/components/admin/supporters-table';
+import { getTranslations } from 'next-intl/server';
 
 export default async function SupportersPage() {
+  const t = await getTranslations('Admin.Supporters');
   const supabase = await createClient();
 
   const {
@@ -44,13 +46,13 @@ export default async function SupportersPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Gerenciar Apoiadores</h1>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
         {profile?.role === 'admin' && (
           <SupporterModal
             trigger={
               <Button>
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Novo Apoiador
+                {t('newSupporter')}
               </Button>
             }
           />

@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -30,6 +28,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { deleteLikes } from '@/app/actions/posts';
+import { useTranslations, useFormatter } from 'next-intl';
 
 type Like = {
   id: string;
@@ -52,6 +51,8 @@ interface LikesTableProps {
 }
 
 export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: LikesTableProps) {
+  const t = useTranslations('Admin.Likes');
+  const format = useFormatter();
   const [likes, setLikes] = useState(initialLikes);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = useState(false);
@@ -98,30 +99,31 @@ export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: 
       {selectedIds.size > 0 && currentUserRole === 'admin' && (
         <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
-            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <span className="text-sm font-medium">
+              {selectedIds.size} {t('selected')}
+            </span>
             <div className="flex items-center gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="sm" disabled={isDeleting}>
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Deletar
+                    {t('delete')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('confirmDeleteTitle')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Esta ação removerá permanentemente as {selectedIds.size} curtidas
-                      selecionadas.
+                      {t('confirmDeleteDesc', { count: selectedIds.size })}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       onClick={() => handleDelete(Array.from(selectedIds))}
                     >
-                      {isDeleting ? 'Removendo...' : 'Sim, remover'}
+                      {isDeleting ? t('deleting') : t('yesDelete')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -150,9 +152,9 @@ export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: 
                   aria-label="Select all"
                 />
               </TableHead>
-              <TableHead>Usuário</TableHead>
-              <TableHead>Post</TableHead>
-              <TableHead className="text-right">Data</TableHead>
+              <TableHead>{t('tableUser')}</TableHead>
+              <TableHead>{t('tablePost')}</TableHead>
+              <TableHead className="text-right">{t('tableDate')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -174,7 +176,7 @@ export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: 
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-sm font-medium">
-                      {like.profiles?.full_name || 'Usuário Desconhecido'}
+                      {like.profiles?.full_name || t('unknownUser')}
                     </span>
                   </div>
                 </TableCell>
@@ -188,12 +190,15 @@ export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: 
                       {like.posts.title}
                     </Link>
                   ) : (
-                    <span className="text-muted-foreground italic">Post excluído</span>
+                    <span className="text-muted-foreground italic">{t('postDeleted')}</span>
                   )}
                 </TableCell>
                 <TableCell className="text-muted-foreground text-right">
-                  {format(new Date(like.created_at), "d 'de' MMMM 'às' HH:mm", {
-                    locale: ptBR,
+                  {format.dateTime(new Date(like.created_at), {
+                    day: 'numeric',
+                    month: 'long',
+                    hour: 'numeric',
+                    minute: 'numeric',
                   })}
                 </TableCell>
               </TableRow>
@@ -201,7 +206,7 @@ export function LikesTable({ likes: initialLikes, currentUserRole = 'editor' }: 
             {likes.length === 0 && (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
-                  Nenhuma curtida encontrada.
+                  {t('noLikes')}
                 </TableCell>
               </TableRow>
             )}

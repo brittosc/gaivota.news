@@ -45,6 +45,7 @@ import {
 import { toast } from 'sonner';
 import { CustomAudioPlayer } from '@/components/ui/custom-audio-player';
 import { CustomVideoPlayer } from '@/components/ui/custom-video-player';
+import { useTranslations } from 'next-intl';
 
 type FileObject = {
   name: string;
@@ -66,6 +67,7 @@ const BUCKETS = {
 };
 
 export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'editor' | 'user' }) {
+  const t = useTranslations('Admin.Files');
   const [activeTab, setActiveTab] = useState<keyof typeof BUCKETS>('images');
   const [files, setFiles] = useState<FileObject[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
@@ -98,7 +100,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
 
     if (error) {
       console.error('Error fetching files:', error);
-      toast.error('Erro ao carregar arquivos. Verifique se o bucket existe.');
+      toast.error(t('toastErrorLoadingFiles'));
     } else {
       const sortedData = data || [];
       if (sortBy === 'date-desc') {
@@ -119,7 +121,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       setFiles(sortedData);
     }
     setIsLoading(false);
-  }, [activeTab, supabase.storage, sortBy]);
+  }, [activeTab, supabase.storage, sortBy, t]);
 
   useEffect(() => {
     fetchFiles();
@@ -157,9 +159,9 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     }
 
     if (error) {
-      toast.error(`Erro ao excluir: ${error.message}`);
+      toast.error(t('toastErrorDeleting', { message: error.message }));
     } else {
-      toast.success('Excluído com sucesso');
+      toast.success(t('toastDeleteSuccess'));
       if (itemToDelete) {
         setFiles(files.filter(f => f.name !== itemToDelete));
       } else {
@@ -171,8 +173,6 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     setIsLoading(false);
   };
 
-  // ... (handleFileUpload, handleDelete, handleRename, openRenameDialog, copyUrl, getPublicUrl omitted for brevity as they don't need changes except maybe usage of fetchFiles which works since it's captured in closure or updated)
-
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (!fileList || fileList.length === 0) return;
@@ -180,26 +180,30 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     setIsUploading(true);
     let successCount = 0;
 
+    // Use standard for loop to handle async/await in sequence if needed, or keeping existing structure
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const nameParts = file.name.split('.');
+      const fileExt = nameParts.length > 1 ? nameParts.pop() : '';
+      const uniqueId = Math.random().toString(36).substring(2);
+      const fileName = `${Date.now()}-${uniqueId}.${fileExt}`;
 
       const { error } = await supabase.storage.from(BUCKETS[activeTab]).upload(fileName, file);
 
       if (error) {
-        toast.error(`Erro ao enviar ${file.name}: ${error.message}`);
+        toast.error(t('toastErrorUploading', { fileName: file.name, message: error.message }));
       } else {
         successCount++;
       }
     }
 
     if (successCount > 0) {
-      toast.success(`${successCount} arquivo(s) enviado(s) com sucesso!`);
+      toast.success(t('toastUploadSuccess', { count: successCount }));
       fetchFiles();
     }
     setIsUploading(false);
-    e.target.value = ''; // Reset input
+    // Reset input
+    e.target.value = '';
   };
 
   const handleRename = async () => {
@@ -210,9 +214,9 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       .move(fileToRename.name, newFileName);
 
     if (error) {
-      toast.error(`Erro ao renomear: ${error.message}`);
+      toast.error(t('toastErrorRenaming', { message: error.message }));
     } else {
-      toast.success('Arquivo renomeado com sucesso');
+      toast.success(t('toastRenameSuccess'));
       fetchFiles();
       setRenameDialogOpen(false);
     }
@@ -227,7 +231,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
   const copyUrl = (fileName: string) => {
     const { data } = supabase.storage.from(BUCKETS[activeTab]).getPublicUrl(fileName);
     navigator.clipboard.writeText(data.publicUrl);
-    toast.success('URL copiada para a área de transferência');
+    toast.success(t('toastUrlCopied'));
   };
 
   const getPublicUrl = (fileName: string) => {
@@ -250,7 +254,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Download error:', error);
-      toast.error('Erro ao baixar arquivo');
+      toast.error(t('toastErrorDownloadingFile'));
     }
   };
 
@@ -263,8 +267,8 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Gerenciador de Arquivos</h2>
-          <p className="text-muted-foreground">Gerencie seus arquivos de mídia e documentos.</p>
+          <h2 className="text-2xl font-bold tracking-tight">{t('title')}</h2>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <div className="flex gap-2">
           <Select
@@ -274,13 +278,13 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
             }
           >
             <SelectTrigger className="w-50">
-              <SelectValue placeholder="Ordenar por" />
+              <SelectValue placeholder={t('sort')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="date-desc">Mais Recentes</SelectItem>
-              <SelectItem value="date-asc">Mais Antigos</SelectItem>
-              <SelectItem value="name-asc">Nome (A-Z)</SelectItem>
-              <SelectItem value="size-desc">Tamanho (Maior)</SelectItem>
+              <SelectItem value="date-desc">{t('sortNewest')}</SelectItem>
+              <SelectItem value="date-asc">{t('sortOldest')}</SelectItem>
+              <SelectItem value="name-asc">{t('sortName')}</SelectItem>
+              <SelectItem value="size-desc">{t('sortSize')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -292,7 +296,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                 ) : (
                   <Upload className="mr-2 h-4 w-4" />
                 )}
-                Upload Arquivo
+                {t('uploadFile')}
                 <Input
                   type="file"
                   className="hidden"
@@ -327,16 +331,16 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       >
         <TabsList>
           <TabsTrigger value="images" className="flex items-center gap-2">
-            <ImageIcon className="h-4 w-4" /> Imagens
+            <ImageIcon className="h-4 w-4" /> {t('tabImages')}
           </TabsTrigger>
           <TabsTrigger value="audio" className="flex items-center gap-2">
-            <Music className="h-4 w-4" /> Áudio
+            <Music className="h-4 w-4" /> {t('tabAudio')}
           </TabsTrigger>
           <TabsTrigger value="video" className="flex items-center gap-2">
-            <Film className="h-4 w-4" /> Vídeo
+            <Film className="h-4 w-4" /> {t('tabVideo')}
           </TabsTrigger>
           <TabsTrigger value="file" className="flex items-center gap-2">
-            <FileIcon className="h-4 w-4" /> Arquivos
+            <FileIcon className="h-4 w-4" /> {t('tabFiles')}
           </TabsTrigger>
         </TabsList>
 
@@ -344,15 +348,15 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Arquivos no bucket: {BUCKETS[activeTab]}</CardTitle>
-                <CardDescription>{files.length} arquivo(s) encontrado(s).</CardDescription>
+                <CardTitle>{t('bucketFiles', { bucket: BUCKETS[activeTab] })}</CardTitle>
+                <CardDescription>{t('filesFound', { count: files.length })}</CardDescription>
               </div>
               {files.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     id="selectAll"
-                    className="h-4 w-4 rounded border-gray-300"
+                    className="border-input h-4 w-4 rounded"
                     checked={files.length > 0 && selectedFiles.length === files.length}
                     onChange={e => {
                       if (e.target.checked) {
@@ -363,7 +367,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                     }}
                   />
                   <label htmlFor="selectAll" className="text-sm">
-                    Selecionar Todos
+                    {t('selectAll')}
                   </label>
                 </div>
               )}
@@ -377,7 +381,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
             ) : files.length === 0 ? (
               <div className="text-muted-foreground flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12">
                 <FileIcon className="mb-4 h-10 w-10 opacity-50" />
-                <p>Nenhum arquivo encontrado neste bucket.</p>
+                <p>{t('noFiles')}</p>
               </div>
             ) : activeTab === 'audio' || activeTab === 'file' ? (
               /* LIST VIEW */
@@ -394,13 +398,13 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                           setSelectedFiles([]);
                         }
                       }}
-                      className="accent-primary h-4 w-4 rounded border-gray-300"
-                      aria-label="Selecionar todos os arquivos"
+                      className="accent-primary border-input h-4 w-4 rounded"
+                      aria-label={t('selectAllFiles')}
                     />
                   </div>
-                  <div>Nome</div>
-                  <div className="hidden sm:block">Tamanho</div>
-                  <div className="hidden sm:block">Data</div>
+                  <div>{t('tableName')}</div>
+                  <div className="hidden sm:block">{t('tableSize')}</div>
+                  <div className="hidden sm:block">{t('tableDate')}</div>
                   <div className="w-10"></div>
                 </div>
                 <div className="divide-y">
@@ -430,9 +434,9 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => toggleFileSelection(file.name)}
-                            className="accent-primary h-4 w-4 cursor-pointer rounded border-gray-300"
+                            className="accent-primary border-input h-4 w-4 cursor-pointer rounded"
                             onClick={e => e.stopPropagation()}
-                            aria-label={`Selecionar ${file.name}`}
+                            aria-label={t('selectFile', { fileName: file.name })}
                           />
                         </div>
                         <div className="flex items-center gap-3 overflow-hidden">
@@ -458,23 +462,23 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={() => openPreview(file)}>
-                                <FileIcon className="mr-2 h-4 w-4" /> Visualizar
+                                <FileIcon className="mr-2 h-4 w-4" /> {t('actionView')}
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => handleDownload(file)}>
-                                <Download className="mr-2 h-4 w-4" /> Baixar
+                                <Download className="mr-2 h-4 w-4" /> {t('actionDownload')}
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => copyUrl(file.name)}>
-                                <Copy className="mr-2 h-4 w-4" /> Copiar Link
+                                <Copy className="mr-2 h-4 w-4" /> {t('actionCopy')}
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => openRenameDialog(file)}>
-                                <Pencil className="mr-2 h-4 w-4" /> Renomear
+                                <Pencil className="mr-2 h-4 w-4" /> {t('actionRename')}
                               </DropdownMenuItem>
                               {userRole === 'admin' && (
                                 <DropdownMenuItem
-                                  className="text-red-600"
+                                  className="text-destructive"
                                   onClick={() => initDelete(file.name)}
                                 >
-                                  <Trash2 className="mr-2 h-4 w-4" /> Excluir
+                                  <Trash2 className="mr-2 h-4 w-4" /> {t('actionDelete')}
                                 </DropdownMenuItem>
                               )}
                             </DropdownMenuContent>
@@ -511,9 +515,9 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                         type="checkbox"
                         checked={selectedFiles.includes(file.name)}
                         onChange={() => toggleFileSelection(file.name)}
-                        className="accent-primary h-3 w-3 cursor-pointer rounded border-gray-300 shadow-sm"
+                        className="accent-primary border-input h-3 w-3 cursor-pointer rounded shadow-sm"
                         onClick={e => e.stopPropagation()}
-                        aria-label={`Selecionar ${file.name}`}
+                        aria-label={t('selectFile', { fileName: file.name })}
                       />
                     </div>
 
@@ -547,23 +551,23 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => openPreview(file)}>
-                            <FileIcon className="mr-2 h-4 w-4" /> Visualizar
+                            <FileIcon className="mr-2 h-4 w-4" /> {t('actionView')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleDownload(file)}>
-                            <Download className="mr-2 h-4 w-4" /> Baixar
+                            <Download className="mr-2 h-4 w-4" /> {t('actionDownload')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => copyUrl(file.name)}>
-                            <Copy className="mr-2 h-4 w-4" /> Copiar Link
+                            <Copy className="mr-2 h-4 w-4" /> {t('actionCopy')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => openRenameDialog(file)}>
-                            <Pencil className="mr-2 h-4 w-4" /> Renomear
+                            <Pencil className="mr-2 h-4 w-4" /> {t('actionRename')}
                           </DropdownMenuItem>
                           {userRole === 'admin' && (
                             <DropdownMenuItem
-                              className="text-red-600"
+                              className="text-destructive"
                               onClick={() => initDelete(file.name)}
                             >
-                              <Trash2 className="mr-2 h-4 w-4" /> Excluir
+                              <Trash2 className="mr-2 h-4 w-4" /> {t('actionDelete')}
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>
@@ -584,11 +588,13 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       {selectedFiles.length > 0 && userRole === 'admin' && (
         <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
-            <span className="font-medium">{selectedFiles.length} selecionado(s)</span>
+            <span className="font-medium">
+              {t('selectedCount', { count: selectedFiles.length })}
+            </span>
             <div className="bg-border h-4 w-px" />
             <Button variant="destructive" size="sm" onClick={() => initDelete()}>
               <Trash2 className="mr-2 h-4 w-4" />
-              Excluir Selecionados
+              {t('deleteSelected')}
             </Button>
             <Button
               variant="ghost"
@@ -606,12 +612,12 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Renomear Arquivo</DialogTitle>
+            <DialogTitle>{t('renameTitle')}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                Nome
+                {t('labelName')}
               </Label>
               <Input
                 id="name"
@@ -623,9 +629,9 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRenameDialogOpen(false)}>
-              Cancelar
+              {t('cancel')}
             </Button>
-            <Button onClick={handleRename}>Salvar</Button>
+            <Button onClick={handleRename}>{t('save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -633,10 +639,10 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirmar Exclusão</DialogTitle>
+            <DialogTitle>{t('confirmDeleteTitle')}</DialogTitle>
             <CardDescription>
-              Tem certeza que deseja excluir permanetemente{' '}
-              {itemToDelete ? 'o item' : `os ${selectedFiles.length} itens selecionados`}?
+              {t('confirmDeleteDesc')}{' '}
+              {itemToDelete ? t('item') : t('items', { count: selectedFiles.length })}?
               {itemToDelete && (
                 <div className="mt-2 font-mono text-sm font-bold">{itemToDelete}</div>
               )}
@@ -644,10 +650,10 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Cancelar
+              {t('cancel')}
             </Button>
             <Button variant="destructive" onClick={confirmDelete}>
-              Excluir
+              {t('delete')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -655,7 +661,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="w-full max-w-4xl overflow-hidden border-none bg-black/95 p-0 text-white">
-          <DialogTitle className="sr-only">Visualização do Arquivo</DialogTitle>
+          <DialogTitle className="sr-only">{t('previewTitle')}</DialogTitle>
           <div className="relative flex max-h-[85vh] min-h-[40vh] flex-col items-center justify-center">
             {previewFile && (
               <div className="flex h-full w-full items-center justify-center p-4">
@@ -677,7 +683,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                     />
                   </div>
                 ) : activeTab === 'audio' ? (
-                  <div className="w-full max-w-md space-y-4 rounded-xl bg-zinc-900 p-6">
+                  <div className="bg-card w-full max-w-md space-y-4 rounded-xl border p-6">
                     <div className="text-center">
                       <Music className="text-primary mx-auto mb-4 h-16 w-16" />
                       <h3 className="mb-6 truncate text-lg font-medium">{previewFile.name}</h3>
@@ -686,13 +692,11 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                   </div>
                 ) : (
                   <div className="p-12 text-center">
-                    <FileIcon className="mx-auto mb-6 h-24 w-24 text-gray-500" />
+                    <FileIcon className="text-muted-foreground mx-auto mb-6 h-24 w-24" />
                     <h3 className="mb-2 text-xl font-medium">{previewFile.name}</h3>
-                    <p className="mb-8 text-gray-400">
-                      Este arquivo não pode ser visualizado diretamente.
-                    </p>
+                    <p className="text-muted-foreground/80 mb-8">{t('previewUnavailable')}</p>
                     <Button onClick={() => handleDownload(previewFile)} size="lg">
-                      <Download className="mr-2 h-5 w-5" /> Baixar Arquivo
+                      <Download className="mr-2 h-5 w-5" /> {t('downloadFile')}
                     </Button>
                   </div>
                 )}
@@ -705,7 +709,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                   onClick={() => handleDownload(previewFile)}
                   className="border-none bg-white/10 text-white shadow-lg backdrop-blur-sm hover:bg-white/20"
                 >
-                  <Download className="mr-2 h-4 w-4" /> Baixar Original
+                  <Download className="mr-2 h-4 w-4" /> {t('downloadOriginal')}
                 </Button>
               </div>
             )}

@@ -11,16 +11,20 @@ import { toast } from 'sonner';
 import { sendCustomNewsletter } from '@/app/actions/newsletter';
 import { useRouter } from 'next/navigation';
 import { RichTextEditor } from '@/components/editor/rich-text-editor';
+import { useTranslations } from 'next-intl';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations('Admin.Newsletter');
   return (
     <Button type="submit" className="w-full" disabled={pending}>
       {pending ? (
-        <>Enviando...</>
+        <>
+          <Send className="mr-2 h-4 w-4" /> {t('sending')}
+        </>
       ) : (
         <>
-          <Send className="mr-2 h-4 w-4" /> Enviar para Todos Assinantes
+          <Send className="mr-2 h-4 w-4" /> {t('send')}
         </>
       )}
     </Button>
@@ -30,6 +34,7 @@ function SubmitButton() {
 export default function ComposeEmailPage() {
   const router = useRouter();
   const [content, setContent] = useState('');
+  const t = useTranslations('Admin.Newsletter');
 
   const handleSubmit = async (formData: FormData) => {
     const result = await sendCustomNewsletter(formData);
@@ -46,34 +51,27 @@ export default function ComposeEmailPage() {
       <div className="mb-6">
         <Link href="/admin/newsletter">
           <Button variant="ghost" size="sm" className="gap-2">
-            <ArrowLeft className="h-4 w-4" /> Voltar
+            <ArrowLeft className="h-4 w-4" /> {t('back')}
           </Button>
         </Link>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Nova Campanha</CardTitle>
-          <CardDescription>
-            Envie um email personalizado para todos os assinantes da newsletter.
-          </CardDescription>
+          <CardTitle>{t('newCampaignTitle')}</CardTitle>
+          <CardDescription>{t('newCampaignDesc')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form action={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="subject" className="text-sm font-medium">
-                Assunto do Email
+                {t('subject')}
               </label>
-              <Input
-                id="subject"
-                name="subject"
-                placeholder="Ex: Novidades da semana, Aviso Importante..."
-                required
-              />
+              <Input id="subject" name="subject" placeholder={t('subjectPlaceholder')} required />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Conteúdo da Mensagem</label>
+              <label className="text-sm font-medium">{t('messageContent')}</label>
               <RichTextEditor content={content} onChange={setContent} />
               <input type="hidden" name="content" value={content} />
             </div>

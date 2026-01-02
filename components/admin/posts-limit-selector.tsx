@@ -8,11 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useTranslations } from 'next-intl';
 
 export function PostsLimitSelector() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const limit = searchParams.get('limit') || '10';
+  const t = useTranslations('Admin.Posts');
 
   const handleValueChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -23,7 +25,7 @@ export function PostsLimitSelector() {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm font-medium">Itens por página:</span>
+      <span className="text-sm font-medium">{t('itemsPerPage')}</span>
       <Select value={limit} onValueChange={handleValueChange}>
         <SelectTrigger className="w-17.5">
           <SelectValue placeholder={limit} />

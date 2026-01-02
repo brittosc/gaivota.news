@@ -5,8 +5,10 @@ import { ShieldAlert } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 export default async function FilesPage() {
+  const t = await getTranslations('Admin.Dashboard');
   const supabase = await createClient();
 
   const {
@@ -31,13 +33,11 @@ export default async function FilesPage() {
             <div className="mb-6 rounded-full bg-red-50 p-4">
               <ShieldAlert className="h-12 w-12 text-red-600" />
             </div>
-            <h1 className="mb-2 text-2xl font-bold text-gray-900">Acesso Restrito</h1>
-            <p className="mb-6 leading-relaxed text-gray-500">
-              Você não possui as permissões necessárias.
-            </p>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900">{t('accessRestricted')}</h1>
+            <p className="mb-6 leading-relaxed text-gray-500">{t('accessRestrictedMessage')}</p>
             <Link href="/" className="w-full">
               <Button variant="outline" className="w-full">
-                Voltar ao Início
+                {t('backHome')}
               </Button>
             </Link>
           </CardContent>

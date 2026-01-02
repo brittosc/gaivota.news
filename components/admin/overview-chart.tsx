@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useTranslations } from 'next-intl';
 
 interface OverviewChartProps {
   data: { date: string; name: string; posts: number; likes: number }[];
@@ -26,6 +27,8 @@ interface OverviewChartProps {
 
 export function OverviewChart({ data }: OverviewChartProps) {
   const [timeRange, setTimeRange] = React.useState('90d');
+  const t = useTranslations('Admin.Dashboard');
+  const tCommon = useTranslations('Common');
 
   const filteredData = React.useMemo(() => {
     const referenceDate = new Date();
@@ -48,25 +51,29 @@ export function OverviewChart({ data }: OverviewChartProps) {
     <Card className="col-span-4">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>Visão Geral (Interativo)</CardTitle>
+          <CardTitle>{t('overviewTitle')}</CardTitle>
           <CardDescription>
-            Mostrando resultados dos últimos{' '}
-            {timeRange === '90d' ? '3 meses' : timeRange === '30d' ? '30 dias' : '7 dias'}
+            {t('overviewSubtitle')}{' '}
+            {timeRange === '90d'
+              ? `3 ${tCommon('months')}`
+              : timeRange === '30d'
+                ? `30 ${tCommon('days')}`
+                : `7 ${tCommon('days')}`}
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="w-40 rounded-lg sm:ml-auto" aria-label="Selecione um período">
-            <SelectValue placeholder="Últimos 3 meses" />
+            <SelectValue placeholder={t('selectPeriod')} />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
             <SelectItem value="90d" className="rounded-lg">
-              Últimos 3 meses
+              {t('last3Months')}
             </SelectItem>
             <SelectItem value="30d" className="rounded-lg">
-              Últimos 30 dias
+              {t('last30Days')}
             </SelectItem>
             <SelectItem value="7d" className="rounded-lg">
-              Últimos 7 dias
+              {t('last7Days')}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -161,7 +168,7 @@ export function OverviewChart({ data }: OverviewChartProps) {
                 }}
               />
               <Area
-                name="Novas Curtidas"
+                name={t('newLikes')}
                 dataKey="likes"
                 type="natural"
                 fill="url(#fillLikes)"
@@ -169,7 +176,7 @@ export function OverviewChart({ data }: OverviewChartProps) {
                 stackId="a"
               />
               <Area
-                name="Novos Posts"
+                name={t('newPosts')}
                 dataKey="posts"
                 type="natural"
                 fill="url(#fillPosts)"

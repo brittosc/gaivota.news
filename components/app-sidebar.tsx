@@ -22,7 +22,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup } from '@/components/ui/sidebar';
-import { ThemeSwitch } from '@/components/theme/theme-toggle';
 
 import { BarChart3, Users, Heart, LogOut, Mail, FileText, ThumbsUp, Folder } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
@@ -112,7 +111,7 @@ export function AppSidebar() {
       'management.createPost': t('createPost'),
       'management.team': t('team') || 'Colaboradores',
       'management.supporters': t('supporters'),
-      'management.likes': 'Curtidas',
+      'management.likes': t('likes'),
       'management.newsletter': t('newsletter') || 'Newsletter', // Fallback
       'management.files': t('files') || 'Arquivos',
       'site.title': t('siteTitle'),
@@ -123,7 +122,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarContent className="bg-zinc-50 p-4 font-bold dark:bg-zinc-900">
+      <SidebarContent className="bg-sidebar p-4 font-bold">
         {sidebarSections.map(({ title, links }) => (
           <SidebarGroup key={title} className="text-muted-foreground p-4 text-sm">
             <span className="mb-2 block font-medium">{getLabel(title)}</span>
@@ -151,7 +150,7 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter className="space-y-4 border-t bg-zinc-50 p-4 dark:bg-zinc-900">
+      <SidebarFooter className="bg-sidebar space-y-4 border-t p-4">
         {profile && (
           <div className="flex items-center gap-3 px-2">
             <Avatar className="h-8 w-8">
@@ -169,9 +168,6 @@ export function AppSidebar() {
             </div>
           </div>
         )}
-        <div className="flex items-center justify-center">
-          <ThemeSwitch />
-        </div>
       </SidebarFooter>
     </Sidebar>
   );

@@ -56,6 +56,7 @@ import {
   publishPost,
   sendPostNewsletter,
 } from '@/app/actions/posts';
+import { useTranslations } from 'next-intl';
 
 type Post = Database['public']['Tables']['posts']['Row'];
 
@@ -64,6 +65,7 @@ interface PostsTableProps {
 }
 
 export function PostsTable({ posts: initialPosts }: PostsTableProps) {
+  const t = useTranslations('Admin.Posts');
   const router = useRouter();
   const [posts, setPosts] = useState(initialPosts); // Local state for optimistic UI
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -99,7 +101,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
 
       if (error) throw error;
 
-      toast.success(ids.length > 1 ? 'Posts deletados!' : 'Post deletado!');
+      toast.success(ids.length > 1 ? t('postsDeleted') : t('postDeleted'));
       setPosts(prev => prev.filter(p => !ids.includes(p.id)));
       setSelectedIds(new Set()); // Clear selection
       router.refresh();
@@ -138,10 +140,10 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
       <div className="flex items-center justify-between">
         <Tabs defaultValue="published" value={filter} onValueChange={setFilter}>
           <TabsList>
-            <TabsTrigger value="all">Todos</TabsTrigger>
-            <TabsTrigger value="published">Publicados</TabsTrigger>
-            <TabsTrigger value="draft">Rascunhos</TabsTrigger>
-            <TabsTrigger value="archived">Arquivados</TabsTrigger>
+            <TabsTrigger value="all">{t('all')}</TabsTrigger>
+            <TabsTrigger value="published">{t('published')}</TabsTrigger>
+            <TabsTrigger value="draft">{t('draft')}</TabsTrigger>
+            <TabsTrigger value="archived">{t('archived')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -150,30 +152,29 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
       {selectedIds.size > 0 && (
         <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform">
           <div className="bg-popover text-popover-foreground flex items-center gap-4 rounded-xl border p-4 shadow-xl">
-            <span className="text-sm font-medium">{selectedIds.size} selecionado(s)</span>
+            <span className="text-sm font-medium">
+              {selectedIds.size} {t('selected')}
+            </span>
             <div className="flex items-center gap-2">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="sm" disabled={isDeleting}>
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Deletar
+                    {t('delete')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta ação não pode ser desfeita. Isso excluirá permanentemente os posts
-                      selecionados.
-                    </AlertDialogDescription>
+                    <AlertDialogTitle>{t('confirmDeleteTitle')}</AlertDialogTitle>
+                    <AlertDialogDescription>{t('confirmDeleteDescription')}</AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       onClick={() => deletePosts(Array.from(selectedIds))}
                     >
-                      {isDeleting ? 'Deletando...' : 'Sim, deletar'}
+                      {isDeleting ? t('deleting') : t('yesDelete')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -202,10 +203,10 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                   aria-label="Select all"
                 />
               </TableHead>
-              <TableHead>Título</TableHead>
-              <TableHead>Slug</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-25 text-right">Ações</TableHead>
+              <TableHead>{t('tableTitle')}</TableHead>
+              <TableHead>{t('tableSlug')}</TableHead>
+              <TableHead>{t('tableStatus')}</TableHead>
+              <TableHead className="w-25 text-right">{t('tableActions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -231,15 +232,15 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                 <TableCell>
                   {post.archived ? (
                     <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-800">
-                      Arquivado
+                      {t('archived')}
                     </span>
                   ) : post.published ? (
                     <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800">
-                      Publicado
+                      {t('published')}
                     </span>
                   ) : (
                     <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800">
-                      Rascunho
+                      {t('draft')}
                     </span>
                   )}
                 </TableCell>
@@ -253,53 +254,53 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                        <DropdownMenuLabel>{t('tableActions')}</DropdownMenuLabel>
                         <Link href={`/${post.slug}`} target="_blank">
                           <DropdownMenuItem>
-                            <Eye className="mr-2 h-4 w-4" /> Ver Post
+                            <Eye className="mr-2 h-4 w-4" /> {t('viewPost')}
                           </DropdownMenuItem>
                         </Link>
                         <Link href={`/admin/posts/edit/${post.slug}`}>
                           <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" /> Editar
+                            <Edit className="mr-2 h-4 w-4" /> {t('edit')}
                           </DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />
                         {post.published ? (
                           <DropdownMenuItem
-                            onClick={() => handleAction(hidePost, post.id, 'Post ocultado')}
+                            onClick={() => handleAction(hidePost, post.id, t('postHidden'))}
                           >
-                            <EyeOff className="mr-2 h-4 w-4" /> Ocultar
+                            <EyeOff className="mr-2 h-4 w-4" /> {t('hide')}
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
-                            onClick={() => handleAction(publishPost, post.id, 'Post publicado')}
+                            onClick={() => handleAction(publishPost, post.id, t('postPublished'))}
                           >
-                            <CheckCircle className="mr-2 h-4 w-4" /> Publicar
+                            <CheckCircle className="mr-2 h-4 w-4" /> {t('publish')}
                           </DropdownMenuItem>
                         )}
                         {post.published && (
                           <DropdownMenuItem
                             // disabled={!!post.newsletter_sent_at}
                             onClick={() =>
-                              handleAction(sendPostNewsletter, post.id, 'Newsletter enviada!')
+                              handleAction(sendPostNewsletter, post.id, t('newsletterSent'))
                             }
                           >
                             <Mail className="mr-2 h-4 w-4" />
-                            {post.newsletter_sent_at ? 'Reenviar Email' : 'Enviar Email'}
+                            {post.newsletter_sent_at ? t('resendEmail') : t('sendEmail')}
                           </DropdownMenuItem>
                         )}
                         {post.archived ? (
                           <DropdownMenuItem
-                            onClick={() => handleAction(restorePost, post.id, 'Post restaurado')}
+                            onClick={() => handleAction(restorePost, post.id, t('postRestored'))}
                           >
-                            <ArchiveRestore className="mr-2 h-4 w-4" /> Restaurar
+                            <ArchiveRestore className="mr-2 h-4 w-4" /> {t('restore')}
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
-                            onClick={() => handleAction(archivePost, post.id, 'Post arquivado')}
+                            onClick={() => handleAction(archivePost, post.id, t('postArchived'))}
                           >
-                            <Archive className="mr-2 h-4 w-4" /> Arquivar
+                            <Archive className="mr-2 h-4 w-4" /> {t('archive')}
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />
@@ -307,7 +308,7 @@ export function PostsTable({ posts: initialPosts }: PostsTableProps) {
                           className="text-destructive focus:text-destructive"
                           onClick={() => deletePosts([post.id])}
                         >
-                          <Trash2 className="mr-2 h-4 w-4" /> Deletar
+                          <Trash2 className="mr-2 h-4 w-4" /> {t('delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

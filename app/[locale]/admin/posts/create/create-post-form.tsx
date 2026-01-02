@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
 import { env } from '@/lib/env';
@@ -22,6 +23,7 @@ interface CreatePostFormProps {
 
 export default function CreatePostForm({ initialData }: CreatePostFormProps) {
   const router = useRouter();
+  const t = useTranslations('Admin.Posts');
   const [loading, setLoading] = useState(false);
   // Controlled inputs for auto-slug
   const [title, setTitle] = useState(initialData?.title || '');
@@ -182,32 +184,32 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
       />
       <form onSubmit={e => e.preventDefault()} className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="title">Título</Label>
+          <Label htmlFor="title">{t('titles')}</Label>
           <Input
             id="title"
             name="title"
             required
-            placeholder="Título do post"
+            placeholder={t('titles')}
             value={title}
             onChange={handleTitleChange}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="slug">Slug (URL)</Label>
+          <Label htmlFor="slug">{t('slugs')}</Label>
           <Input
             id="slug"
             name="slug"
             required
-            placeholder="titulo-do-post"
+            placeholder={t('slugsPlaceholder')}
             value={slug}
             onChange={handleSlugChange}
           />
-          <p className="text-muted-foreground text-xs">URL amigável para o post.</p>
+          <p className="text-muted-foreground text-xs">{t('slugsDescription')}</p>
         </div>
 
         <div className="space-y-2">
-          <Label>Imagem de Capa</Label>
+          <Label>{t('images')}</Label>
           <div className="flex flex-col gap-4">
             {featuredImage && (
               <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-md border">
@@ -250,26 +252,24 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
               onClick={() => setIsModalOpen(true)}
               className="w-fit"
             >
-              {featuredImage ? 'Alterar Imagem' : 'Adicionar Imagem'}
+              {featuredImage ? t('imageButton') : t('imageButton')}
             </Button>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="authorCustomName">Nome do Autor (Opcional)</Label>
+          <Label htmlFor="authorCustomName">{t('author')}</Label>
           <Input
             id="authorCustomName"
             value={authorCustomName}
             onChange={e => setAuthorCustomName(e.target.value)}
-            placeholder="Ex: João Silva (Deixe vazio para não exibir)"
+            placeholder={t('authorPlaceholder')}
           />
-          <p className="text-muted-foreground text-xs">
-            Se preenchido, este nome aparecerá ao lado da data no post.
-          </p>
+          <p className="text-muted-foreground text-xs">{t('authorDescription')}</p>
         </div>
 
         <div className="space-y-2">
-          <Label>Conteúdo</Label>
+          <Label>{t('content')}</Label>
           <div className="min-h-100">
             <RichTextEditor content={content} onChange={setContent} />
           </div>
@@ -277,7 +277,7 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline" onClick={() => router.back()} disabled={loading}>
-            Cancelar
+            {t('cancel')}
           </Button>
           <Button
             type="button"
@@ -285,10 +285,14 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
             onClick={e => handleSubmit(false, e)}
             disabled={loading}
           >
-            {loading ? 'Salvando...' : 'Salvar como Rascunho'}
+            {loading ? t('saving') : t('saveWithDraft')}
           </Button>
           <Button type="button" onClick={e => handleSubmit(true, e)} disabled={loading}>
-            {loading ? 'Salvando...' : initialData?.published ? 'Atualizar Post' : 'Publicar'}
+            {loading
+              ? t('saving')
+              : initialData?.published
+                ? t('saveChanges')
+                : t('saveWithPublish')}
           </Button>
         </div>
       </form>
