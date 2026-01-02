@@ -1,6 +1,6 @@
 import CreatePostForm from './create-post-form';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
