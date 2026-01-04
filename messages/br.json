@@ -96,7 +96,46 @@
     "title": "Política de Privacidade"
   },
   "Terms": {
-    "title": "Termos de Uso"
+    "title": "Termos de Uso",
+    "lastUpdated": "Última atualização: {date}",
+    "intro": "Bem-vindo ao Gaivota News. Ao acessar nosso portal, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis, e concorda que é responsável pelo cumprimento de todas as leis locais aplicáveis.",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceitação dos Termos",
+        "content": "Ao acessar este site, você concorda em estar vinculado a estes Termos e Condições de Uso, todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, está proibido de usar ou acessar este site."
+      },
+      "mission": {
+        "title": "2. Missão e Isenção Editorial",
+        "content": "O Gaivota News é um portal independente comprometido com a verdade. Não possuímos vínculos políticos ou econômicos que comprometam nossa isenção. Nosso compromisso é com a comunidade e com a precisão dos fatos."
+      },
+      "intellectual": {
+        "title": "3. Propriedade Intelectual",
+        "content": "O conteúdo, layout, design e gráficos deste site são protegidos por direitos autorais e de propriedade intelectual. O uso não autorizado de qualquer material pode violar leis de direitos autorais e marcas registradas."
+      },
+      "responsibility": {
+        "title": "4. Responsabilidade do Usuário",
+        "content": "O usuário compromete-se a usar o site de forma ética. É proibido usar o site para disseminar conteúdo ilegal, ofensivo, difamatório ou que viole direitos de terceiros."
+      },
+      "modifications": {
+        "title": "5. Modificações",
+        "content": "O Gaivota News pode revisar estes termos de serviço a qualquer momento, sem aviso prévio. Ao usar este site, você concorda em estar vinculado à versão atual desses termos de serviço."
+      },
+      "contact": {
+        "title": "6. Contato",
+        "content": "Para questões relacionadas a estes termos, entre em contato através dos nossos canais oficiais de atendimento."
+      }
+    },
+    "status": "Vigente",
+    "jurisdiction": "Jurisdição: BR",
+    "compliance": {
+      "title": "Verificacão de Conformidade",
+      "items": {
+        "digitalSignature": "Assinatura Digital",
+        "timeStamped": "Com Carimbo de Tempo",
+        "versionControlled": "Versão Controlada",
+        "publicLedger": "Registro Público"
+      }
+    }
   },
   "Components": {
     "Sidebar": {
@@ -108,6 +147,7 @@
       "createPost": "Criar Post",
       "team": "Colaboradores",
       "supporters": "Apoiadores",
+      "users": "Usuários",
       "likes": "Curtidas",
       "newsletter": "Newsletter",
       "files": "Arquivos",

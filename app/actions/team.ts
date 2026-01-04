@@ -69,7 +69,10 @@ export async function searchUserByEmail(email: string) {
   };
 }
 
-export async function updateUserRole(userId: string, role: 'admin' | 'editor' | 'user') {
+export async function updateUserRole(
+  userId: string,
+  role: 'admin' | 'editor' | 'user' | 'supporter'
+) {
   const supabase = await createClient();
 
   // Verify if current user is admin

@@ -158,6 +158,17 @@
         "title": "6. Contact",
         "content": "For questions related to these terms, please contact us through our official support channels."
       }
+    },
+    "status": "Effective",
+    "jurisdiction": "Jurisdiction: BR",
+    "compliance": {
+      "title": "Compliance Check",
+      "items": {
+        "digitalSignature": "Digital Signature",
+        "timeStamped": "Time Stamped",
+        "versionControlled": "Version Controlled",
+        "publicLedger": "Public Ledger"
+      }
     }
   },
   "Components": {
@@ -170,6 +181,7 @@
       "createPost": "Create Post",
       "team": "Team",
       "supporters": "Supporters",
+      "users": "Users",
       "likes": "Likes",
       "newsletter": "Newsletter",
       "files": "Files",

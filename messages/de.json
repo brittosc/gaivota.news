@@ -164,6 +164,17 @@
         "title": "6. Kontakt",
         "content": "Bei Fragen zu diesen Bedingungen kontaktieren Sie uns bitte über unsere offiziellen Support-Kanäle."
       }
+    },
+    "status": "Gültig",
+    "jurisdiction": "Gerichtsstand: BR",
+    "compliance": {
+      "title": "Konformitätsprüfung",
+      "items": {
+        "digitalSignature": "Digitale Signatur",
+        "timeStamped": "Zeitstempel",
+        "versionControlled": "Versionskontrolliert",
+        "publicLedger": "Öffentliches Register"
+      }
     }
   },
   "Components": {
@@ -176,6 +187,7 @@
       "createPost": "Beitrag erstellen",
       "team": "Mitarbeiter",
       "supporters": "Unterstützer",
+      "users": "Benutzer",
       "likes": "Gefällt mir",
       "newsletter": "Newsletter",
       "files": "Dateien",

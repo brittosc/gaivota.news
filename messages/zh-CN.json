@@ -158,6 +158,17 @@
         "title": "6. 联系方式",
         "content": "如有与这些条款相关的问题，请通过我们的官方支持渠道联系我们。"
       }
+    },
+    "status": "生效",
+    "jurisdiction": "管辖区: BR",
+    "compliance": {
+      "title": "合规检查",
+      "items": {
+        "digitalSignature": "数字签名",
+        "timeStamped": "时间戳",
+        "versionControlled": "版本控制",
+        "publicLedger": "公共分类账"
+      }
     }
   },
   "Components": {
@@ -170,6 +181,7 @@
       "createPost": "创建帖子",
       "team": "合作者",
       "supporters": "支持者",
+      "users": "用户",
       "likes": "点赞",
       "newsletter": "时事通讯",
       "files": "文件",

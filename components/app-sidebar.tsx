@@ -59,6 +59,12 @@ const sidebarSections = [
         color: 'text-pink-500',
       },
       {
+        label: 'management.users',
+        href: '/admin/users',
+        icon: Users,
+        color: 'text-cyan-500',
+      },
+      {
         label: 'management.likes',
         href: '/admin/likes',
         icon: ThumbsUp,
@@ -113,6 +119,7 @@ export function AppSidebar() {
       'management.createPost': t('createPost'),
       'management.team': t('team') || 'Colaboradores',
       'management.supporters': t('supporters'),
+      'management.users': t('users') || 'Usuários',
       'management.likes': t('likes'),
       'management.newsletter': t('newsletter') || 'Newsletter', // Fallback
       'management.files': t('files') || 'Arquivos',

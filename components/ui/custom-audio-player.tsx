@@ -139,9 +139,10 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
           onValueChange={handleSeek}
           className="cursor-pointer **:[[role=slider]]:hidden [&>.relative]:h-1 [&>.relative>.absolute]:bg-emerald-500"
         />
-        <div className="text-muted-foreground flex justify-between px-0.5 text-[10px] font-medium tracking-tight">
-          <span>{formatTime(progress)}</span>
-          <span>{formatTime(duration)}</span>
+        <div className="text-muted-foreground flex justify-between px-0.5 text-xs font-medium tracking-tight">
+          <span>
+            {formatTime(progress)} / {formatTime(duration)}
+          </span>
         </div>
       </div>
 

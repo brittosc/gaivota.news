@@ -36,6 +36,7 @@ import { ServiceWorkerRegister } from '@/components/pwa/sw-register';
 import { ServiceWorkerUpdatePrompt } from '@/components/pwa/sw-update-prompt';
 import { AppSidebar } from '@/components/app-sidebar';
 import { Footer } from '@/components/layout/footer';
+import { CookieConsent } from '@/components/cookie-consent';
 
 import '../globals.css';
 
@@ -116,6 +117,7 @@ export default async function LocaleLayout({
                               </div>
                             </SidebarInset>
                             <ChatWidget userId={user?.id} userRole={userRole} />
+                            <CookieConsent />
                           </SettingsClientWrapper>
                         </SidebarProvider>
                       </ModalProvider>

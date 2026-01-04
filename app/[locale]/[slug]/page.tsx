@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Shield, Sparkles, Lock } from 'lucide-react';
 import { Database } from '@/lib/database.types';
 import { ShareButtons } from '@/components/blog/share-buttons';
 import Image from 'next/image';
@@ -77,6 +77,7 @@ export async function generateMetadata(props: BlogPostProps) {
 }
 
 // import { LikeButton } from '@/components/blog/like-button';
+import { CommentsSection } from '@/components/blog/comments-section';
 
 // ... (existing imports)
 
@@ -188,6 +189,45 @@ export default async function BlogPostPage(props: BlogPostProps) {
           </div>
           <div className="leading-relaxed">
             <PostViewer content={post.content} />
+          </div>
+
+          <CommentsSection postId={post.id} />
+
+          <div className="mt-16 border-t pt-8">
+            <h4 className="text-muted-foreground mb-6 text-xs font-bold tracking-widest uppercase opacity-70">
+              Transparência & Governança
+            </h4>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <Link
+                href="/policies/corrections"
+                className="group border-border hover:bg-muted/50 flex flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors"
+              >
+                <div className="text-primary mb-2 opacity-80 group-hover:opacity-100">
+                  <Shield className="h-5 w-5" />
+                </div>
+                <span className="text-sm font-medium">Política de Correções</span>
+              </Link>
+
+              <Link
+                href="/policies/editorial"
+                className="group border-border hover:bg-muted/50 flex flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors"
+              >
+                <div className="text-primary mb-2 opacity-80 group-hover:opacity-100">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <span className="text-sm font-medium">Política Editorial</span>
+              </Link>
+
+              <Link
+                href="/policies/right-of-reply"
+                className="group border-border hover:bg-muted/50 flex flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors"
+              >
+                <div className="text-primary mb-2 opacity-80 group-hover:opacity-100">
+                  <Lock className="h-5 w-5" />
+                </div>
+                <span className="text-sm font-medium">Direito de Resposta</span>
+              </Link>
+            </div>
           </div>
         </article>
       </div>

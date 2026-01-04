@@ -15,7 +15,7 @@ export default function NewsletterPage() {
   const t = useTranslations('NewsletterPage');
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-zinc-950 text-white selection:bg-emerald-500/30">
+    <div className="bg-background text-foreground relative min-h-screen overflow-hidden selection:bg-emerald-500/30">
       {/* Background Effects */}
       <div className="absolute top-0 left-1/2 -ml-160 h-160 w-7xl bg-emerald-500/10 blur-[100px]" />
       <div className="absolute right-0 bottom-0 h-160 w-7xl bg-indigo-500/10 blur-[100px]" />
@@ -32,37 +32,37 @@ export default function NewsletterPage() {
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-5xl xl:text-6xl">
                 {t('title')}
               </h1>
-              <p className="text-lg text-zinc-400 sm:text-xl">{t('subtitle')}</p>
+              <p className="text-muted-foreground text-lg sm:text-xl">{t('subtitle')}</p>
             </div>
 
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900">
+                <div className="border-border bg-card mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border">
                   <TrendingUp className="h-5 w-5 text-emerald-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">{t('benefits.analysisTitle')}</h3>
-                  <p className="text-sm text-zinc-400">{t('benefits.analysisDesc')}</p>
+                  <h3 className="text-foreground font-semibold">{t('benefits.analysisTitle')}</h3>
+                  <p className="text-muted-foreground text-sm">{t('benefits.analysisDesc')}</p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900">
+                <div className="border-border bg-card mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border">
                   <Zap className="h-5 w-5 text-amber-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">{t('benefits.exclusiveTitle')}</h3>
-                  <p className="text-sm text-zinc-400">{t('benefits.exclusiveDesc')}</p>
+                  <h3 className="text-foreground font-semibold">{t('benefits.exclusiveTitle')}</h3>
+                  <p className="text-muted-foreground text-sm">{t('benefits.exclusiveDesc')}</p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900">
+                <div className="border-border bg-card mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border">
                   <CheckCircle2 className="h-5 w-5 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">{t('benefits.communityTitle')}</h3>
-                  <p className="text-sm text-zinc-400">{t('benefits.communityDesc')}</p>
+                  <h3 className="text-foreground font-semibold">{t('benefits.communityTitle')}</h3>
+                  <p className="text-muted-foreground text-sm">{t('benefits.communityDesc')}</p>
                 </div>
               </div>
             </div>
@@ -70,14 +70,14 @@ export default function NewsletterPage() {
 
           {/* Right Column: Form Card */}
           <div className="w-full max-w-md lg:mx-auto">
-            <Card className="border-zinc-800 bg-zinc-900/50 shadow-2xl backdrop-blur-sm">
+            <Card className="border-border bg-card/50 shadow-2xl backdrop-blur-sm">
               <CardContent className="p-8">
                 <div className="mb-8">
-                  <h2 className="mb-2 text-xl font-semibold text-white">{t('subscribe')}</h2>
-                  <p className="text-sm text-zinc-400">{t('subtitle')}</p>
+                  <h2 className="text-foreground mb-2 text-xl font-semibold">{t('subscribe')}</h2>
+                  <p className="text-muted-foreground text-sm">{t('subtitle')}</p>
                 </div>
                 <NewsletterForm />
-                <p className="mt-4 text-center text-xs text-zinc-500">
+                <p className="text-muted-foreground mt-4 text-center text-xs">
                   {t.raw
                     ? t
                         .raw('error')

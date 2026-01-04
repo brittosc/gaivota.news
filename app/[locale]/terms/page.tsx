@@ -58,7 +58,7 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            Legal Status: Active
+            {t('status')}
           </div>
 
           <h1 className="from-foreground to-foreground/50 mt-8 bg-linear-to-br bg-clip-text text-5xl font-black tracking-tighter text-transparent sm:text-6xl md:text-7xl">
@@ -68,7 +68,7 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
           <div className="text-muted-foreground mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <div className="bg-background/50 flex items-center gap-2 rounded-lg border px-3 py-1 text-sm backdrop-blur-sm">
               <Gavel className="h-4 w-4" />
-              <span>Jurisdiction: BR</span>
+              <span>{t('jurisdiction')}</span>
             </div>
             <div className="bg-background/50 flex items-center gap-2 rounded-lg border px-3 py-1 text-sm backdrop-blur-sm">
               <Activity className="h-4 w-4" />
@@ -123,18 +123,18 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
             <div className="flex items-center justify-center gap-2">
               <ShieldCheck className="text-muted-foreground h-5 w-5" />
               <span className="text-muted-foreground text-sm font-medium tracking-widest uppercase">
-                Compliance Verification
+                {t('compliance.title')}
               </span>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              {['Digital Signature', 'Time-Stamped', 'Version Controlled', 'Public Ledger'].map(
+              {['digitalSignature', 'timeStamped', 'versionControlled', 'publicLedger'].map(
                 item => (
                   <div
                     key={item}
                     className="bg-muted/20 text-muted-foreground flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase backdrop-blur-sm"
                   >
                     <CheckCircle2 className="h-3 w-3" />
-                    {item}
+                    {t(`compliance.items.${item}`)}
                   </div>
                 )
               )}

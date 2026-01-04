@@ -161,6 +161,17 @@
         "title": "6. Contacto",
         "content": "Para preguntas relacionadas con estos términos, contáctenos a través de nuestros canales de soporte oficiales."
       }
+    },
+    "status": "Vigente",
+    "jurisdiction": "Jurisdicción: BR",
+    "compliance": {
+      "title": "Verificación de Cumplimiento",
+      "items": {
+        "digitalSignature": "Firma Digital",
+        "timeStamped": "Estampado de Tiempo",
+        "versionControlled": "Control de Versiones",
+        "publicLedger": "Registro Público"
+      }
     }
   },
   "Components": {
@@ -173,6 +184,7 @@
       "createPost": "Crear Publicación",
       "team": "Equipo",
       "supporters": "Colaboradores",
+      "users": "Usuarios",
       "likes": "Me gusta",
       "newsletter": "Boletín",
       "files": "Archivos",

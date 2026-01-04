@@ -158,6 +158,17 @@
         "title": "6. الاتصال",
         "content": "للأسئلة المتعلقة بهذه الشروط، يرجى الاتصال بنا من خلال قنوات الدعم الرسمية لدينا."
       }
+    },
+    "status": "نشط",
+    "jurisdiction": "الاختصاص القضائي: BR",
+    "compliance": {
+      "title": "التحقق من الامتثال",
+      "items": {
+        "digitalSignature": "التوقيع الرقمي",
+        "timeStamped": "ختم زمني",
+        "versionControlled": "التحكم في الإصدار",
+        "publicLedger": "السجل العام"
+      }
     }
   },
   "Components": {
@@ -170,6 +181,7 @@
       "createPost": "إنشاء منشور",
       "team": "المتعاونون",
       "supporters": "الداعمون",
+      "users": "المستخدمون",
       "likes": "الإعجابات",
       "newsletter": "النشرة الإخبارية",
       "files": "الملفات",

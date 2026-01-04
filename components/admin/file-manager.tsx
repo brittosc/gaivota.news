@@ -180,15 +180,40 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     setIsUploading(true);
     let successCount = 0;
 
-    // Use standard for loop to handle async/await in sequence if needed, or keeping existing structure
+    // Use standard for loop to handle async/await in sequence
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
+
+      // Encrypt the file
+      let fileToUpload: File | Blob = file;
+      try {
+        // Dynamically import to avoid server-side issues if any (though this is 'use client')
+        const { encryptFile } = await import('@/lib/encryption');
+        const { blob } = await encryptFile(file);
+        fileToUpload = blob;
+        toast.info(`Criptografando ${file.name}...`);
+      } catch (e) {
+        console.error('Encryption failed', e);
+        toast.error(`Falha ao criptografar ${file.name}, enviando original.`);
+      }
+
       const nameParts = file.name.split('.');
       const fileExt = nameParts.length > 1 ? nameParts.pop() : '';
       const uniqueId = Math.random().toString(36).substring(2);
+      // Add .enc extension or keep original to indicate encryption?
+      // User asked to "encrypt upload", normally we keep extension for recognition or change to .enc
+      // I will keep extension but maybe append .enc if I wanted to be strict.
+      // For compatibility with the viewer, keeping original extension might break preview if it's encrypted binary!
+      // The user want "Criptografa". If I encrypt it, it WON'T be viewable in the browser directly anymore!
+      // That's the definition of encryption.
+      // So the "Preview" will fail. This is expected behavior for "Secure/Encrypted" storage.
       const fileName = `${Date.now()}-${uniqueId}.${fileExt}`;
 
-      const { error } = await supabase.storage.from(BUCKETS[activeTab]).upload(fileName, file);
+      const { error } = await supabase.storage
+        .from(BUCKETS[activeTab])
+        .upload(fileName, fileToUpload, {
+          contentType: 'application/octet-stream', // Force binary type
+        });
 
       if (error) {
         toast.error(t('toastErrorUploading', { fileName: file.name, message: error.message }));
@@ -258,9 +283,29 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     }
   };
 
-  const openPreview = (file: FileObject) => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const openPreview = async (file: FileObject) => {
     setPreviewFile(file);
     setPreviewOpen(true);
+    setPreviewUrl(null);
+
+    const originalUrl = getPublicUrl(file.name);
+
+    try {
+      const { decryptFile } = await import('@/lib/encryption');
+      const res = await fetch(originalUrl);
+      if (!res.ok) throw new Error('Fetch failed');
+      const blob = await res.blob();
+
+      const decryptedBlob = await decryptFile(blob);
+      const url = URL.createObjectURL(decryptedBlob);
+      setPreviewUrl(url);
+    } catch (_) {
+      // Helper: If decryption fails, it's likely a non-encrypted file.
+      // console.debug('Decryption failed, using original content.', e);
+      setPreviewUrl(originalUrl);
+    }
   };
 
   return (
@@ -668,7 +713,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                 {activeTab === 'images' ? (
                   <div className="relative h-full min-h-[50vh] w-full">
                     <Image
-                      src={getPublicUrl(previewFile.name)}
+                      src={previewUrl || getPublicUrl(previewFile.name)}
                       alt={previewFile.name}
                       fill
                       className="object-contain"
@@ -678,7 +723,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                 ) : activeTab === 'video' ? (
                   <div className="w-full max-w-3xl">
                     <CustomVideoPlayer
-                      src={getPublicUrl(previewFile.name)}
+                      src={previewUrl || getPublicUrl(previewFile.name)}
                       className="aspect-video w-full"
                     />
                   </div>
@@ -688,7 +733,10 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
                       <Music className="text-primary mx-auto mb-4 h-16 w-16" />
                       <h3 className="mb-6 truncate text-lg font-medium">{previewFile.name}</h3>
                     </div>
-                    <CustomAudioPlayer src={getPublicUrl(previewFile.name)} className="w-full" />
+                    <CustomAudioPlayer
+                      src={previewUrl || getPublicUrl(previewFile.name)}
+                      className="w-full"
+                    />
                   </div>
                 ) : (
                   <div className="p-12 text-center">

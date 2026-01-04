@@ -161,6 +161,17 @@
         "title": "6. Contact",
         "content": "Pour toute question relative à ces conditions, veuillez nous contacter via nos canaux d'assistance officiels."
       }
+    },
+    "status": "En vigueur",
+    "jurisdiction": "Juridiction: BR",
+    "compliance": {
+      "title": "Vérification de Conformité",
+      "items": {
+        "digitalSignature": "Signature Numérique",
+        "timeStamped": "Horodaté",
+        "versionControlled": "Contrôle de Version",
+        "publicLedger": "Registre Public"
+      }
     }
   },
   "Components": {
@@ -173,6 +184,7 @@
       "createPost": "Créer un Article",
       "team": "Collaborateurs",
       "supporters": "Supporters",
+      "users": "Utilisateurs",
       "likes": "J'aime",
       "newsletter": "Newsletter",
       "files": "Fichiers",

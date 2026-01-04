@@ -158,6 +158,17 @@
         "title": "6. Contato",
         "content": "Para questões relacionadas a estes termos, entre em contato através dos nossos canais oficiais de atendimento."
       }
+    },
+    "status": "Vigente",
+    "jurisdiction": "Jurisdição: BR",
+    "compliance": {
+      "title": "Verificacão de Conformidade",
+      "items": {
+        "digitalSignature": "Assinatura Digital",
+        "timeStamped": "Com Carimbo de Tempo",
+        "versionControlled": "Versão Controlada",
+        "publicLedger": "Registro Público"
+      }
     }
   },
   "Components": {
@@ -170,6 +181,7 @@
       "createPost": "Criar Post",
       "team": "Colaboradores",
       "supporters": "Apoiadores",
+      "users": "Usuários",
       "likes": "Curtidas",
       "newsletter": "Newsletter",
       "files": "Arquivos",
