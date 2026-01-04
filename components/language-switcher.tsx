@@ -1,14 +1,14 @@
 /**
  * @file language-switcher.tsx
  * @directory gaivota.news\components
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 29/12/2025 06:13
  *
  * @description
  * Descrição objetiva da responsabilidade do arquivo
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *
@@ -35,7 +35,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 const languageConfig: Record<Locale, { name: string; flagUrl: string; fallback: string }> = {
-  br: {
+  'pt-BR': {
     name: 'Português (Brasil)',
     flagUrl: 'https://flagcdn.com/w80/br.png',
     fallback: 'BR',

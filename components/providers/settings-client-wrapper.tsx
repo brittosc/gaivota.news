@@ -1,14 +1,14 @@
 /**
  * @file settings-client-wrapper.tsx
  * @directory gaivota.news\components\providers
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 28/12/2025 14:08
  *
  * @description
  * Descrição objetiva da responsabilidade do arquivo
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *

@@ -1,7 +1,7 @@
 /**
  * @file database.types.ts
  * @directory gaivota.news\lib
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 21/12/2025 13:33
  */

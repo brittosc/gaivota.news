@@ -50,6 +50,16 @@ export async function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/supporter" className="hover:text-primary transition-colors">
+                    {t('becomeSupporter')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/newsletter" className="hover:text-primary transition-colors">
+                    {t('newsletter')}
+                  </Link>
+                </li>
+                <li>
                   <Link href="/admin" className="hover:text-primary transition-colors">
                     {t('admin')}
                   </Link>

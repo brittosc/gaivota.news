@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
   if (acceptLanguage.toLowerCase().includes('pt')) {
     const headers = new Headers(request.headers);
-    headers.set('accept-language', `br,${acceptLanguage}`);
+    headers.set('accept-language', `pt-BR,${acceptLanguage}`);
     modifiedRequest = new NextRequest(request.url, {
       headers,
       method: request.method,

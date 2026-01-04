@@ -99,10 +99,72 @@
     "goHome": "Zurück zur Startseite"
   },
   "Privacy": {
-    "title": "Datenschutzrichtlinie"
+    "title": "Datenschutzerklärung",
+    "lastUpdated": "Zuletzt aktualisiert: {date}",
+    "intro": "Bei Gaivota News schätzen wir Transparenz und Vertrauen. Diese Datenschutzerklärung beschreibt, wie wir Ihre persönlichen Daten sammeln, verwenden und schützen, um die Einhaltung der Datenschutzbestimmungen zu gewährleisten.",
+    "sections": {
+      "collection": {
+        "title": "1. Datenerfassung",
+        "content": "Wir sammeln Informationen, die Sie uns direkt zur Verfügung stellen, wie Name und E-Mail-Adresse bei der Anmeldung zu unserem Newsletter, sowie automatisch erfasste Daten wie IP-Adresse und Browsertyp, um Ihr Surferlebnis zu verbessern."
+      },
+      "usage": {
+        "title": "2. Nutzung der Informationen",
+        "content": "Wir verwenden Ihre Daten, um Inhalte zu personalisieren, relevante Updates zu senden (sofern genehmigt), Abonnements zu bearbeiten und die Leistung der Website zu verbessern. Wir verkaufen Ihre persönlichen Daten nicht an Dritte."
+      },
+      "cookies": {
+        "title": "3. Cookies und ähnliche Technologien",
+        "content": "Wir verwenden Cookies, um zu verstehen, wie Sie mit unseren Inhalten interagieren. Sie können Ihre Cookie-Einstellungen jederzeit in Ihren Browsereinstellungen verwalten."
+      },
+      "security": {
+        "title": "4. Datensicherheit",
+        "content": "Wir implementieren robuste Sicherheitsmaßnahmen, um Ihre Daten vor unbefugtem Zugriff, Änderung oder Weitergabe zu schützen. Wir verwenden branchenübliche Verschlüsselungsprotokolle."
+      },
+      "rights": {
+        "title": "5. Ihre Rechte",
+        "content": "Sie haben das Recht, Zugang, Korrektur oder Löschung Ihrer persönlichen Daten zu verlangen. Um diese Rechte auszuüben, kontaktieren Sie uns bitte über unsere offiziellen Kanäle."
+      },
+      "contact": {
+        "title": "6. Kontakt",
+        "content": "Wenn Sie Fragen oder Bedenken bezüglich unserer Datenschutzerklärung haben, kontaktieren Sie uns bitte unter: datenschutz@gaivotanews.com."
+      }
+    },
+    "footer": {
+      "gdpr": "GDPR-konform",
+      "lgpd": "LGPD-konform",
+      "encryption": "End-to-End-Verschlüsselung",
+      "monitoring": "24/7-Überwachung"
+    }
   },
   "Terms": {
-    "title": "Nutzungsbedingungen"
+    "title": "Nutzungsbedingungen",
+    "lastUpdated": "Zuletzt aktualisiert: {date}",
+    "intro": "Willkommen bei Gaivota News. Durch den Zugriff auf unser Portal erklären Sie sich mit diesen Nutzungsbedingungen, allen geltenden Gesetzen und Vorschriften einverstanden und stimmen zu, dass Sie für die Einhaltung aller geltenden lokalen Gesetze verantwortlich sind.",
+    "sections": {
+      "acceptance": {
+        "title": "1. Annahme der Bedingungen",
+        "content": "Durch den Zugriff auf diese Website erklären Sie sich damit einverstanden, an diese Nutzungsbedingungen sowie alle geltenden Gesetze und Vorschriften gebunden zu sein. Wenn Sie mit einem dieser Bedingungen nicht einverstanden sind, ist Ihnen die Nutzung oder der Zugriff auf diese Website untersagt."
+      },
+      "mission": {
+        "title": "2. Mission und redaktionelle Unabhängigkeit",
+        "content": "Gaivota News ist ein unabhängiges Portal, das der Wahrheit verpflichtet ist. Wir haben keine politischen oder wirtschaftlichen Bindungen, die unsere Unparteilichkeit beeinträchtigen. Unsere Verpflichtung gilt der Gemeinschaft und der Genauigkeit der Fakten."
+      },
+      "intellectual": {
+        "title": "3. Geistiges Eigentum",
+        "content": "Der Inhalt, das Layout, das Design und die Grafiken dieser Website sind urheberrechtlich und geistig geschützt. Die unbefugte Nutzung von Material kann gegen Urheber- und Markenrechte verstoßen."
+      },
+      "responsibility": {
+        "title": "4. Benutzerverantwortung",
+        "content": "Der Benutzer erklärt sich damit einverstanden, die Website ethisch zu nutzen. Es ist untersagt, die Website zur Verbreitung von illegalen, beleidigenden, verleumderischen oder die Rechte Dritter verletzenden Inhalten zu nutzen."
+      },
+      "modifications": {
+        "title": "5. Änderungen",
+        "content": "Gaivota News kann diese Nutzungsbedingungen jederzeit ohne Vorankündigung überarbeiten. Durch die Nutzung dieser Website erklären Sie sich damit einverstanden, an die aktuelle Version dieser Nutzungsbedingungen gebunden zu sein."
+      },
+      "contact": {
+        "title": "6. Kontakt",
+        "content": "Bei Fragen zu diesen Bedingungen kontaktieren Sie uns bitte über unsere offiziellen Support-Kanäle."
+      }
+    }
   },
   "Components": {
     "Sidebar": {
@@ -128,6 +190,8 @@
       "admin": "Admin-Bereich",
       "privacy": "Datenschutzrichtlinie",
       "terms": "Nutzungsbedingungen",
+      "becomeSupporter": "Werden Sie Unterstützer",
+      "newsletter": "Newsletter",
       "rights": "Alle Rechte vorbehalten."
     },
     "Newsletter": {

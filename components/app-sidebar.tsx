@@ -1,14 +1,14 @@
 /**
  * @file app-sidebar.tsx
  * @directory gaivota.news\components
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 28/12/2025 14:09
  *
  * @description
  * Descrição objetiva da responsabilidade do arquivo
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *
@@ -69,6 +69,8 @@ const sidebarSections = [
 ];
 
 import { useTranslations } from 'next-intl';
+import { Separator } from './ui/separator';
+import Image from 'next/image';
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -123,6 +125,10 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarContent className="bg-sidebar p-4 font-bold">
+        <Link href="/">
+          <Image src="/logo_text.png" alt="Logo" width={156} height={156} className="mx-auto" />
+        </Link>
+        <Separator />
         {sidebarSections.map(({ title, links }) => (
           <SidebarGroup key={title} className="text-muted-foreground p-4 text-sm">
             <span className="mb-2 block font-medium">{getLabel(title)}</span>

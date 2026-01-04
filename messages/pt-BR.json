@@ -1,0 +1,607 @@
+{
+  "HomePage": {
+    "title": "Olá!",
+    "welcome": "Bem-vindo ao template de elite.",
+    "modalMessage": "Bem-vindo ao sistema internacionalizado"
+  },
+  "Common": {
+    "tryAgain": "Tentar novamente",
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro.",
+    "months": "meses",
+    "days": "dias",
+    "hours": "horas",
+    "minutes": "minutos",
+    "seconds": "segundos"
+  },
+  "Settings": {
+    "title": "Configurações",
+    "subtitle": "Personalize a sua experiência no sistema.",
+    "darkMode": ["Modo Escuro", "Alternar entre temas claro e escuro."],
+    "visualNotifications": ["Notificações Visuais", "Exibir ou ocultar balões de alerta (toasts)."],
+    "soundEffects": ["Efeitos Sonoros", "Tocar sons em notificações e ações."],
+    "languageSelect": ["Idioma do Sistema", "Escolha o idioma preferencial para a interface."]
+  },
+  "Offline": {
+    "title": "Você está offline",
+    "subtitle": "Parece que você perdeu a conexão com a internet. Verifique sua rede e tente carregar a página novamente."
+  },
+  "Profile": {
+    "account": "Conta",
+    "defaultName": "Usuário",
+    "provider": "Provedor",
+    "userAuth": "Usuário autenticado",
+    "logout": "Sair da conta"
+  },
+  "login": {
+    "welcomeBack": "Bem-vindo de volta",
+    "description": "Acesse sua conta de forma rápida e segura",
+    "signInWithGoogle": "Entrar com Google",
+    "termsNotice": "Ao continuar, você concorda com nossos",
+    "termsOfUse": "Termos de Uso",
+    "and": "e",
+    "privacyPolicy": "Política de Privacidade.",
+    "marketingTitle": "Jornalismo que transforma",
+    "marketingSubtitle": "Descubra análises profundas, reportagens exclusivas e uma comunidade que valoriza a verdade.",
+    "feature1": "Acesso ilimitado a artigos e colunas",
+    "feature2": "Newsletter matinal exclusiva",
+    "feature3": "Webinários e debates com especialistas"
+  },
+  "sidebar": {
+    "management": {
+      "title": "Gestão",
+      "administration": "Administração",
+      "indicators": "Indicadores",
+      "teams": "Equipes"
+    },
+    "operational": {
+      "title": "Operacional",
+      "operations": "Operações",
+      "processes": "Processos",
+      "maintenance": "Manutenção"
+    },
+    "system": {
+      "title": "Sistema",
+      "logs": "Logs",
+      "settings": "Configurações",
+      "permissions": "Permissoes"
+    }
+  },
+  "modal": {
+    "defaults": {
+      "title": "Aviso do Sistema",
+      "message": "Esta é uma mensagem de informação.",
+      "button": "Entendido"
+    },
+    "settings": {
+      "common": {
+        "close": "Fechar"
+      },
+      "title": "Configurações Salvas",
+      "message": "Suas preferências de som e notificações foram atualizadas com sucesso em todos os seus dispositivos."
+    }
+  },
+  "Error": {
+    "title": "Algo deu errado!",
+    "description": "Não conseguimos processar sua solicitação no momento. Por favor, tente novamente mais tarde.",
+    "tryAgain": "Tentar novamente",
+    "goHome": "Ir para o início"
+  },
+  "NotFound": {
+    "title": "Página não encontrada",
+    "description": "Ops! Parece que você se perdeu no caminho. A página não existe, foi comida pelo cachorro, enterrada no quintal e ninguém lembra onde.",
+    "goHome": "Voltar ao início"
+  },
+  "Privacy": {
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: {date}",
+    "intro": "Na Gaivota News, valorizamos a transparência e a confiança. Esta Política de Privacidade descreve como coletamos, usamos e protegemos suas informações pessoais, garantindo conformidade com a Lei Geral de Proteção de Dados (LGPD).",
+    "sections": {
+      "collection": {
+        "title": "1. Coleta de Informações",
+        "content": "Coletamos informações que você nos fornece diretamente, como nome e e-mail ao assinar nossa newsletter, e dados coletados automaticamente, como endereço IP e tipo de navegador, para melhorar sua experiência de navegação."
+      },
+      "usage": {
+        "title": "2. Uso das Informações",
+        "content": "Utilizamos seus dados para personalizar o conteúdo, enviar atualizações relevantes (se autorizado), processar assinaturas e melhorar a performance do nosso site. Não vendemos suas informações pessoais para terceiros."
+      },
+      "cookies": {
+        "title": "3. Cookies e Tecnologias Semelhantes",
+        "content": "Usamos cookies para entender como você interage com nosso conteúdo. Você pode gerenciar suas preferências de cookies nas configurações do seu navegador a qualquer momento."
+      },
+      "security": {
+        "title": "4. Segurança de Dados",
+        "content": "Implementamos medidas de segurança robustas para proteger seus dados contra acesso não autorizado, alteração ou divulgação. Utilizamos protocolos de criptografia padrão da indústria."
+      },
+      "rights": {
+        "title": "5. Seus Direitos",
+        "content": "Você tem o direito de solicitar o acesso, correção ou exclusão de seus dados pessoais. Para exercer esses direitos, entre em contato conosco através dos canais oficiais."
+      },
+      "contact": {
+        "title": "6. Fale Conosco",
+        "content": "Se tiver dúvidas ou preocupações sobre nossa política de privacidade, entre em contato pelo e-mail: privacidade@gaivotanews.com."
+      }
+    },
+    "footer": {
+      "gdpr": "Pronto para GDPR",
+      "lgpd": "Conforme LGPD",
+      "encryption": "Criptografia Ponta-a-Ponta",
+      "monitoring": "Monitoramento 24/7"
+    }
+  },
+  "Terms": {
+    "title": "Termos de Uso",
+    "lastUpdated": "Última atualização: {date}",
+    "intro": "Bem-vindo ao Gaivota News. Ao acessar nosso portal, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis, e concorda que é responsável pelo cumprimento de todas as leis locais aplicáveis.",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceitação dos Termos",
+        "content": "Ao acessar este site, você concorda em estar vinculado a estes Termos e Condições de Uso, todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, está proibido de usar ou acessar este site."
+      },
+      "mission": {
+        "title": "2. Missão e Isenção Editorial",
+        "content": "O Gaivota News é um portal independente comprometido com a verdade. Não possuímos vínculos políticos ou econômicos que comprometam nossa isenção. Nosso compromisso é com a comunidade e com a precisão dos fatos."
+      },
+      "intellectual": {
+        "title": "3. Propriedade Intelectual",
+        "content": "O conteúdo, layout, design e gráficos deste site são protegidos por direitos autorais e de propriedade intelectual. O uso não autorizado de qualquer material pode violar leis de direitos autorais e marcas registradas."
+      },
+      "responsibility": {
+        "title": "4. Responsabilidade do Usuário",
+        "content": "O usuário compromete-se a usar o site de forma ética. É proibido usar o site para disseminar conteúdo ilegal, ofensivo, difamatório ou que viole direitos de terceiros."
+      },
+      "modifications": {
+        "title": "5. Modificações",
+        "content": "O Gaivota News pode revisar estes termos de serviço a qualquer momento, sem aviso prévio. Ao usar este site, você concorda em estar vinculado à versão atual desses termos de serviço."
+      },
+      "contact": {
+        "title": "6. Contato",
+        "content": "Para questões relacionadas a estes termos, entre em contato através dos nossos canais oficiais de atendimento."
+      }
+    }
+  },
+  "Components": {
+    "Sidebar": {
+      "adminTitle": "Administração",
+      "communityTitle": "Comunidade",
+      "siteTitle": "Site",
+      "dashboard": "Dashboard",
+      "posts": "Posts",
+      "createPost": "Criar Post",
+      "team": "Colaboradores",
+      "supporters": "Apoiadores",
+      "likes": "Curtidas",
+      "newsletter": "Newsletter",
+      "files": "Arquivos",
+      "home": "Página Inicial",
+      "logout": "Sair"
+    },
+    "Footer": {
+      "description": "Notícias e atualizações sobre o nosso município.",
+      "linksTitle": "Links Úteis",
+      "legalTitle": "Legal",
+      "home": "Página Inicial",
+      "admin": "Área Administrativa",
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Uso",
+      "becomeSupporter": "Seja um Apoiador",
+      "newsletter": "Newsletter",
+      "rights": "Todos os direitos reservados."
+    },
+    "Newsletter": {
+      "title": "Receba as novidades",
+      "label": "Newsletter",
+      "description": "Inscreva-se em nossa newsletter para receber os últimos posts e atualizações diretamente no seu e-mail.",
+      "shortDescription": "Receba as últimas notícias diretamente no seu e-mail.",
+      "placeholder": "seu@email.com",
+      "subscribe": "Inscrever-se",
+      "subscribing": "Inscrevendo...",
+      "success": "Inscrição realizada com sucesso!",
+      "error": "Erro ao se inscrever",
+      "invalidEmail": "Por favor, insira um e-mail válido.",
+      "alreadySubscribed": "Este e-mail já está inscrito!"
+    },
+    "Editor": {
+      "undo": "Desfazer",
+      "redo": "Refazer",
+      "fontSize": "Tamanho da Fonte",
+      "letterSpacing": "Espaçamento",
+      "size": "Tamanho",
+      "spacing": "Espaçamento",
+      "heading1": "Título 1",
+      "heading2": "Título 2",
+      "heading3": "Título 3",
+      "bold": "Negrito",
+      "italic": "Itálico",
+      "underline": "Sublinhado",
+      "strikethrough": "Tachado",
+      "inlineCode": "Código",
+      "highlight": "Destacar",
+      "textColor": "Cor do Texto",
+      "alignLeft": "Alinhar à Esquerda",
+      "alignCenter": "Centralizar",
+      "alignRight": "Alinhar à Direita",
+      "justify": "Justificado",
+      "bulletList": "Lista de Marcadores",
+      "orderedList": "Lista Numerada",
+      "outdent": "Diminuir Recuo",
+      "indent": "Aumentar Recuo",
+      "link": "Inserir Link",
+      "image": "Inserir Imagem",
+      "gallery": "Galeria de Imagens",
+      "youtube": "Inserir YouTube",
+      "audio": "Inserir Áudio",
+      "video": "Inserir Vídeo",
+      "file": "Inserir Arquivo",
+      "horizontalRule": "Linha Horizontal",
+      "subscript": "Subscrito",
+      "superscript": "Sobrescrito",
+      "preview": "Pré-visualizar",
+      "edit": "Editar",
+      "openInNewTab": "Abrir em nova aba",
+      "url": "URL",
+      "youtubeUrl": "URL do YouTube",
+      "modalTitleLink": "Inserir Link",
+      "modalTitleImage": "Inserir Imagem",
+      "modalTitleGallery": "Inserir Galeria",
+      "modalTitleAudio": "Inserir Áudio",
+      "modalTitleYoutube": "Inserir YouTube",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    }
+  },
+  "Admin": {
+    "Dashboard": {
+      "title": "Dashboard",
+      "newPost": "Novo Post",
+      "totalPosts": "Total de Posts",
+      "subscribers": "Assinantes",
+      "totalLikes": "Total de Curtidas",
+      "viewAllPosts": "Ver todos os posts",
+      "manageNewsletter": "Gerenciar newsletter",
+      "viewLikesHistory": "Ver histórico de curtidas",
+      "accessRestricted": "Acesso Restrito",
+      "accessRestrictedMessage": "Você não possui as permissões necessárias para visualizar este painel. Esta área é exclusiva para administradores e editores da equipe.",
+      "backHome": "Voltar ao Início",
+      "overview": "Visão Geral",
+      "overviewTitle": "Visão Geral",
+      "overviewSubtitle": "Mostrando resultados dos últimos",
+      "last3Months": "Últimos 3 meses",
+      "last30Days": "Últimos 30 dias",
+      "last7Days": "Últimos 7 dias",
+      "selectPeriod": "Selecione o período",
+      "newLikes": "Novas Curtidas",
+      "newPosts": "Novos Posts",
+      "calendar": "Calendário"
+    },
+    "Posts": {
+      "title": "Todos os Posts",
+      "newPost": "Novo Post",
+      "restrictedAccess": "Acesso Restrito",
+      "restrictedMessage": "Você não tem permissão para acessar esta página.",
+      "backHome": "Voltar para Início",
+      "all": "Todos",
+      "published": "Publicados",
+      "draft": "Rascunhos",
+      "archived": "Arquivados",
+      "tableTitle": "Título",
+      "tableSlug": "Slug",
+      "tableStatus": "Status",
+      "tableActions": "Ações",
+      "itemsPerPage": "Itens por página:",
+      "selected": "selecionado(s)",
+      "delete": "Excluir",
+      "confirmDeleteTitle": "Tem certeza?",
+      "confirmDeleteDescription": "Esta ação não pode ser desfeita. Isso excluirá permanentemente os posts selecionados.",
+      "cancel": "Cancelar",
+      "deleting": "Excluindo...",
+      "yesDelete": "Sim, excluir",
+      "viewPost": "Ver Post",
+      "edit": "Editar",
+      "hide": "Ocultar",
+      "publish": "Publicar",
+      "archive": "Arquivar",
+      "restore": "Restaurar",
+      "sendEmail": "Enviar Email",
+      "resendEmail": "Reenviar Email",
+      "newsletterSent": "Newsletter enviada!",
+      "postsDeleted": "Posts excluídos!",
+      "postDeleted": "Post excluído!",
+      "postHidden": "Post ocultado",
+      "postPublished": "Post publicado",
+      "postArchived": "Post arquivado",
+      "postRestored": "Post restaurado",
+      "titles": "Título",
+      "slugs": "Slug (URL)",
+      "slugsDescription": "URL amigável para o post.",
+      "slugsPlaceholder": "Slug (URL)",
+      "images": "Imagem",
+      "imageDescription": "Imagem do post.",
+      "imageButton": "Adicionar Imagem",
+      "author": "Nome do Autor (Opcional)",
+      "authorDescription": "Se preenchido, este nome aparecerá ao lado da data no post.",
+      "authorPlaceholder": "Nome do Autor",
+      "content": "Conteúdo",
+      "saveWithDraft": "Salvar como Rascunho",
+      "saveWithPublish": "Salvar e Publicar",
+      "saving": "Salvando...",
+      "saveChanges": "Atualizar Post"
+    },
+    "Likes": {
+      "title": "Histórico de Curtidas",
+      "subtitle": "Veja quem curtiu seus posts.",
+      "cardTitle": "Curtidas",
+      "recentLikes": "Mostrando as últimas {count} curtidas.",
+      "tableUser": "Usuário",
+      "tablePost": "Post",
+      "tableDate": "Data",
+      "noLikes": "Nenhuma curtida encontrada.",
+      "unknownUser": "Usuário Desconhecido",
+      "postDeleted": "Post apagado",
+      "selected": "selecionado(s)",
+      "delete": "Excluir",
+      "confirmDeleteTitle": "Tem certeza?",
+      "confirmDeleteDesc": "Esta ação removerá permanentemente as {count} curtidas selecionadas.",
+      "cancel": "Cancelar",
+      "deleting": "Removendo...",
+      "yesDelete": "Sim, remover"
+    },
+    "Newsletter": {
+      "title": "Gerenciar Assinantes",
+      "description": "Veja e gerencie todos os assinantes da newsletter.",
+      "newCampaign": "Nova Campanha",
+      "newCampaignTitle": "Nova Campanha",
+      "newCampaignDesc": "Envie um email personalizado para todos os assinantes da newsletter.",
+      "tableSubscriber": "Assinante",
+      "tableEmail": "Email",
+      "tableDate": "Data Inscrição",
+      "tableStatus": "Status",
+      "tableActions": "Ações",
+      "statusActive": "Ativo",
+      "statusInactive": "Inativo",
+      "selected": "selecionado(s)",
+      "delete": "Excluir",
+      "confirmDeleteTitle": "Tem certeza?",
+      "confirmDeleteDescription": "Esta ação excluirá permanentemente os assinantes selecionados.",
+      "cancel": "Cancelar",
+      "deleting": "Excluindo...",
+      "yesDelete": "Sim, excluir",
+      "guest": "Convidado",
+      "deactivate": "Desativar",
+      "activate": "Ativar",
+      "removeSubscriberTitle": "Remover Assinante?",
+      "removeSubscriberDescription": "Tem certeza que deseja remover {email}?",
+      "removing": "Removendo...",
+      "yesRemove": "Sim, remover",
+      "messageContent": "Conteúdo da Mensagem",
+      "sendToAll": "Enviar para Todos Assinantes",
+      "back": "Voltar",
+      "noSubscribers": "Nenhum assinante encontrado.",
+      "subject": "Assunto do Email",
+      "subjectPlaceholder": "Ex: Novidades da semana, Aviso Importante...",
+      "send": "Enviar para todos os assinantes",
+      "sending": "Enviando...",
+      "sent": "Enviado!"
+    },
+    "Supporters": {
+      "title": "Gerenciar Apoiadores",
+      "newSupporter": "Novo Apoiador",
+      "tableLogo": "Logo",
+      "tableName": "Nome",
+      "tableLink": "Link",
+      "tableStatus": "Status",
+      "tableActions": "Ações",
+      "statusActive": "Ativo",
+      "statusInactive": "Inativo",
+      "settingsTitle": "Configurações do Carrossel",
+      "settingsDescription": "Ajuste a velocidade e exibição dos apoiadores.",
+      "settingsSpeed": "Velocidade (segundos)",
+      "settingsMaxItems": "Máximo de Itens",
+      "settingsHelp": "Quanto maior o valor, mais lenta a animação.",
+      "saving": "Salvando...",
+      "save": "Salvar",
+      "toastSettingsUpdated": "Configurações atualizadas!",
+      "toastErrorUpdatingSettings": "Erro ao atualizar configurações.",
+      "noSupporters": "Nenhum apoiador encontrado.",
+      "selected": "selecionado(s)",
+      "delete": "Excluir",
+      "confirmDeleteTitle": "Tem certeza?",
+      "confirmDeleteDesc": "Esta ação excluirá permanentemente os {count} apoiadores selecionados.",
+      "cancel": "Cancelar",
+      "deleting": "Excluindo...",
+      "yesDelete": "Sim, excluir",
+      "deleteSupporterDesc": "Esta ação não pode ser desfeita. Isso excluirá permanentemente o apoiador.",
+      "toastErrorDeleting": "Erro ao deletar: {message}",
+      "toastDeleteSuccess": "Apoiadores deletados com sucesso!",
+      "editSupporter": "Editar Apoiador",
+      "labelName": "Nome",
+      "labelLogo": "Logo",
+      "labelLink": "Link",
+      "labelActive": "Ativo",
+      "settingsSpeedHelp": "Quanto maior o valor, mais lenta a animação."
+    },
+    "Team": {
+      "title": "Gerenciar Equipe",
+      "description": "Gerencie administradores e editores do site.",
+      "emailUnavailable": "Email indisponível",
+      "openMenu": "Abrir menu",
+      "actions": "Ações",
+      "changeRole": "Alterar Papel",
+      "removeMember": "Remover do Time",
+      "joinedAt": "Entrou em",
+      "dateUnknown": "Data desconhecida",
+      "online": "Online",
+      "lastLogin": "Último login",
+      "changeRoleTitle": "Alterar Papel",
+      "changeRoleDesc": "Selecione o novo papel para {name}.",
+      "selectRole": "Selecione um papel",
+      "roleAdmin": "Admin",
+      "roleEditor": "Editor",
+      "cancel": "Cancelar",
+      "saving": "Salvando...",
+      "saveChanges": "Salvar Alterações",
+      "removeMemberTitle": "Remover do Time?",
+      "removeMemberDesc": "Isso removerá o acesso administrativo de <b>{name}</b> e definirá seu papel como \"Usuário\". Esta ação pode ser desfeita readicionando o membro.",
+      "removing": "Removendo...",
+      "yesRemove": "Sim, remover",
+      "toastErrorUpdatingRole": "Erro ao atualizar papel",
+      "toastRoleUpdated": "Papel atualizado com sucesso",
+      "toastErrorRemovingMember": "Erro ao remover membro",
+      "toastMemberRemoved": "Membro removido do time",
+      "addMember": "Adicionar Membro",
+      "removeFromTeam": "Remover do Time"
+    },
+    "Files": {
+      "title": "Gerenciador de Arquivos",
+      "description": "Gerencie seus arquivos de mídia e documentos",
+      "tabImages": "Imagens",
+      "tabAudio": "Áudio",
+      "tabVideo": "Vídeo",
+      "tabFiles": "Arquivos",
+      "filesFound": "arquivos encontrados",
+      "selectAll": "Selecionar Todos",
+      "sortNewest": "Mais Recentes",
+      "sortOldest": "Mais Antigos",
+      "sortName": "Nome (A-Z)",
+      "sortSize": "Tamanho (Maior)",
+      "sort": "Ordenar por",
+      "uploadFile": "Enviar Arquivo",
+      "bucketFiles": "Arquivos no bucket: {bucket}",
+      "noFiles": "Nenhum arquivo encontrado neste bucket.",
+      "tableName": "Nome",
+      "tableSize": "Tamanho",
+      "tableDate": "Data",
+      "actionView": "Visualizar",
+      "actionDownload": "Baixar",
+      "actionCopy": "Copiar Link",
+      "actionRename": "Renomear",
+      "actionDelete": "Excluir",
+      "selected": "selecionado(s)",
+      "deleteSelected": "Excluir Selecionados",
+      "renameTitle": "Renomear Arquivo",
+      "labelName": "Nome",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "delete": "Excluir",
+      "confirmDeleteTitle": "Confirmar Exclusão",
+      "confirmDeleteDesc": "Tem certeza que deseja excluir permanentemente",
+      "item": "o item",
+      "items": "os {count} itens selecionados",
+      "previewTitle": "Pré-visualização do Arquivo",
+      "downloadFile": "Baixar Arquivo",
+      "downloadOriginal": "Baixar Original",
+      "previewUnavailable": "Este arquivo não pode ser visualizado diretamente.",
+      "toastErrorLoadingFiles": "Erro ao carregar arquivos. Verifique se o bucket existe.",
+      "toastErrorDeleting": "Erro ao excluir: {message}",
+      "toastDeleteSuccess": "Excluído com sucesso",
+      "toastErrorUploading": "Erro ao enviar {fileName}: {message}",
+      "toastUploadSuccess": "{count} arquivo(s) enviado(s) com sucesso!",
+      "toastErrorRenaming": "Erro ao renomear: {message}",
+      "toastRenameSuccess": "Arquivo renomeado com sucesso",
+      "toastUrlCopied": "URL copiada para a área de transferência",
+      "toastErrorDownloadingFile": "Erro ao baixar arquivo",
+      "selectedCount": "{count} selecionados",
+      "selectAllFiles": "Selecionar todos os arquivos",
+      "selectFile": "Selecionar {fileName}"
+    }
+  },
+  "ReadingTime": {
+    "readingTime": "{count, plural, =1 {# minuto de leitura} other {# minutos de leitura}}"
+  },
+  "Blog": {
+    "search": "Pesquisar Post",
+    "sort": "Ordenar Post",
+    "latest": "Mais Recentes",
+    "oldest": "Mais Antigos"
+  },
+  "Pages": {
+    "Home": {
+      "heroSubtitle": "Notícias e atualizações sobre o nosso município.",
+      "error": "Erro ao carregar posts.",
+      "noResults": "Nenhum post encontrado para sua busca.",
+      "clearSearch": "Limpar busca",
+      "page": "Página",
+      "of": "de"
+    }
+  },
+  "NewsletterPage": {
+    "title": "Jornalismo que Transforma",
+    "subtitle": "Junte-se a uma comunidade de leitores exigentes. Receba análises profundas, não apenas notícias.",
+    "emailPlaceholder": "seu@email.com",
+    "subscribe": "Inscrever-se Gratuitamente",
+    "success": "Inscrição realizada com sucesso!",
+    "error": "Erro ao inscrever-se. Tente novamente.",
+    "joinCount": "Junte-se a mais de 10.000 leitores",
+    "benefits": {
+      "analysisTitle": "Análise Diária",
+      "analysisDesc": "Vá além das manchetes com nossa curadoria especializada.",
+      "exclusiveTitle": "Relatórios Exclusivos",
+      "exclusiveDesc": "Acesso antecipado a investigações e dossiês especiais.",
+      "communityTitle": "Comunidade Global",
+      "communityDesc": "Faça parte de uma rede que valoriza a verdade."
+    }
+  },
+  "PricingPage": {
+    "title": "Escolha o seu plano",
+    "subtitle": "Jornalismo independente precisa do seu apoio. Escolha o plano ideal para você.",
+    "monthly": "Mensal",
+    "subscribe": "Assinar agora",
+    "basic": {
+      "name": "Básico",
+      "description": "Para quem quer apenas ler.",
+      "feature1": "Acesso ilimitado a todos os artigos",
+      "feature2": "Leitura sem anúncios",
+      "feature3": "Suporte ao jornalismo independente"
+    },
+    "pro": {
+      "name": "Profissional",
+      "description": "Para quem quer estar à frente.",
+      "feature1": "Tudo do plano Básico",
+      "feature2": "Newsletter matinal exclusiva",
+      "feature3": "Comentários prioritários",
+      "feature4": "Acesso antecipado a reportagens"
+    },
+    "elite": {
+      "name": "Elite",
+      "description": "A experiência completa e definitiva.",
+      "feature1": "Tudo do plano Profissional",
+      "feature2": "Webinários com editores",
+      "feature3": "Acesso ao acervo digital completo",
+      "feature4": "Relatórios trimestrais exclusivos"
+    },
+    "ivaIncluded": "+ IVA"
+  },
+  "SupporterPage": {
+    "hero": {
+      "title": "Mantenha a Luz Acesa",
+      "subtitle": "Torne-se um Guardião da Gaivota News. Sua contribuição garante que a verdade permaneça acessível a todos."
+    },
+    "mission": {
+      "title": "Nossa Missão",
+      "description": "Acreditamos que o jornalismo deve ser destemido e livre de influências. Como Guardião, você não está apenas assinando; você está protegendo a integridade da nossa linha editorial.",
+      "stats": {
+        "independent": "Independente",
+        "corporateAds": "Anúncios Corporativos"
+      }
+    },
+    "privileges": {
+      "title": "Privilégios do Círculo Interno",
+      "editorial": {
+        "title": "Conselho Editorial",
+        "description": "Acesso direto à nossa liderança editorial quinzenalmente."
+      },
+      "recognition": {
+        "title": "Reconhecimento Perene",
+        "description": "Seu nome gravado digitalmente no Hall dos Fundadores."
+      },
+      "concierge": {
+        "title": "Atendimento Concierge",
+        "description": "Linha direta exclusiva para dúvidas e sugestões."
+      }
+    },
+    "cta": {
+      "label": "Falar com o Concierge",
+      "subtext": "Atendimento personalizado via WhatsApp."
+    }
+  }
+}

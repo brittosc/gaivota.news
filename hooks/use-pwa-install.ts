@@ -1,7 +1,7 @@
 /**
  * @file use-pwa-install.ts
  * @directory gaivota.news\hooks
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.1.0
  * @since 21/12/2025 13:34
  *
@@ -9,7 +9,7 @@
  * Gerencia a lógica de instalação do PWA e detecção de estado standalone.
  * Refatorado para usar useSyncExternalStore e evitar re-renders em cascata.
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *

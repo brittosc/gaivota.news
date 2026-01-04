@@ -21,7 +21,7 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
   const [duration, setDuration] = React.useState(0);
-  const [volume, setVolume] = React.useState(0.3); // Default 30%
+  const [volume, setVolume] = React.useState(0.5); // Default 50%
   const [isMuted, setIsMuted] = React.useState(false);
   const [playbackRate, setPlaybackRate] = React.useState(1);
 
@@ -104,7 +104,7 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
   return (
     <div
       className={cn(
-        'bg-background/80 flex h-11 w-full max-w-md items-center gap-2 rounded-full border border-emerald-100/20 px-3 py-1 shadow-sm backdrop-blur-sm transition-all hover:shadow-md md:w-fit md:min-w-[320px] dark:border-emerald-800/20',
+        'bg-muted/50 border-border/50 hover:bg-muted/80 flex h-12 w-full max-w-md items-center gap-3 rounded-xl border px-3 shadow-sm backdrop-blur-sm transition-all md:w-fit md:min-w-90',
         className
       )}
       {...props}
@@ -121,31 +121,31 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
         type="button"
         variant="secondary"
         size="icon"
-        className="h-8 w-8 shrink-0 rounded-full bg-emerald-100 text-emerald-600 shadow-sm hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-400 dark:hover:bg-emerald-900/60"
+        className="h-8 w-8 shrink-0 rounded-lg bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500"
         onClick={togglePlay}
       >
         {isPlaying ? (
-          <Pause className="h-3.5 w-3.5 fill-current" />
+          <Pause className="h-4 w-4 fill-current" />
         ) : (
-          <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+          <Play className="ml-0.5 h-4 w-4 fill-current" />
         )}
       </Button>
 
-      <div className="flex flex-1 flex-col justify-center gap-0.5">
+      <div className="flex flex-1 flex-col justify-center gap-1">
         <Slider
           value={[progress]}
           max={duration || 100}
           step={0.1}
           onValueChange={handleSeek}
-          className="cursor-pointer [&>.relative>.absolute]:bg-emerald-500"
+          className="cursor-pointer **:[[role=slider]]:hidden [&>.relative]:h-1 [&>.relative>.absolute]:bg-emerald-500"
         />
-        <div className="text-muted-foreground flex justify-between px-0.5 text-[9px] font-medium">
+        <div className="text-muted-foreground flex justify-between px-0.5 text-[10px] font-medium tracking-tight">
           <span>{formatTime(progress)}</span>
           <span>{formatTime(duration)}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {/* Speed Control */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -153,9 +153,9 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
               type="button"
               variant="ghost"
               size="icon"
-              className="text-muted-foreground h-7 w-7 rounded-full hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400"
+              className="text-muted-foreground hover:bg-background hover:text-foreground h-8 w-8 rounded-md"
             >
-              <span className="text-[10px] font-bold">{playbackRate}x</span>
+              <span className="text-xs font-bold">{playbackRate}x</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -173,22 +173,23 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
             type="button"
             variant="ghost"
             size="icon"
-            className="text-muted-foreground h-7 w-7 rounded-full hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400"
+            className="text-muted-foreground hover:bg-background hover:text-foreground h-8 w-8 rounded-md"
             onClick={toggleMute}
           >
             {isMuted || volume === 0 ? (
-              <VolumeX className="h-3.5 w-3.5" />
+              <VolumeX className="h-4 w-4" />
             ) : (
-              <Volume2 className="h-3.5 w-3.5" />
+              <Volume2 className="h-4 w-4" />
             )}
           </Button>
-          <div className="bg-popover absolute right-full mr-2 hidden w-20 rounded-md p-2 shadow-md group-hover/volume:block">
+          <div className="bg-popover animate-in fade-in slide-in-from-bottom-1 border-border/50 absolute bottom-full left-1/2 z-50 mb-2 hidden h-28 min-w-10 -translate-x-1/2 flex-col justify-center rounded-lg border p-3 shadow-xl group-hover/volume:flex after:absolute after:-bottom-4 after:left-0 after:h-4 after:w-full after:content-['']">
             <Slider
+              orientation="vertical"
               value={[isMuted ? 0 : volume]}
               max={1}
               step={0.01}
               onValueChange={handleVolumeChange}
-              className="cursor-pointer [&>.relative>.absolute]:bg-emerald-500"
+              className="min-h-0! w-full cursor-pointer [&>.relative>.absolute]:bg-emerald-500"
             />
           </div>
         </div>
@@ -198,10 +199,10 @@ export function CustomAudioPlayer({ src, className, ...props }: CustomAudioPlaye
           type="button"
           variant="ghost"
           size="icon"
-          className="text-muted-foreground h-7 w-7 rounded-full hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400"
+          className="text-muted-foreground hover:bg-background hover:text-foreground h-8 w-8 rounded-md"
           onClick={handleDownload}
         >
-          <Download className="h-3.5 w-3.5" />
+          <Download className="h-4 w-4" />
         </Button>
       </div>
     </div>

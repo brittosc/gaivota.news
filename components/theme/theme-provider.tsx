@@ -1,14 +1,14 @@
 /**
  * @file theme-provider.tsx
  * @directory gaivota.news\components\theme
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 21/12/2025 13:33
  *
  * @description
  * Descrição objetiva da responsabilidade do arquivo
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *

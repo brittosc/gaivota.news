@@ -1,7 +1,7 @@
 /**
  * @file use-store.ts
  * @directory gaivota.news\hooks
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.2
  * @since 28/12/2025 18:30
  *
@@ -9,7 +9,7 @@
  * Gerenciamento de estado global centralizado com persistência local.
  * Tipagem corrigida de 'any' para 'unknown' para conformidade com ESLint.
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *

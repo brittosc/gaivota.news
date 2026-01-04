@@ -25,11 +25,11 @@ export function AudioComponent({ node, selected }: AudioComponentProps) {
 
   return (
     <NodeViewWrapper
-      className={`audio-component my-4 transition-all duration-200 ${selected ? 'rounded-full ring-2 ring-emerald-500 ring-offset-0' : ''}`}
+      className="audio-component my-4"
       style={{ textAlign: node.attrs.textAlign as React.CSSProperties['textAlign'] }}
     >
       <div
-        className="inline-block" // Wraps player so it respects text-align of parent/wrapper
+        className={`inline-block transition-all duration-200 ${selected ? 'ring-offset-background rounded-xl ring-2 ring-emerald-500 ring-offset-2' : ''}`}
         style={{ width: 'fit-content', maxWidth: '100%' }}
       >
         <CustomAudioPlayer src={src} />

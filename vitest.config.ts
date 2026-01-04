@@ -1,7 +1,7 @@
 /**
  * @file vitest.config.ts
  * @directory template-nextjs
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 28/12/2025 18:40
  *

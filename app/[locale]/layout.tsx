@@ -1,7 +1,7 @@
 /**
  * @file layout.tsx
  * @directory gaivota.news\app\[locale]
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.5
  * @since 28/12/2025 19:32
  *

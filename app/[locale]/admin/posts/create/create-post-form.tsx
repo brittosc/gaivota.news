@@ -12,6 +12,8 @@ import { toast } from 'sonner';
 import { RichTextEditor } from '@/components/editor/rich-text-editor';
 import { Database } from '@/lib/database.types';
 import { MediaUploadModal } from '@/components/editor/media-upload-modal';
+import { generateRandomAuthor } from '@/lib/random-author';
+import { Dice5 } from 'lucide-react';
 
 import Image from 'next/image';
 
@@ -259,12 +261,24 @@ export default function CreatePostForm({ initialData }: CreatePostFormProps) {
 
         <div className="space-y-2">
           <Label htmlFor="authorCustomName">{t('author')}</Label>
-          <Input
-            id="authorCustomName"
-            value={authorCustomName}
-            onChange={e => setAuthorCustomName(e.target.value)}
-            placeholder={t('authorPlaceholder')}
-          />
+          <div className="flex gap-2">
+            <Input
+              id="authorCustomName"
+              value={authorCustomName}
+              onChange={e => setAuthorCustomName(e.target.value)}
+              placeholder={t('authorPlaceholder')}
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              size="icon"
+              onClick={() => setAuthorCustomName(generateRandomAuthor())}
+              title="Gerar nome aleatório"
+              className="shrink-0"
+            >
+              <Dice5 className="h-4 w-4" />
+            </Button>
+          </div>
           <p className="text-muted-foreground text-xs">{t('authorDescription')}</p>
         </div>
 

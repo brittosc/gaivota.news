@@ -1,14 +1,14 @@
 /**
  * @file theme-toggle.tsx
  * @directory gaivota.news\components\theme
- * @author Mauricio de Britto - grupobritto.com.br
+ * @author Gaivota News - gaivota.news
  * @version 0.0.1
  * @since 21/12/2025 13:33
  *
  * @description
  * Descrição objetiva da responsabilidade do arquivo
  *
- * @company Quem é dono do sistema
+ * @company Gaivota News
  * @system Em qual sistema este arquivo existe?
  * @module Qual parte funcional do sistema ele implementa?
  *
@@ -35,7 +35,7 @@ export function ThemeSwitch() {
     return (
       <button
         disabled
-        className="bg-background border-input inline-flex h-10 w-10 items-center justify-center rounded-md border opacity-50"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md border opacity-50"
         aria-label="Carregando tema"
       >
         <Sun className="h-[1.2rem] w-[1.2rem]" />
@@ -50,7 +50,7 @@ export function ThemeSwitch() {
   return (
     <button
       onClick={toggleTheme}
-      className="bg-background border-input ring-offset-background hover:bg-accent hover:text-accent-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+      className="border-input ring-offset-background hover:bg-accent hover:text-accent-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
       aria-label="Alternar tema"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

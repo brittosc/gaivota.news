@@ -96,10 +96,72 @@
     "goHome": "Volver al inicio"
   },
   "Privacy": {
-    "title": "Política de Privacidad"
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: {date}",
+    "intro": "En Gaivota News, valoramos la transparencia y la confianza. Esta Política de Privacidad describe cómo recopilamos, usamos y protegemos su información personal, garantizando el cumplimiento de las regulaciones de protección de datos.",
+    "sections": {
+      "collection": {
+        "title": "1. Recopilación de Información",
+        "content": "Recopilamos información que usted nos proporciona directamente, como nombre y correo electrónico al suscribirse a nuestro boletín, y datos recopilados automáticamente, como dirección IP y tipo de navegador, para mejorar su experiencia de navegación."
+      },
+      "usage": {
+        "title": "2. Uso de la Información",
+        "content": "Utilizamos sus datos para personalizar el contenido, enviar actualizaciones relevantes (si está autorizado), procesar suscripciones y mejorar el rendimiento del sitio. No vendemos su información personal a terceros."
+      },
+      "cookies": {
+        "title": "3. Cookies y Tecnologías Similares",
+        "content": "Utilizamos cookies para entender cómo interactúa con nuestro contenido. Puede administrar sus preferencias de cookies en la configuración de su navegador en cualquier momento."
+      },
+      "security": {
+        "title": "4. Seguridad de Datos",
+        "content": "Implementamos medidas de seguridad robustas para proteger sus datos contra acceso no autorizado, alteración o divulgación. Utilizamos protocolos de encriptación estándar de la industria."
+      },
+      "rights": {
+        "title": "5. Sus Derechos",
+        "content": "Usted tiene derecho a solicitar el acceso, corrección o eliminación de sus datos personales. Para ejercer estos derechos, contáctenos a través de nuestros canales oficiales."
+      },
+      "contact": {
+        "title": "6. Contáctenos",
+        "content": "Si tiene preguntas o inquietudes sobre nuestra política de privacidad, contáctenos en: privacidad@gaivotanews.com."
+      }
+    },
+    "footer": {
+      "gdpr": "Listo para GDPR",
+      "lgpd": "Conforme a LGPD",
+      "encryption": "Encriptación de extremo a extremo",
+      "monitoring": "Monitoreo 24/7"
+    }
   },
   "Terms": {
-    "title": "Términos de Uso"
+    "title": "Términos de Uso",
+    "lastUpdated": "Última actualización: {date}",
+    "intro": "Bienvenido a Gaivota News. Al acceder a nuestro portal, usted acepta cumplir con estos términos de servicio, todas las leyes y regulaciones aplicables, y acepta que es responsable del cumplimiento de cualquier ley local aplicable.",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceptación de los Términos",
+        "content": "Al acceder a este sitio web, usted acepta estar sujeto a estos Términos y Condiciones de Uso, todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, tiene prohibido usar o acceder a este sitio."
+      },
+      "mission": {
+        "title": "2. Misión e Independencia Editorial",
+        "content": "Gaivota News es un portal independiente comprometido con la verdad. No tenemos vínculos políticos o económicos que comprometan nuestra imparcialidad. Nuestro compromiso es con la comunidad y la precisión de los hechos."
+      },
+      "intellectual": {
+        "title": "3. Propiedad Intelectual",
+        "content": "El contenido, diseño, diseño y gráficos de este sitio están protegidos por derechos de autor y derechos de propiedad intelectual. El uso no autorizado de cualquier material puede violar las leyes de derechos de autor y marcas registradas."
+      },
+      "responsibility": {
+        "title": "4. Responsabilidad del Usuario",
+        "content": "El usuario acepta usar el sitio de manera ética. Está prohibido usar el sitio para difundir contenido ilegal, ofensivo, difamatorio o que infrinja los derechos de otros."
+      },
+      "modifications": {
+        "title": "5. Modificaciones",
+        "content": "Gaivota News puede revisar estos términos de servicio en cualquier momento sin previo aviso. Al usar este sitio web, usted acepta estar sujeto a la versión actual de estos términos de servicio."
+      },
+      "contact": {
+        "title": "6. Contacto",
+        "content": "Para preguntas relacionadas con estos términos, contáctenos a través de nuestros canales de soporte oficiales."
+      }
+    }
   },
   "Components": {
     "Sidebar": {
@@ -125,6 +187,8 @@
       "admin": "Área Administrativa",
       "privacy": "Política de Privacidad",
       "terms": "Términos de Uso",
+      "becomeSupporter": "Sea un colaborador",
+      "newsletter": "Boletín",
       "rights": "Todos los derechos reservados."
     },
     "Newsletter": {
