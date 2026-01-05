@@ -517,7 +517,8 @@
       "toastErrorDownloadingFile": "Erreur lors du téléchargement du fichier",
       "selectedCount": "{count} sélectionné(s)",
       "selectAllFiles": "Tout sélectionner",
-      "selectFile": "Sélectionner {fileName}"
+      "selectFile": "Sélectionner {fileName}",
+      "storage": "Stockage"
     }
   },
   "ReadingTime": {

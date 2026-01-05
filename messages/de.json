@@ -520,7 +520,8 @@
       "toastErrorDownloadingFile": "Fehler beim Herunterladen der Datei",
       "selectedCount": "{count} ausgewählt",
       "selectAllFiles": "Alle Dateien auswählen",
-      "selectFile": "{fileName} auswählen"
+      "selectFile": "{fileName} auswählen",
+      "storage": "Speicher"
     }
   },
   "ReadingTime": {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -26,12 +26,14 @@ export function CommentsSection({ postId }: { postId: string }) {
   const [editContent, setEditContent] = useState('');
 
   // Initialize Supabase client
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const [supabase] = useState(() =>
+    createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
   );
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     const { data, error } = await supabase
       .from('comments')
       .select('*, user:profiles(full_name, avatar_url, role)')
@@ -52,15 +54,15 @@ export function CommentsSection({ postId }: { postId: string }) {
         }))
       );
     }
-  };
+  }, [postId, supabase]);
 
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       setLoading(false);
       fetchComments();
     });
-  });
+  }, [fetchComments, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

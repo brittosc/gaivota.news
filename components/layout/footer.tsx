@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { SupportersMarquee } from '@/components/marketing/supporters-marquee';
 import { NewsletterForm } from '@/components/newsletter-form';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeSwitch } from '@/components/theme/theme-toggle';
@@ -11,7 +10,7 @@ export async function Footer() {
 
   return (
     <footer className="bg-muted/30 mt-10">
-      <SupportersMarquee />
+      {/* <SupportersMarquee /> */}
 
       <div className="container mx-auto max-w-4xl px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -85,15 +84,16 @@ export async function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/supporter" className="hover:text-primary transition-colors">
-                    {t('becomeSupporter')}
-                  </Link>
-                </li>
-                <li>
                   <Link href="/newsletter" className="hover:text-primary transition-colors">
                     {t('newsletter')}
                   </Link>
                 </li>
+                <li>
+                  <Link href="/supporter" className="hover:text-primary transition-colors">
+                    {t('becomeSupporter')}
+                  </Link>
+                </li>
+
                 <li>
                   <Link href="/admin" className="hover:text-primary transition-colors">
                     {t('admin')}

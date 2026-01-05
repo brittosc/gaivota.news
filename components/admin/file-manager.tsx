@@ -46,6 +46,7 @@ import { toast } from 'sonner';
 import { CustomAudioPlayer } from '@/components/ui/custom-audio-player';
 import { CustomVideoPlayer } from '@/components/ui/custom-video-player';
 import { useTranslations } from 'next-intl';
+import { Meter, MeterTrack, MeterIndicator } from '@/components/ui/meter';
 
 type FileObject = {
   name: string;
@@ -66,6 +67,8 @@ const BUCKETS = {
   file: 'blog-files',
 };
 
+const MAX_STORAGE_BYTES = 5 * 1024 * 1024 * 1024; // 5GB
+
 export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'editor' | 'user' }) {
   const t = useTranslations('Admin.Files');
   const [activeTab, setActiveTab] = useState<keyof typeof BUCKETS>('images');
@@ -83,6 +86,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
   const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'name-asc' | 'size-desc'>(
     'date-desc'
   );
+  const [totalUsage, setTotalUsage] = useState(0);
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -123,8 +127,20 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
     setIsLoading(false);
   }, [activeTab, supabase.storage, sortBy, t]);
 
+  const fetchStorageStats = useCallback(async () => {
+    let totalBytes = 0;
+    for (const bucket of Object.values(BUCKETS)) {
+      const { data } = await supabase.storage.from(bucket).list(undefined, { limit: 1000 });
+      if (data) {
+        totalBytes += data.reduce((acc, file) => acc + (file.metadata?.size || 0), 0);
+      }
+    }
+    setTotalUsage(totalBytes);
+  }, [supabase.storage]);
+
   useEffect(() => {
     fetchFiles();
+    fetchStorageStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, sortBy]);
 
@@ -301,7 +317,7 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
       const decryptedBlob = await decryptFile(blob);
       const url = URL.createObjectURL(decryptedBlob);
       setPreviewUrl(url);
-    } catch (_) {
+    } catch {
       // Helper: If decryption fails, it's likely a non-encrypted file.
       // console.debug('Decryption failed, using original content.', e);
       setPreviewUrl(originalUrl);
@@ -315,6 +331,29 @@ export function FileManager({ userRole = 'user' }: { userRole?: 'admin' | 'edito
           <h2 className="text-2xl font-bold tracking-tight">{t('title')}</h2>
           <p className="text-muted-foreground">{t('description')}</p>
         </div>
+
+        <div className="w-full max-w-xs space-y-2">
+          <div className="text-muted-foreground flex justify-between text-xs">
+            <span>{t('storage')}</span>
+            <span>{(totalUsage / 1024 / 1024).toFixed(1)} MB / 5 GB</span>
+          </div>
+          <Meter value={(totalUsage / MAX_STORAGE_BYTES) * 100} className="h-2">
+            <MeterTrack>
+              <MeterIndicator
+                className={
+                  (totalUsage / MAX_STORAGE_BYTES) * 100 >= 90
+                    ? 'bg-red-400'
+                    : (totalUsage / MAX_STORAGE_BYTES) * 100 >= 75
+                      ? 'bg-orange-400'
+                      : (totalUsage / MAX_STORAGE_BYTES) * 100 >= 50
+                        ? 'bg-yellow-400'
+                        : 'bg-green-400'
+                }
+              />
+            </MeterTrack>
+          </Meter>
+        </div>
+
         <div className="flex gap-2">
           <Select
             value={sortBy}

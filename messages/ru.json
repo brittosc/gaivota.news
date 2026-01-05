@@ -517,7 +517,8 @@
       "toastErrorDownloadingFile": "Ошибка при скачивании файла",
       "selectedCount": "{count} выбрано",
       "selectAllFiles": "Выбрать все файлы",
-      "selectFile": "Выбрать {fileName}"
+      "selectFile": "Выбрать {fileName}",
+      "storage": "Хранилище"
     }
   },
   "ReadingTime": {

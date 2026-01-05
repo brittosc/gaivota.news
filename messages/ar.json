@@ -514,7 +514,8 @@
       "toastErrorDownloadingFile": "خطأ في تنزيل الملف",
       "selectedCount": "{count} محدد",
       "selectAllFiles": "تحديد جميع الملفات",
-      "selectFile": "تحديد {fileName}"
+      "selectFile": "تحديد {fileName}",
+      "storage": "التخزين"
     }
   },
   "ReadingTime": {

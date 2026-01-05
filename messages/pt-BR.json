@@ -513,8 +513,8 @@
       "toastUrlCopied": "URL copiada para a área de transferência",
       "toastErrorDownloadingFile": "Erro ao baixar arquivo",
       "selectedCount": "{count} selecionados",
-      "selectAllFiles": "Selecionar todos os arquivos",
-      "selectFile": "Selecionar {fileName}"
+      "selectFile": "Selecionar {fileName}",
+      "storage": "Armazenamento"
     }
   },
   "ReadingTime": {

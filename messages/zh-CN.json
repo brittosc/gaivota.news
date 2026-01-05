@@ -514,7 +514,8 @@
       "toastErrorDownloadingFile": "下载文件时出错",
       "selectedCount": "已选择 {count} 项",
       "selectAllFiles": "选择所有文件",
-      "selectFile": "选择 {fileName}"
+      "selectFile": "选择 {fileName}",
+      "storage": "存储"
     }
   },
   "ReadingTime": {
