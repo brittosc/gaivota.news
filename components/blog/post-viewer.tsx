@@ -3,7 +3,6 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
-import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TaskList from '@tiptap/extension-task-list';
@@ -21,6 +20,7 @@ import { FontSize } from '@/components/editor/extensions/font-size';
 import { ImageGallery } from '@/components/editor/extensions/image-gallery';
 import { LetterSpacing } from '@/components/editor/extensions/letter-spacing';
 import { FileAttachment } from '@/components/editor/extensions/file-attachment';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 interface PostViewerProps {
   content: string;
