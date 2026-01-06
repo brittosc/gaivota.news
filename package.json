@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "bun next dev",
+    "build": "bun next build",
+    "start": "bun next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format:check": "prettier . --check",
@@ -130,5 +130,11 @@
     "*.{json,css,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "@swc/core",
+    "core-js-pure",
+    "unrs-resolver"
+  ]
 }
